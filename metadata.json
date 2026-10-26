@@ -1,0 +1,6 @@
+{
+  "name": "VANGUARD — World-Class Digital Collective",
+  "description": "Fullscreen hero landing page for VANGUARD, a creative agency building fierce brand identities that design, disrupt, and conquer.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

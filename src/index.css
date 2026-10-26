@@ -1,0 +1,675 @@
+@import "tailwindcss";
+
+:root {
+  --pad-x: clamp(1.25rem, 4.5vw, 5rem);
+  --pad-y: clamp(1rem, 3vh, 4rem);
+  --header-pt: clamp(1.25rem, 2.5vh, 2.5rem);
+  --gap-nav: clamp(1rem, 2.2vw, 2.25rem);
+  --logo: clamp(1.35rem, 1.2vw + 0.9rem, 2.1rem);
+  --logo-deg: clamp(0.65rem, 0.4vw + 0.45rem, 0.9rem);
+  --nav: clamp(0.65rem, 0.35vw + 0.5rem, 0.875rem);
+  --headline: clamp(2.15rem, 4.5vw + 0.75rem, 5.25rem);
+  --body: clamp(0.7rem, 0.35vw + 0.55rem, 0.9rem);
+  --micro: clamp(0.55rem, 0.25vw + 0.45rem, 0.7rem);
+  --btn-px: clamp(1.15rem, 1.4vw, 1.75rem);
+  --btn-py: clamp(0.6rem, 0.9vh, 0.85rem);
+  --btn-gap: clamp(0.75rem, 1vw, 1.1rem);
+  --feature-pad: clamp(1rem, 1.5vw, 1.75rem);
+  --feature-min: clamp(13rem, 18vw, 20rem);
+  --globe: clamp(2.25rem, 2.5vw + 1rem, 3.25rem);
+  --checker-w: clamp(2.75rem, 4.5vw, 6.5rem);
+  --checker-h: clamp(1.35rem, 2.2vw, 3rem);
+  --corner: clamp(0.65rem, 0.4vw + 0.4rem, 0.95rem);
+  --icon: clamp(1rem, 0.6vw + 0.7rem, 1.35rem);
+  --drawer-pad: clamp(1.25rem, 2.5vw, 2.25rem);
+  --drawer-max: clamp(18rem, 28vw, 28rem);
+  --section-gap: clamp(0.75rem, 1.5vh, 1.5rem);
+  --main-py: clamp(1.25rem, 4vh, 4rem);
+}
+
+.font-podium {
+  font-family: 'FSP DEMO - PODIUM Sharp 4.11', 'Orbitron', sans-serif;
+}
+
+.font-vazir {
+  font-family: 'Vazirmatn', 'Plus Jakarta Sans', sans-serif;
+}
+
+.font-inter {
+  font-family: 'Inter', 'Plus Jakarta Sans', sans-serif;
+}
+
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.font-jakarta {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Intersection Observer Reveal Keyframes (Distinct Animation Per Section) */
+@keyframes slideUpReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUpReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleInReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideRightReveal {
+  0% {
+    opacity: 0;
+    transform: translateX(-32px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideLeftReveal {
+  0% {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes flipUpReveal {
+  0% {
+    opacity: 0;
+    transform: perspective(800px) rotateX(14deg) translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(800px) rotateX(0deg) translateY(0);
+  }
+}
+
+@keyframes blurInReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes fadeInReveal {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUpReveal 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-up {
+  animation: fadeUpReveal 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-scale-in {
+  animation: scaleInReveal 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-right {
+  animation: slideRightReveal 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-left {
+  animation: slideLeftReveal 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-flip-up {
+  animation: flipUpReveal 720ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-blur-in {
+  animation: blurInReveal 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-in {
+  animation: fadeInReveal 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Cascading Stagger Delays for Product Grid Cards */
+.cascade-delay-0 {
+  animation-delay: 0ms;
+}
+
+.cascade-delay-1 {
+  animation-delay: 90ms;
+}
+
+.cascade-delay-2 {
+  animation-delay: 180ms;
+}
+
+.cascade-delay-3 {
+  animation-delay: 270ms;
+}
+
+.cascade-delay-4 {
+  animation-delay: 360ms;
+}
+
+.cascade-delay-5 {
+  animation-delay: 450ms;
+}
+
+.cascade-delay-6 {
+  animation-delay: 540ms;
+}
+
+.cascade-delay-7 {
+  animation-delay: 630ms;
+}
+
+/* 3D SectionBackdrop Ambient Keyframes */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(2deg);
+  }
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinReverseSlow {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.06);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spinSlow 24s linear infinite;
+}
+
+.animate-spin-reverse-slow {
+  animation: spinReverseSlow 30s linear infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* Fluid utility classes for corner brackets, globe, and feature blocks */
+.lgpsm-feature-box {
+  min-width: var(--feature-min);
+  padding: var(--feature-pad);
+}
+
+.lgpsm-globe {
+  width: var(--globe);
+  height: var(--globe);
+}
+
+.lgpsm-corner {
+  width: var(--corner);
+  height: var(--corner);
+}
+
+/* =====================================================================
+   ENGRAVED BRIDGE & STAGECOACH GLASS HALO FOOTER
+====================================================================== */
+:root {
+  --paper: #ebeee7;
+  --ink: #2b3a30;
+  --ink-soft: #3d4a41;
+  --muted: #6b746c;
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.footer {
+  position: relative;
+  width: 100%;
+  padding: clamp(24px, 4vw, 52px) clamp(14px, 3.5vw, 48px) clamp(32px, 5vw, 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: transparent;
+  isolation: isolate;
+}
+
+/* Outer glowing glass aura behind the bridge & horse capsule */
+.footer__glass-aura {
+  position: absolute;
+  inset: 8% 6%;
+  border-radius: 44px;
+  background: radial-gradient(
+    ellipse 80% 70% at 50% 60%,
+    rgba(45, 212, 191, 0.28) 0%,
+    rgba(167, 243, 208, 0.22) 38%,
+    rgba(255, 255, 255, 0.12) 65%,
+    transparent 100%
+  );
+  filter: blur(34px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Main frosted glass halo container housing ONLY the bridge & horses */
+.footer__glass-stage {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1280px);
+  height: clamp(220px, 31vw, 390px);
+  border-radius: clamp(24px, 3vw, 38px);
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    rgba(235, 238, 231, 0.78) 0%,
+    rgba(235, 238, 231, 0.92) 55%,
+    rgba(222, 234, 226, 0.96) 100%
+  );
+  backdrop-filter: blur(22px) saturate(165%);
+  -webkit-backdrop-filter: blur(22px) saturate(165%);
+  border: 1.5px solid rgba(255, 255, 255, 0.72);
+  box-shadow:
+    0 0 0 1px rgba(45, 212, 191, 0.32),
+    0 0 55px rgba(45, 212, 191, 0.32),
+    0 0 110px rgba(255, 255, 255, 0.2),
+    0 24px 60px rgba(2, 6, 23, 0.55),
+    inset 0 2px 8px rgba(255, 255, 255, 0.88),
+    inset 0 -16px 36px rgba(45, 212, 191, 0.2);
+}
+
+/* Inner luminous glass halo rim around the stage */
+.footer__glass-halo-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 92% 82% at 50% 55%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.42) 82%,
+    rgba(45, 212, 191, 0.28) 100%
+  );
+  box-shadow: inset 0 0 42px rgba(255, 255, 255, 0.62);
+}
+
+/* Video anchored to the bottom of the frame so ONLY the bridge & horses fill the glass stage */
+.footer__video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 100%;
+  mix-blend-mode: multiply;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Specular diagonal glass reflection sheen over the bridge & stagecoach */
+.footer__glass-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(
+    125deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.14) 26%,
+    rgba(255, 255, 255, 0) 50%,
+    rgba(45, 212, 191, 0.14) 82%,
+    rgba(255, 255, 255, 0.35) 100%
+  );
+}
+
+@media (max-width: 640px) {
+  .footer {
+    padding: 18px 12px 28px;
+  }
+
+  .footer__glass-stage {
+    height: clamp(195px, 52vw, 250px);
+    border-radius: 24px;
+  }
+}
+
+/* =====================================================================
+   LUMORA "CADET SKYRANGER" 3D INTERACTIVE HERO (Search Section)
+====================================================================== */
+.lumora-stage {
+  --u: max(calc(100vw / 1440), calc(100vh / 810));
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #02040d;
+  color: #ffffff;
+  font-family: "Urbanist", sans-serif;
+  overflow: hidden;
+  user-select: none;
+}
+
+@media (pointer: fine) {
+  .lumora-stage,
+  .lumora-stage button,
+  .lumora-stage a {
+    cursor: none;
+  }
+}
+
+.lumora-frame {
+  position: absolute;
+  width: calc(1440 * var(--u));
+  height: calc(810 * var(--u));
+  left: calc(50% - 720 * var(--u));
+  top: calc(50% - 405 * var(--u));
+}
+
+.lumora-plate {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+}
+
+.lumora-head-clip {
+  position: absolute;
+  left: calc(510 * var(--u));
+  top: calc(255 * var(--u));
+  width: calc(435 * var(--u));
+  height: calc(450 * var(--u));
+  object-fit: fill;
+  -webkit-mask-image: radial-gradient(
+    ellipse 50% 50% at 50% 46%,
+    #000 0%,
+    #000 72%,
+    transparent 99%
+  );
+  mask-image: radial-gradient(
+    ellipse 50% 50% at 50% 46%,
+    #000 0%,
+    #000 72%,
+    transparent 99%
+  );
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  user-select: none;
+}
+
+.lumora-head-clip.is-ready {
+  opacity: 1;
+}
+
+.lumora-helmet {
+  position: absolute;
+  left: calc(533 * var(--u));
+  top: calc(288 * var(--u));
+  width: calc(360 * var(--u));
+  height: calc(360 * var(--u));
+  object-fit: fill;
+  mix-blend-mode: screen;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 76%,
+    transparent 92%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 76%,
+    transparent 92%
+  );
+  opacity: 0;
+  transform: translateY(calc(-70 * var(--u))) scale(0.96);
+  transition:
+    transform 720ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 520ms ease;
+  pointer-events: none;
+  user-select: none;
+}
+
+.lumora-helmet.is-on {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Interactive Search Bar in the Top Zone Above Character's Head */
+.lumora-search-zone {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  top: clamp(64px, 11vh, 110px);
+  width: min(92vw, 620px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 25;
+}
+
+.lumora-search-box {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: rgba(8, 15, 34, 0.76);
+  backdrop-filter: blur(20px) saturate(165%);
+  -webkit-backdrop-filter: blur(20px) saturate(165%);
+  border: 1.5px solid rgba(103, 232, 249, 0.55);
+  box-shadow:
+    0 0 28px rgba(34, 211, 238, 0.35),
+    0 0 64px rgba(59, 130, 246, 0.25),
+    inset 0 1px 3px rgba(255, 255, 255, 0.35);
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.lumora-search-box:focus-within {
+  border-color: #22d3ee;
+  box-shadow:
+    0 0 36px rgba(34, 211, 238, 0.55),
+    0 0 80px rgba(59, 130, 246, 0.38),
+    inset 0 1px 4px rgba(255, 255, 255, 0.5);
+}
+
+.lumora-search-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: #ffffff;
+  font-size: clamp(13px, 1.15vw, 15px);
+  font-weight: 600;
+}
+
+.lumora-search-input::placeholder {
+  color: rgba(205, 210, 230, 0.75);
+}
+
+.lumora-search-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.lumora-search-results {
+  width: 100%;
+  margin-top: 2px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(7, 12, 26, 0.92);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(103, 232, 249, 0.4);
+  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.75);
+}
+
+.lumora-push-btn {
+  position: absolute;
+  left: calc(675 * var(--u));
+  top: calc(720 * var(--u));
+  width: calc(75 * var(--u));
+  height: calc(75 * var(--u));
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 28%,
+    #ff6b6b 0%,
+    #ef233c 48%,
+    #9b0014 100%
+  );
+  border: calc(4 * var(--u)) solid #111625;
+  box-shadow:
+    0 0 0 calc(1.5 * var(--u)) rgba(255, 255, 255, 0.28),
+    inset 0 calc(3 * var(--u)) calc(6 * var(--u)) rgba(255, 255, 255, 0.45),
+    0 calc(8 * var(--u)) calc(20 * var(--u)) rgba(0, 0, 0, 0.6);
+  font-family: "Urbanist", sans-serif;
+  font-weight: 700;
+  font-size: calc(16.5 * var(--u));
+  line-height: 1.02;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0;
+  z-index: 15;
+  transition:
+    transform 160ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 320ms ease;
+}
+
+.lumora-push-btn.is-pressing {
+  transform: scale(0.88);
+}
+
+.lumora-push-btn[aria-pressed="true"] {
+  box-shadow:
+    0 0 calc(26 * var(--u)) rgba(255, 59, 78, 0.95),
+    0 0 calc(52 * var(--u)) rgba(239, 35, 60, 0.65),
+    0 0 0 calc(1.5 * var(--u)) rgba(255, 255, 255, 0.55),
+    inset 0 calc(3 * var(--u)) calc(6 * var(--u)) rgba(255, 255, 255, 0.55);
+}
+
+.lumora-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  margin-top: -3.5px;
+  border-radius: 50%;
+  background: #ffffff;
+  pointer-events: none;
+  z-index: 60;
+  will-change: transform;
+}
+
+.lumora-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  margin-left: -22px;
+  margin-top: -22px;
+  border-radius: 50%;
+  border: 1.5px solid #ffffff;
+  pointer-events: none;
+  z-index: 59;
+  will-change: transform;
+}
+
+@media (max-width: 820px) {
+  .lumora-search-zone {
+    top: 62px;
+    width: 92vw;
+  }
+
+  .lumora-search-box {
+    padding: 10px 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lumora-head-clip {
+    display: none;
+  }
+}
+
+
