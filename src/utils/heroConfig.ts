@@ -1,4 +1,4 @@
-export type SectionId = 'games' | 'ai' | 'search' | 'web' | 'studio';
+export type SectionId = 'home' | 'games' | 'ai' | 'search' | 'web' | 'studio';
 export type Language = 'en' | 'fa';
 
 export const NAV_LINKS = ['Projects', 'Studio', 'Offerings', 'Inquire'] as const;
@@ -141,14 +141,14 @@ export const SECTIONS: SectionConfig[] = [
     isCenterAction: true,
     en: {
       tabLabel: 'Search',
-      navLabel: 'Catalog',
+      navLabel: 'Search',
       tagline: 'MODASR / SMART PRODUCT FINDER',
       headingLines: ['Compare.', 'Select.', 'Order.'],
       subtextLine1: 'Inspect category, duration, region, and delivery method',
       subtextLine2: 'before placing your order —',
       subtextHighlight: 'with zero guesswork.',
       ctaText: 'OPEN FULL STORE',
-      badgeLine1: 'Live Catalog',
+      badgeLine1: 'Live Search',
       badgeLine2: 'Transparent Specs',
       stats: [
         { value: '8+', label: 'Flagship Products' },
@@ -158,13 +158,13 @@ export const SECTIONS: SectionConfig[] = [
     },
     fa: {
       tabLabel: 'جستجو',
-      navLabel: 'محصولات',
+      navLabel: 'جستجو',
       tagline: 'MODASR / SMART PRODUCT FINDER',
       headingLines: ['جستجو.', 'مقایسه.', 'انتخاب.'],
       subtextLine1: 'دسته، مدت، حجم، ریجن و روش تحویل هر محصول را',
       subtextLine2: 'پیش از خرید به‌صورت شفاف بررسی کنید —',
       subtextHighlight: 'بدون حدس و ابهام.',
-      ctaText: 'مشاهده کاتالوگ کامل',
+      ctaText: 'جستجوی هوشمند محصولات',
       badgeLine1: 'شفافیت کامل',
       badgeLine2: 'مشخصات دقیق ریجن',
       stats: [
@@ -220,9 +220,9 @@ export const SECTIONS: SectionConfig[] = [
     accentGlow: 'rgba(245, 158, 11, 0.55)',
     videoFilter: 'hue-rotate(38deg) saturate(1.3) brightness(0.62) contrast(1.15)',
     en: {
-      tabLabel: 'Orders & You',
-      navLabel: 'Track Order',
-      tagline: 'MODASR / ORDER TRACKING & ACCOUNT',
+      tabLabel: 'Account',
+      navLabel: 'Account',
+      tagline: 'MODASR / ACCOUNT & ORDER TRACKING',
       headingLines: ['Verify.', 'Track.', 'Receive.'],
       subtextLine1: 'Every order has an idempotency key and live event log',
       subtextLine2: 'calculated strictly on the server —',
@@ -237,9 +237,9 @@ export const SECTIONS: SectionConfig[] = [
       ],
     },
     fa: {
-      tabLabel: 'سفارش‌ها',
-      navLabel: 'پیگیری سفارش',
-      tagline: 'MODASR / ORDER TRACKING & ACCOUNT',
+      tabLabel: 'حساب',
+      navLabel: 'حساب کاربری',
+      tagline: 'MODASR / ACCOUNT & ORDER TRACKING',
       headingLines: ['ثبت یکتا.', 'رویدادها.', 'پیگیری.'],
       subtextLine1: 'هر خرید یک رکورد قابل پیگیری با کلید یکتای سرور است',
       subtextLine2: 'که تمام رویدادهای آن با زمان دقیق —',
@@ -310,8 +310,178 @@ export const SHOWCASE_ITEMS: ShowcaseItem[] = [
   },
 ];
 
+export const HOME_SECTION: SectionConfig = {
+  id: 'home',
+  accentHex: '#14B8A6',
+  accentGlow: 'rgba(20, 184, 166, 0.55)',
+  videoFilter: 'none',
+  en: {
+    tabLabel: 'Dashboard',
+    navLabel: 'Home & Dashboard',
+    tagline: 'MODASR / MAIN DASHBOARD & COMMAND HUB',
+    headingLines: ['Digital', 'Products', 'Command Hub.'],
+    subtextLine1: 'Unified dashboard for AI subscriptions, Gaming gift cards & VPN nodes',
+    subtextLine2: 'with live Wallex USDT rates —',
+    subtextHighlight: 'and instant server-verified delivery.',
+    ctaText: 'EXPLORE CATEGORIES',
+    badgeLine1: 'Unified Hub',
+    badgeLine2: '26+ Official Products',
+    stats: [
+      { value: '26+', label: 'Authentic Products' },
+      { value: '30s', label: 'Wallex Live Rate' },
+      { value: '24/7', label: 'Instant Delivery' },
+    ],
+  },
+  fa: {
+    tabLabel: 'خانه / داشبورد',
+    navLabel: 'خانه و داشبورد',
+    tagline: 'MODASR / MAIN DASHBOARD & COMMAND HUB',
+    headingLines: ['داشبورد اصلی', 'محصولات دیجیتال', 'مدثر.'],
+    subtextLine1: 'مرکز یکپارچه خرید اشتراک هوش مصنوعی، گیفت‌کارت گیم و سرویس اتصال',
+    subtextLine2: 'با نرخ لحظه‌ای تتر والکس —',
+    subtextHighlight: 'و تحویل آنی با تضمین سرور.',
+    ctaText: 'مشاهده دسته‌بندی‌ها',
+    badgeLine1: 'داشبورد یکپارچه',
+    badgeLine2: '+۲۶ محصول اورجینال',
+    stats: [
+      { value: '+۲۶', label: 'محصول اورجینال' },
+      { value: '۳۰ ثانیه', label: 'نرخ زنده والکس' },
+      { value: '۲۴/۷', label: 'تحویل آنی' },
+    ],
+  },
+};
+
+export const BOTTOM_NAV_SECTIONS: SectionConfig[] = [
+  HOME_SECTION,
+  SECTIONS[0], // games (گیم و بازی)
+  SECTIONS[1], // ai (هوش مصنوعی)
+  SECTIONS[3], // web (اتصال و اپ)
+  SECTIONS[2], // search (جستجو)
+  SECTIONS[4], // studio (حساب)
+];
+
 export function getSectionById(id: SectionId): SectionConfig {
+  if (id === 'home') return HOME_SECTION;
   return SECTIONS.find((s) => s.id === id) ?? SECTIONS[0];
+}
+
+export interface PageVisualTheme {
+  id: SectionId;
+  nameFa: string;
+  nameEn: string;
+  primaryHex: string;
+  secondaryHex: string;
+  ambientBaseHex: string;
+  fullPageGradient: string;
+  cardBorderClass: string;
+  cardGlassClass: string;
+  pillActiveClass: string;
+  heroMediaType: 'video' | 'artwork';
+  mediaUrl: string;
+  posterUrl: string;
+}
+
+export const PAGE_VISUAL_THEMES: Record<SectionId, PageVisualTheme> = {
+  home: {
+    id: 'home',
+    nameFa: 'تم رویال زمردی داشبورد اصلی',
+    nameEn: 'Royal Emerald Command Hub',
+    primaryHex: '#14B8A6',
+    secondaryHex: '#10B981',
+    ambientBaseHex: '#020B0E',
+    fullPageGradient:
+      'radial-gradient(ellipse 90% 60% at 50% 0%, rgba(20, 184, 166, 0.24) 0%, rgba(16, 185, 129, 0.10) 45%, rgba(2, 11, 14, 0.92) 100%)',
+    cardBorderClass: 'border-teal-400/35 hover:border-teal-300/65',
+    cardGlassClass: 'bg-[#04131A]/55 backdrop-blur-xl',
+    pillActiveClass: 'bg-teal-400 text-slate-950 shadow-[0_0_20px_rgba(20,184,166,0.45)]',
+    heroMediaType: 'artwork',
+    mediaUrl: '',
+    posterUrl: '',
+  },
+  games: {
+    id: 'games',
+    nameFa: 'تم کریمسون آرنا گیم و بازی',
+    nameEn: 'Crimson Gaming Arena',
+    primaryHex: '#F43F5E',
+    secondaryHex: '#F97316',
+    ambientBaseHex: '#0B0205',
+    fullPageGradient:
+      'radial-gradient(ellipse 95% 65% at 50% 12%, rgba(244, 63, 94, 0.34) 0%, rgba(249, 115, 22, 0.16) 48%, rgba(11, 2, 5, 0.68) 100%)',
+    cardBorderClass: 'border-rose-500/40 hover:border-rose-400/75',
+    cardGlassClass: 'bg-[#160409]/55 backdrop-blur-xl',
+    pillActiveClass: 'bg-rose-500 text-white shadow-[0_0_22px_rgba(244,63,94,0.55)]',
+    heroMediaType: 'video',
+    mediaUrl: HERO_VIDEO_URL,
+    posterUrl: HERO_POSTER_URL,
+  },
+  ai: {
+    id: 'ai',
+    nameFa: 'تم نکسوس نئونی هوش مصنوعی',
+    nameEn: 'Cyan Neural Matrix',
+    primaryHex: '#00F5D4',
+    secondaryHex: '#06B6D4',
+    ambientBaseHex: '#02090F',
+    fullPageGradient:
+      'radial-gradient(ellipse 95% 65% at 50% 12%, rgba(0, 245, 212, 0.30) 0%, rgba(6, 182, 212, 0.16) 48%, rgba(2, 9, 15, 0.68) 100%)',
+    cardBorderClass: 'border-cyan-400/40 hover:border-cyan-300/75',
+    cardGlassClass: 'bg-[#03131D]/55 backdrop-blur-xl',
+    pillActiveClass: 'bg-cyan-400 text-slate-950 shadow-[0_0_22px_rgba(0,245,212,0.5)]',
+    heroMediaType: 'video',
+    mediaUrl: AI_HERO_VIDEO_URL,
+    posterUrl: AI_HERO_POSTER_URL,
+  },
+  web: {
+    id: 'web',
+    nameFa: 'تم کهکشانی ایندیگو اتصال و اپ',
+    nameEn: 'Indigo Cosmic Connectivity',
+    primaryHex: '#6366F1',
+    secondaryHex: '#38BDF8',
+    ambientBaseHex: '#030514',
+    fullPageGradient:
+      'radial-gradient(ellipse 95% 65% at 50% 12%, rgba(99, 102, 241, 0.34) 0%, rgba(56, 189, 248, 0.16) 48%, rgba(3, 5, 20, 0.68) 100%)',
+    cardBorderClass: 'border-indigo-400/40 hover:border-indigo-300/75',
+    cardGlassClass: 'bg-[#070B24]/55 backdrop-blur-xl',
+    pillActiveClass: 'bg-indigo-500 text-white shadow-[0_0_22px_rgba(99,102,241,0.55)]',
+    heroMediaType: 'video',
+    mediaUrl: WEB_HERO_VIDEO_URL,
+    posterUrl: WEB_HERO_POSTER_URL,
+  },
+  search: {
+    id: 'search',
+    nameFa: 'تم هولوگرافیک سایبری جستجو',
+    nameEn: 'Sapphire Holographic Search',
+    primaryHex: '#00D2FF',
+    secondaryHex: '#3B82F6',
+    ambientBaseHex: '#02040D',
+    fullPageGradient:
+      'radial-gradient(ellipse 95% 65% at 50% 8%, rgba(0, 210, 255, 0.24) 0%, rgba(59, 130, 246, 0.12) 48%, rgba(2, 4, 13, 0.95) 100%)',
+    cardBorderClass: 'border-sky-400/40 hover:border-sky-300/75',
+    cardGlassClass: 'bg-[#041024]/55 backdrop-blur-xl',
+    pillActiveClass: 'bg-sky-400 text-slate-950 shadow-[0_0_22px_rgba(0,210,255,0.5)]',
+    heroMediaType: 'artwork',
+    mediaUrl: '',
+    posterUrl: '',
+  },
+  studio: {
+    id: 'studio',
+    nameFa: 'تم طلایی VIP حساب کاربری',
+    nameEn: 'Golden Obsidian VIP Account',
+    primaryHex: '#F59E0B',
+    secondaryHex: '#FBBF24',
+    ambientBaseHex: '#090602',
+    fullPageGradient:
+      'radial-gradient(ellipse 95% 65% at 50% 8%, rgba(245, 158, 11, 0.30) 0%, rgba(217, 119, 6, 0.15) 48%, rgba(9, 6, 2, 0.72) 100%)',
+    cardBorderClass: 'border-amber-400/40 hover:border-amber-300/75',
+    cardGlassClass: 'bg-[#171004]/55 backdrop-blur-xl',
+    pillActiveClass: 'bg-amber-400 text-slate-950 shadow-[0_0_22px_rgba(245,158,11,0.5)]',
+    heroMediaType: 'artwork',
+    mediaUrl: HERO_POSTER_URL,
+    posterUrl: HERO_POSTER_URL,
+  },
+};
+
+export function getPageVisualTheme(sectionId: SectionId): PageVisualTheme {
+  return PAGE_VISUAL_THEMES[sectionId] ?? PAGE_VISUAL_THEMES.home;
 }
 
 export function filterShowcaseItems(

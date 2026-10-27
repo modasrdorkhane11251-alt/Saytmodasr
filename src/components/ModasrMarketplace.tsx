@@ -17,7 +17,14 @@ import {
   Wifi,
   Zap,
 } from 'lucide-react';
-import { AI_HERO_VIDEO_URL, HERO_VIDEO_URL, WEB_HERO_VIDEO_URL, Language, SectionId } from '../utils/heroConfig';
+import {
+  AI_HERO_VIDEO_URL,
+  HERO_VIDEO_URL,
+  WEB_HERO_VIDEO_URL,
+  Language,
+  SectionId,
+  getPageVisualTheme,
+} from '../utils/heroConfig';
 import {
   MODASR_PRODUCTS,
   ModasrOrder,
@@ -34,9 +41,11 @@ import {
 } from '../hooks/useScrollReveal';
 import { ScrollReveal } from './ScrollReveal';
 import { CornerBracketSvg, WireframeGlobeSvg } from './LgpsmIcons';
+import { LumoraSkyrangerHero } from './LumoraSkyrangerHero';
 import { MeridianFooter } from './MeridianFooter';
 
 interface ModasrMarketplaceProps {
+  activePage?: SectionId;
   lang: Language;
   usdtRate: number;
   onRefreshRate: () => void;
@@ -50,6 +59,8 @@ interface ModasrMarketplaceProps {
   onSelectOrderNumber: (orderNo: string) => void;
   accentHex: string;
   onActivateHeroSection?: (id: SectionId) => void;
+  totalCartCount?: number;
+  onOpenCart?: () => void;
 }
 
 const FAQ_ITEMS = [
@@ -154,7 +165,7 @@ function MarketplaceProductCard({
       data-revealed="true"
       className="animate-fade-up h-full"
     >
-      <div className="group h-full rounded-3xl bg-slate-900/65 hover:bg-slate-900/95 border border-white/10 hover:border-teal-500/40 p-5 flex flex-col justify-between transition-all duration-300">
+      <div className="group h-full rounded-3xl bg-slate-950/60 backdrop-blur-xl hover:bg-slate-950/80 border border-white/15 hover:border-teal-400/55 p-5 flex flex-col justify-between transition-all duration-300 shadow-[0_12px_36px_rgba(0,0,0,0.45)]">
         <div>
           {/* Top Row: Icon + Quiet Brand & Kicker */}
           <div className="flex items-center justify-between gap-3 mb-4">
@@ -239,6 +250,7 @@ function MarketplaceProductCard({
 }
 
 export function ModasrMarketplace({
+  activePage = 'home',
   lang,
   usdtRate,
   onRefreshRate,
@@ -251,6 +263,8 @@ export function ModasrMarketplace({
   activeOrderNumber,
   onSelectOrderNumber,
   onActivateHeroSection,
+  totalCartCount = 0,
+  onOpenCart,
 }: ModasrMarketplaceProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [brandFilter, setBrandFilter] = useState<string>('all');
@@ -291,12 +305,29 @@ export function ModasrMarketplace({
   );
 
   const isRtl = lang === 'fa';
+
+  // Determine effective category filter per dedicated page
+  const effectiveCategory: ProductCategory =
+    activePage === 'ai'
+      ? 'ai'
+      : activePage === 'games'
+      ? selectedCategory === 'gaming' || selectedCategory === 'ingame'
+        ? selectedCategory
+        : 'gaming'
+      : activePage === 'web'
+      ? selectedCategory === 'vpn' || selectedCategory === 'subscriptions'
+        ? selectedCategory
+        : 'vpn'
+      : selectedCategory;
+
   const filteredProducts = filterModasrProducts(
     MODASR_PRODUCTS,
-    selectedCategory,
+    effectiveCategory,
     searchQuery,
     brandFilter
   );
+
+  const featuredDashboardProducts = MODASR_PRODUCTS.slice(0, 6);
 
   const trackedOrder =
     orders.find(
@@ -310,25 +341,256 @@ export function ModasrMarketplace({
     window.setTimeout(() => setRateRefreshing(false), 450);
   };
 
+  const isHomePage = activePage === 'home';
+  const isCatalogPage =
+    activePage === 'games' ||
+    activePage === 'ai' ||
+    activePage === 'web';
+  const isOrdersPage = activePage === 'studio';
+  const pageTheme = getPageVisualTheme(activePage);
+
   return (
     <div
       dir={isRtl ? 'rtl' : 'ltr'}
-      className="relative z-20 bg-[#04070B] text-white border-t border-white/10 font-vazir"
+      data-testid="modasr-page-container"
+      data-active-page={activePage}
+      data-page-theme={pageTheme.id}
+      className={`relative z-20 bg-transparent text-white font-vazir ${
+        isHomePage || activePage === 'search' ? 'pb-0' : 'pb-24'
+      }`}
     >
-      {/* 1. LIVE WALLEX USDT / TOMAN EXCHANGE RATE BAR — Animation: scale-in */}
+      {/* 0A. DEDICATED SEARCH PAGE — ONLY THE 3D INTERACTIVE ASTRONAUT BOY & SMART SEARCH ('search') */}
+      {activePage === 'search' && (
+        <section
+          data-testid="search-lumora-hero-section"
+          className="w-full"
+        >
+          <LumoraSkyrangerHero
+            onAddToCart={onAddToCart}
+            usdtRate={usdtRate}
+            externalSearchQuery={searchQuery}
+            onExternalSearchChange={setSearchQuery}
+          />
+        </section>
+      )}
+
+      {/* 0. HOME / DASHBOARD COMMAND OVERVIEW (Only on 'home' page) */}
+      {isHomePage && (
+        <section
+          data-testid="home-dashboard-overview"
+          className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-6 pb-4"
+        >
+          <div className="rounded-3xl bg-gradient-to-br from-[#041821]/75 via-[#06131D]/70 to-teal-950/55 backdrop-blur-2xl border border-teal-400/40 p-6 sm:p-8 shadow-[0_0_55px_rgba(20,184,166,0.18)]">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-white/10">
+              <div>
+                <div className="text-xs font-bold text-teal-400 tracking-wider uppercase mb-1.5">
+                  {isRtl
+                    ? 'MODASR DASHBOARD · خانه و داشبورد اصلی سایت'
+                    : 'MODASR DASHBOARD · MAIN STOREFRONT HUB'}
+                </div>
+                <h1 className="text-2xl sm:text-4xl font-black text-white leading-tight">
+                  {isRtl
+                    ? 'داشبورد یکپارچه محصولات دیجیتال و اشتراک‌های اورجینال'
+                    : 'Unified Digital Products & Subscriptions Dashboard'}
+                </h1>
+                <p className="text-xs sm:text-sm text-white/65 mt-2 max-w-2xl leading-relaxed">
+                  {isRtl
+                    ? 'از نوار پایین سایت یا کارت‌های دسته‌بندی زیر، وارد صفحه اختصاصی هر بخش شوید: گیم و گیفت‌کارت، هوش مصنوعی، اتصال و اپ، جستجو یا حساب کاربری.'
+                    : 'Use the bottom navigation bar or category cards below to open dedicated pages for Gaming, AI Hub, VPN & Apps, Search, or Account.'}
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => onActivateHeroSection?.('studio')}
+                  className="px-5 py-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-white font-semibold text-xs flex items-center gap-2 transition-colors cursor-pointer"
+                >
+                  <Clock className="w-4 h-4 text-teal-300" />
+                  <span>
+                    {isRtl
+                      ? `حساب کاربری (${trackedOrder.orderNumber})`
+                      : `My Account (${trackedOrder.orderNumber})`}
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            {/* 4 Quick Dashboard Metric Cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+              <div className="p-4 rounded-2xl bg-black/55 border border-white/10">
+                <div className="text-[11px] text-white/55">
+                  {isRtl ? 'محصولات فعال فروشگاه' : 'Active Store Products'}
+                </div>
+                <div className="text-xl sm:text-2xl font-black text-white tabular-nums mt-1">
+                  {categoryCounts.all.toLocaleString(isRtl ? 'fa-IR' : 'en-US')}{' '}
+                  <span className="text-xs font-semibold text-teal-300">
+                    {isRtl ? 'محصول اورجینال' : 'Verified'}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-black/55 border border-white/10">
+                <div className="text-[11px] text-white/55">
+                  {isRtl ? 'نرخ لحظه‌ای تتر والکس' : 'Live Wallex USDT Rate'}
+                </div>
+                <div className="text-xl sm:text-2xl font-black text-teal-300 tabular-nums mt-1">
+                  {formatToman(usdtRate, lang)}
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => onActivateHeroSection?.('studio')}
+                className="p-4 rounded-2xl bg-black/55 hover:bg-white/[0.06] border border-white/10 hover:border-teal-400/40 text-start transition-colors cursor-pointer"
+              >
+                <div className="text-[11px] text-white/55">
+                  {isRtl ? 'آخرین سفارش ثبت‌شده' : 'Latest Active Order'}
+                </div>
+                <div className="text-base sm:text-lg font-black text-amber-300 font-mono mt-1 flex items-center justify-between">
+                  <span>{trackedOrder.orderNumber}</span>
+                  <ArrowUpRight className="w-4 h-4 text-white/60" />
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onOpenCart?.()}
+                className="p-4 rounded-2xl bg-black/55 hover:bg-white/[0.06] border border-white/10 hover:border-teal-400/40 text-start transition-colors cursor-pointer"
+              >
+                <div className="text-[11px] text-white/55">
+                  {isRtl ? 'وضعیت سبد خرید شما' : 'Shopping Cart Status'}
+                </div>
+                <div className="text-xl sm:text-2xl font-black text-emerald-300 tabular-nums mt-1 flex items-center justify-between">
+                  <span>
+                    {totalCartCount.toLocaleString(isRtl ? 'fa-IR' : 'en-US')}{' '}
+                    <span className="text-xs font-semibold text-white/75">
+                      {isRtl ? 'آیتم در سبد' : 'Items'}
+                    </span>
+                  </span>
+                  <ShoppingBag className="w-4 h-4 text-emerald-300" />
+                </div>
+              </button>
+            </div>
+
+            {/* 6 Categorized Page Shortcuts */}
+            <div className="mt-6 pt-6 border-t border-white/10">
+              <div className="text-xs font-bold text-white/75 mb-3">
+                {isRtl
+                  ? 'دسته‌بندی‌های تخصصی سایت (کلیک برای ورود به صفحه اختصاصی):'
+                  : 'Specialized Store Categories (Click to open dedicated page):'}
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                {[
+                  {
+                    id: 'games-card',
+                    titleFa: 'گیفت‌کارت و کنسول',
+                    titleEn: 'Console & Gift Cards',
+                    subFa: `${categoryCounts.gaming.toLocaleString('fa-IR')} محصول`,
+                    subEn: `${categoryCounts.gaming} Products`,
+                    accent: 'border-rose-500/35 hover:border-rose-400 text-rose-300',
+                    onClick: () => {
+                      onSelectCategory('gaming');
+                      onActivateHeroSection?.('games');
+                    },
+                  },
+                  {
+                    id: 'ingame-card',
+                    titleFa: 'جم، سی‌پی و یوسی',
+                    titleEn: 'CP, UC & Game Gems',
+                    subFa: `${categoryCounts.ingame.toLocaleString('fa-IR')} محصول`,
+                    subEn: `${categoryCounts.ingame} Products`,
+                    accent: 'border-amber-500/35 hover:border-amber-400 text-amber-300',
+                    onClick: () => {
+                      onSelectCategory('ingame');
+                      onActivateHeroSection?.('games');
+                    },
+                  },
+                  {
+                    id: 'ai-card',
+                    titleFa: 'هوش مصنوعی و کد',
+                    titleEn: 'AI & Coding Pro',
+                    subFa: `${categoryCounts.ai.toLocaleString('fa-IR')} محصول`,
+                    subEn: `${categoryCounts.ai} Products`,
+                    accent: 'border-teal-500/35 hover:border-teal-400 text-teal-300',
+                    onClick: () => {
+                      onSelectCategory('ai');
+                      onActivateHeroSection?.('ai');
+                    },
+                  },
+                  {
+                    id: 'vpn-card',
+                    titleFa: 'وی‌پی‌ان و آی‌پی ثابت',
+                    titleEn: 'VPN & Static IP',
+                    subFa: `${categoryCounts.vpn.toLocaleString('fa-IR')} محصول`,
+                    subEn: `${categoryCounts.vpn} Products`,
+                    accent: 'border-indigo-500/35 hover:border-indigo-400 text-indigo-300',
+                    onClick: () => {
+                      onSelectCategory('vpn');
+                      onActivateHeroSection?.('web');
+                    },
+                  },
+                  {
+                    id: 'subs-card',
+                    titleFa: 'تلگرام و اپل‌آیدی',
+                    titleEn: 'Telegram & Apple ID',
+                    subFa: `${categoryCounts.subscriptions.toLocaleString('fa-IR')} محصول`,
+                    subEn: `${categoryCounts.subscriptions} Products`,
+                    accent: 'border-cyan-500/35 hover:border-cyan-400 text-cyan-300',
+                    onClick: () => {
+                      onSelectCategory('subscriptions');
+                      onActivateHeroSection?.('web');
+                    },
+                  },
+                  {
+                    id: 'orders-card',
+                    titleFa: 'حساب کاربری',
+                    titleEn: 'My Account',
+                    subFa: isRtl ? 'سفارش‌ها و وضعیت حساب' : 'Orders & Account',
+                    subEn: 'Orders & Status',
+                    accent: 'border-emerald-500/35 hover:border-emerald-400 text-emerald-300',
+                    onClick: () => {
+                      onActivateHeroSection?.('studio');
+                    },
+                  },
+                ].map((catItem) => (
+                  <button
+                    key={catItem.id}
+                    type="button"
+                    data-testid={`dashboard-cat-${catItem.id}`}
+                    onClick={catItem.onClick}
+                    className={`p-3.5 rounded-2xl bg-white/[0.03] hover:bg-white/[0.07] border transition-all text-start flex flex-col justify-between cursor-pointer ${catItem.accent}`}
+                  >
+                    <div className="text-xs font-bold text-white">
+                      {isRtl ? catItem.titleFa : catItem.titleEn}
+                    </div>
+                    <div className="mt-2 flex items-center justify-between text-[11px] opacity-85">
+                      <span>{isRtl ? catItem.subFa : catItem.subEn}</span>
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 1. LIVE WALLEX USDT / TOMAN EXCHANGE RATE BAR — Shown ONLY on 'home' Dashboard */}
+      {isHomePage && (
       <section
         id="exchange-rate"
         aria-label={
           isRtl ? 'نرخ لحظه‌ای تتر به تومان' : 'Live USDT Exchange Rate'
         }
-        className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-12 pb-6"
+        className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-6 pb-4"
       >
         <div
           ref={rateBannerReveal.ref}
           data-testid="exchange-rate-banner"
           data-scroll-reveal="scale-in"
-          data-revealed={rateBannerReveal.isVisible ? 'true' : 'false'}
-          className={`${rateBannerReveal.revealClassName} rounded-3xl bg-gradient-to-r from-emerald-950/60 via-slate-900/85 to-teal-950/60 border border-teal-500/25 p-6 sm:p-8 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-2xl`}
+          data-revealed="true"
+          className="animate-scale-in rounded-3xl bg-gradient-to-r from-emerald-950/65 via-slate-950/75 to-teal-950/65 backdrop-blur-2xl border border-teal-400/35 p-6 sm:p-8 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-2xl"
         >
           <div className="max-w-2xl">
             <div className="flex items-center gap-2 text-xs text-teal-400 font-semibold tracking-wider uppercase mb-2">
@@ -403,9 +665,11 @@ export function ModasrMarketplace({
           </div>
         </div>
       </section>
+      )}
 
-      {/* 2. FEATURED BENTO SHOWCASE (منتخب‌های فروشگاهی) — Animation: flip-up */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-10">
+      {/* 2. FEATURED BENTO SHOWCASE (منتخب‌های فروشگاهی) — Shown on 'home' Dashboard */}
+      {isHomePage && (
+      <section className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-8">
         <div
           ref={bentoHeaderReveal.ref}
           data-scroll-reveal="flip-up"
@@ -596,88 +860,152 @@ export function ModasrMarketplace({
             </div>
           </ScrollReveal>
         </div>
-      </section>
 
-      {/* 3. FULL INTERACTIVE PRODUCT CATALOG (از نیازت شروع کن) — Animation: fade-up + slide-left */}
+        {/* Featured Products Preview on Home Dashboard */}
+        <div className="mt-10 pt-8 border-t border-white/10">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <div>
+              <h3 className="text-xl sm:text-2xl font-bold text-white">
+                {isRtl
+                  ? 'پرفروش‌ترین محصولات منتخب در یک نگاه'
+                  : 'Top Featured Storefront Products'}
+              </h3>
+              <p className="text-xs sm:text-sm text-white/60 mt-1">
+                {isRtl
+                  ? 'محبوب‌ترین اشتراک‌ها و گیفت‌کارت‌های آماده تحویل آنی در داشبورد اصلی'
+                  : 'Most popular subscriptions and gift cards ready for instant delivery'}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => onActivateHeroSection?.('search')}
+              className="px-4 py-2.5 rounded-xl bg-teal-400/15 hover:bg-teal-400 hover:text-slate-950 border border-teal-400/40 text-teal-300 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              <span>
+                {isRtl
+                  ? 'مشاهده کاتالوگ کامل همه محصولات'
+                  : 'Open Full Product Catalog'}
+              </span>
+              <ArrowUpRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {featuredDashboardProducts.map((product, idx) => (
+              <MarketplaceProductCard
+                key={product.id}
+                product={product}
+                cascadeIndex={idx}
+                lang={lang}
+                usdtRate={usdtRate}
+                currencyMode={currencyMode}
+                onAddToCart={onAddToCart}
+                onShowDetails={setDetailProduct}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+      )}
+
+      {/* 3. DEDICATED CATEGORY / FULL PRODUCT CATALOG — Shown on 'games', 'ai', 'web', 'search' */}
+      {isCatalogPage && (
       <section
         id="catalog-section"
-        className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-12 border-t border-white/10"
+        className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-4 pb-12"
       >
         <div
           ref={catalogHeaderReveal.ref}
           data-scroll-reveal="fade-up"
-          data-revealed={catalogHeaderReveal.isVisible ? 'true' : 'false'}
-          className={`${catalogHeaderReveal.revealClassName} flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8`}
+          data-revealed="true"
+          className="animate-fade-up flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6"
         >
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
               {isRtl ? 'از نیازت شروع کن' : 'Start From Your Need'}
             </h2>
-            <p className="text-sm text-white/60 mt-2">
+            <p className="text-sm text-white/75 mt-2 drop-shadow-[0_1px_6px_rgba(0,0,0,0.75)]">
               {isRtl
                 ? 'به‌جای گم‌شدن بین صدها گزینه، دسته‌ی مناسب را انتخاب کن و پلن‌ها را با جزئیات کامل مقایسه کن.'
-                : 'Filter by category or search directly to compare duration, region, and server-verified pricing.'}
+                : 'Select your category tab to compare duration, region, and server-verified pricing.'}
             </p>
-          </div>
-
-          {/* Search Input */}
-          <div className="relative w-full md:w-80">
-            <Search className="w-4 h-4 text-teal-400 absolute start-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={
-                isRtl
-                  ? 'جستجوی نام محصول (مثلاً ChatGPT، Steam...)'
-                  : 'Search products (e.g. ChatGPT, Steam...)'
-              }
-              aria-label={
-                isRtl ? 'جستجو در کاتالوگ محصولات' : 'Search product catalog'
-              }
-              className="w-full bg-white/5 border border-white/15 focus:border-teal-400 rounded-2xl ps-10 pe-4 py-3 text-xs text-white placeholder:text-white/40 focus:outline-none transition-colors"
-            />
           </div>
         </div>
 
         {/* Interactive Category Filter Bar — Animation: slide-left */}
         <ScrollReveal variant="slide-left" delayMs={60}>
-          <div className="flex flex-wrap items-center gap-2 mb-4 bg-white/[0.03] p-1.5 rounded-2xl border border-white/10">
+          <div
+            className={`flex flex-wrap items-center gap-2 mb-5 p-1.5 rounded-2xl border ${pageTheme.cardGlassClass} ${pageTheme.cardBorderClass}`}
+          >
             {(
-              [
-                {
-                  id: 'all',
-                  fa: `همه محصولات (${categoryCounts.all.toLocaleString('fa-IR')})`,
-                  en: `All Products (${categoryCounts.all})`,
-                },
-                {
-                  id: 'ai',
-                  fa: `هوش مصنوعی (${categoryCounts.ai.toLocaleString('fa-IR')})`,
-                  en: `AI & Code (${categoryCounts.ai})`,
-                },
-                {
-                  id: 'ingame',
-                  fa: `جم، سی‌پی و یوسی · دیکاردو (${categoryCounts.ingame.toLocaleString('fa-IR')})`,
-                  en: `CP, UC & Gems (${categoryCounts.ingame})`,
-                },
-                {
-                  id: 'gaming',
-                  fa: `گیفت‌کارت و کنسول (${categoryCounts.gaming.toLocaleString('fa-IR')})`,
-                  en: `Gift Cards & Console (${categoryCounts.gaming})`,
-                },
-                {
-                  id: 'subscriptions',
-                  fa: `اشتراک پرمیوم و اپل‌آیدی (${categoryCounts.subscriptions.toLocaleString('fa-IR')})`,
-                  en: `Premium & Apple ID (${categoryCounts.subscriptions})`,
-                },
-                {
-                  id: 'vpn',
-                  fa: `اتصال و آی‌پی ثابت (${categoryCounts.vpn.toLocaleString('fa-IR')})`,
-                  en: `VPN & Static IP (${categoryCounts.vpn})`,
-                },
-              ] as Array<{ id: ProductCategory; fa: string; en: string }>
+              activePage === 'games'
+                ? ([
+                    {
+                      id: 'gaming',
+                      fa: `گیفت‌کارت و کنسول (${categoryCounts.gaming.toLocaleString('fa-IR')})`,
+                      en: `Gift Cards & Console (${categoryCounts.gaming})`,
+                    },
+                    {
+                      id: 'ingame',
+                      fa: `جم، سی‌پی و یوسی · دیکاردو (${categoryCounts.ingame.toLocaleString('fa-IR')})`,
+                      en: `CP, UC & Gems (${categoryCounts.ingame})`,
+                    },
+                  ] as Array<{ id: ProductCategory; fa: string; en: string }>)
+                : activePage === 'ai'
+                ? ([
+                    {
+                      id: 'ai',
+                      fa: `هوش مصنوعی و ابزار کدنویسی (${categoryCounts.ai.toLocaleString('fa-IR')})`,
+                      en: `AI & Code (${categoryCounts.ai})`,
+                    },
+                  ] as Array<{ id: ProductCategory; fa: string; en: string }>)
+                : activePage === 'web'
+                ? ([
+                    {
+                      id: 'vpn',
+                      fa: `اتصال و آی‌پی ثابت (${categoryCounts.vpn.toLocaleString('fa-IR')})`,
+                      en: `VPN & Static IP (${categoryCounts.vpn})`,
+                    },
+                    {
+                      id: 'subscriptions',
+                      fa: `اشتراک پرمیوم و اپل‌آیدی (${categoryCounts.subscriptions.toLocaleString('fa-IR')})`,
+                      en: `Premium & Apple ID (${categoryCounts.subscriptions})`,
+                    },
+                  ] as Array<{ id: ProductCategory; fa: string; en: string }>)
+                : ([
+                    {
+                      id: 'all',
+                      fa: `همه محصولات (${categoryCounts.all.toLocaleString('fa-IR')})`,
+                      en: `All Products (${categoryCounts.all})`,
+                    },
+                    {
+                      id: 'ai',
+                      fa: `هوش مصنوعی (${categoryCounts.ai.toLocaleString('fa-IR')})`,
+                      en: `AI & Code (${categoryCounts.ai})`,
+                    },
+                    {
+                      id: 'ingame',
+                      fa: `جم، سی‌پی و یوسی · دیکاردو (${categoryCounts.ingame.toLocaleString('fa-IR')})`,
+                      en: `CP, UC & Gems (${categoryCounts.ingame})`,
+                    },
+                    {
+                      id: 'gaming',
+                      fa: `گیفت‌کارت و کنسول (${categoryCounts.gaming.toLocaleString('fa-IR')})`,
+                      en: `Gift Cards & Console (${categoryCounts.gaming})`,
+                    },
+                    {
+                      id: 'subscriptions',
+                      fa: `اشتراک پرمیوم و اپل‌آیدی (${categoryCounts.subscriptions.toLocaleString('fa-IR')})`,
+                      en: `Premium & Apple ID (${categoryCounts.subscriptions})`,
+                    },
+                    {
+                      id: 'vpn',
+                      fa: `اتصال و آی‌پی ثابت (${categoryCounts.vpn.toLocaleString('fa-IR')})`,
+                      en: `VPN & Static IP (${categoryCounts.vpn})`,
+                    },
+                  ] as Array<{ id: ProductCategory; fa: string; en: string }>)
             ).map((tab) => {
-              const active = selectedCategory === tab.id;
+              const active = effectiveCategory === tab.id;
               return (
                 <button
                   key={tab.id}
@@ -689,8 +1017,8 @@ export function ModasrMarketplace({
                   }}
                   className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
                     active
-                      ? 'bg-teal-400 text-slate-950 shadow-md'
-                      : 'text-white/75 hover:text-white hover:bg-white/5'
+                      ? pageTheme.pillActiveClass
+                      : 'text-white/80 hover:text-white hover:bg-white/10'
                   }`}
                 >
                   {isRtl ? tab.fa : tab.en}
@@ -699,7 +1027,8 @@ export function ModasrMarketplace({
             })}
           </div>
 
-          {/* Quick Ecosystem & Brand Filter Bar (Dicardo, Iranicard, GiftCard.ir, Global Hubs) */}
+          {/* Quick Ecosystem & Brand Filter Bar (Shown on Full Catalog 'search' page) */}
+          {activePage === 'search' && (
           <div
             data-testid="brand-ecosystem-filter-bar"
             className="flex flex-wrap items-center gap-2 mb-8"
@@ -742,12 +1071,13 @@ export function ModasrMarketplace({
               );
             })}
           </div>
+          )}
         </ScrollReveal>
 
         {/* ===================================================================
             3A-0. DEDICATED DICARDO IN-GAME TOP-UP SPOTLIGHT (CP, UC, GEMS & PASSES)
         ==================================================================== */}
-        {selectedCategory === 'ingame' && (
+        {effectiveCategory === 'ingame' && (
           <div
             data-testid="ingame-category-spotlight"
             className="mb-8 relative rounded-3xl overflow-hidden border border-amber-500/40 bg-gradient-to-br from-amber-950/50 via-slate-950 to-slate-950 p-6 sm:p-8 shadow-2xl animate-scale-in"
@@ -808,7 +1138,7 @@ export function ModasrMarketplace({
         {/* ===================================================================
             3A. DEDICATED GAMING CATEGORY SPOTLIGHT BANNER (With Hero Gaming Video!)
         ==================================================================== */}
-        {selectedCategory === 'gaming' && (
+        {effectiveCategory === 'gaming' && (
           <div
             data-testid="gaming-category-spotlight"
             className="mb-8 relative rounded-3xl overflow-hidden border border-rose-500/40 bg-slate-950 min-h-[260px] sm:min-h-[300px] flex flex-col justify-between p-6 sm:p-8 shadow-[0_0_50px_rgba(244,63,94,0.2)] animate-scale-in"
@@ -820,7 +1150,7 @@ export function ModasrMarketplace({
               muted
               loop
               playsInline
-              className="absolute inset-0 w-full h-full object-cover object-[73%_center] sm:object-[68%_center] md:object-[64%_center] lg:object-center opacity-75"
+              className="absolute inset-0 w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[76%_center] lg:object-center opacity-75"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/75 to-slate-950/30" />
 
@@ -867,7 +1197,7 @@ export function ModasrMarketplace({
         {/* ===================================================================
             3B. CUSTOM ARTIFICIAL INTELLIGENCE (هوش مصنوعی) INTERACTIVE COMMAND DECK
         ==================================================================== */}
-        {selectedCategory === 'ai' && (
+        {effectiveCategory === 'ai' && (
           <div
             data-testid="ai-category-spotlight"
             className="mb-8 relative rounded-3xl overflow-hidden border border-teal-400/40 bg-slate-950 p-6 sm:p-8 shadow-[0_0_55px_rgba(0,245,212,0.16)] animate-scale-in"
@@ -1056,7 +1386,7 @@ export function ModasrMarketplace({
         {/* ===================================================================
             3C. CUSTOM WEB, VPN & APPS (اتصال، تحریم‌شکن و تلگرام پرمیوم) SPOTLIGHT
         ==================================================================== */}
-        {selectedCategory === 'vpn' && (
+        {effectiveCategory === 'vpn' && (
           <div
             data-testid="vpn-category-spotlight"
             className="mb-8 relative rounded-3xl overflow-hidden border border-indigo-400/40 bg-slate-950 p-6 sm:p-8 shadow-[0_0_55px_rgba(99,102,241,0.18)] animate-scale-in"
@@ -1139,8 +1469,10 @@ export function ModasrMarketplace({
           ))}
         </div>
       </section>
+      )}
 
-      {/* 4. DIGITAL ARCHITECTURE SHOWCASE: STATIC IMAGE SECTION + LOWER FEATURE BLOCK (Intersection Observer fade-up) */}
+      {/* 4. DIGITAL ARCHITECTURE SHOWCASE — Shown on 'home' Dashboard */}
+      {isHomePage && (
       <section
         id="architecture-showcase-section"
         aria-label={
@@ -1157,19 +1489,10 @@ export function ModasrMarketplace({
             data-testid="static-image-section"
             data-scroll-reveal="fade-up"
             data-revealed={staticImageSectionReveal.isVisible ? 'true' : 'false'}
-            className={`${staticImageSectionReveal.revealClassName} lg:col-span-7 rounded-3xl overflow-hidden border border-teal-500/30 bg-slate-950 relative min-h-[320px] sm:min-h-[380px] flex flex-col justify-end p-6 sm:p-8`}
+            className={`${staticImageSectionReveal.revealClassName} lg:col-span-7 rounded-3xl overflow-hidden border border-teal-500/30 bg-gradient-to-br from-[#041821] via-slate-950 to-[#031218] relative min-h-[320px] sm:min-h-[380px] flex flex-col justify-end p-6 sm:p-8`}
           >
-            <img
-              src="/assets/aistudio/file_0000000013d4820d8db4a2c8678426e1_1c955518.png"
-              alt={
-                isRtl
-                  ? 'نمای اختصاصی زیرساخت محصولات دیجیتال مدثر'
-                  : 'MODASR Digital Ecosystem Showcase'
-              }
-              referrerPolicy="no-referrer"
-              className="absolute inset-0 w-full h-full object-cover object-center opacity-75"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-950/20" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_25%,rgba(20,184,166,0.22),transparent_60%)] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/65 to-transparent pointer-events-none" />
 
             <div className="relative z-10 max-w-xl">
               <div className="text-xs font-semibold text-teal-400 tracking-wider uppercase mb-2">
@@ -1271,12 +1594,62 @@ export function ModasrMarketplace({
           </div>
         </div>
       </section>
+      )}
 
-      {/* 5. SERVER-VERIFIED TRANSPARENCY & LIVE ORDER TRACKER — Animation: slide-right + scale-in */}
+      {/* 5. ACCOUNT OVERVIEW & LIVE ORDER TRACKER — Shown on 'studio' (Account / حساب) page */}
+      {isOrdersPage && (
+      <>
       <section
         id="order-tracker-section"
-        className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-12 border-t border-white/10"
+        className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-6 pb-10"
       >
+        {/* Account Overview Header Card */}
+        <div
+          data-testid="account-overview-card"
+          className="mb-8 rounded-3xl bg-gradient-to-r from-[#1A1104]/80 via-[#120C03]/75 to-amber-950/55 backdrop-blur-2xl border border-amber-400/45 p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6 shadow-[0_0_55px_rgba(245,158,11,0.18)]"
+        >
+          <div>
+            <div className="text-xs font-bold text-amber-400 tracking-wider uppercase mb-1.5">
+              {isRtl
+                ? 'MODASR ACCOUNT · حساب کاربری و مدیریت سفارش‌ها'
+                : 'MODASR ACCOUNT · USER PROFILE & ORDERS'}
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-black text-white">
+              {isRtl
+                ? 'حساب کاربری، سوابق خرید و پیگیری زنده'
+                : 'Your Account, Purchase History & Live Order Tracker'}
+            </h1>
+            <p className="text-xs sm:text-sm text-white/65 mt-1.5 max-w-2xl leading-relaxed">
+              {isRtl
+                ? `ایمیل فعال حساب: ${trackedOrder.email} — در این بخش وضعیت لحظه‌ای سفارش‌های ثبت‌شده، کلید یکتای سرور و سبد خرید خود را مدیریت کنید.`
+                : `Active Account Email: ${trackedOrder.email} — Manage your verified orders, server idempotency keys, and active cart.`}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <div className="px-4 py-2.5 rounded-2xl bg-black/60 border border-white/10 text-xs">
+              <span className="text-white/55">
+                {isRtl ? 'تعداد سفارش‌ها: ' : 'Orders: '}
+              </span>
+              <span className="font-black text-amber-300 tabular-nums">
+                {orders.length.toLocaleString(isRtl ? 'fa-IR' : 'en-US')}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => onOpenCart?.()}
+              className="px-4 py-2.5 rounded-2xl bg-teal-400 hover:bg-teal-300 text-slate-950 font-bold text-xs flex items-center gap-2 cursor-pointer"
+            >
+              <ShoppingBag className="w-3.5 h-3.5" />
+              <span>
+                {isRtl
+                  ? `سبد خرید (${totalCartCount.toLocaleString('fa-IR')})`
+                  : `Cart (${totalCartCount})`}
+              </span>
+            </button>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left 5 Columns: 4 Architectural Trust Pillars — Animation: slide-right */}
           <div className="lg:col-span-5 space-y-5">
@@ -1360,7 +1733,7 @@ export function ModasrMarketplace({
           <ScrollReveal
             variant="scale-in"
             delayMs={120}
-            className="lg:col-span-7"
+            className="order-first lg:order-none lg:col-span-7"
           >
             <div className="rounded-3xl bg-slate-900/80 border border-teal-500/30 p-6 sm:p-8 shadow-2xl">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
@@ -1532,9 +1905,18 @@ export function ModasrMarketplace({
           })}
         </div>
       </section>
+      </>
+      )}
 
-      {/* 7. MERIDIAN FULL-VIEWPORT ENGRAVED ILLUSTRATION FOOTER */}
-      <MeridianFooter />
+      {/* 7. MERIDIAN FULL-WIDTH ABOUT & QUICK ACCESS + VIADUCT BRIDGE FOOTER (Only at bottom of Home / Dashboard) */}
+      {isHomePage && (
+        <MeridianFooter
+          lang={lang}
+          onNavigateSection={onActivateHeroSection}
+          onSelectCategory={onSelectCategory}
+          onOpenCart={onOpenCart}
+        />
+      )}
 
       {/* PRODUCT DETAIL MODAL */}
       {detailProduct && (

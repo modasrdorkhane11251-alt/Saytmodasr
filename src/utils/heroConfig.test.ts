@@ -7,9 +7,13 @@ import {
   AI_HERO_VIDEO_URL,
   WEB_HERO_VIDEO_URL,
   SECTIONS,
+  HOME_SECTION,
+  BOTTOM_NAV_SECTIONS,
   SHOWCASE_ITEMS,
   getStaggerDelayMs,
   getSectionById,
+  getPageVisualTheme,
+  PAGE_VISUAL_THEMES,
   filterShowcaseItems,
 } from './heroConfig';
 
@@ -40,12 +44,19 @@ test('NAV_LINKS and HERO_STATS match specification', () => {
   );
 });
 
-test('SECTIONS defines 5 themed realms with dedicated Gaming and AI labels', () => {
+test('SECTIONS defines 5 themed realms and BOTTOM_NAV_SECTIONS starts with Home/Dashboard', () => {
   assert.equal(SECTIONS.length, 5);
   assert.deepEqual(
     SECTIONS.map((s) => s.id),
     ['games', 'ai', 'search', 'web', 'studio']
   );
+  assert.equal(BOTTOM_NAV_SECTIONS.length, 6);
+  assert.deepEqual(
+    BOTTOM_NAV_SECTIONS.map((s) => s.id),
+    ['home', 'games', 'ai', 'web', 'search', 'studio']
+  );
+  assert.equal(HOME_SECTION.fa.tabLabel, 'خانه / داشبورد');
+  assert.equal(getSectionById('home').id, 'home');
   const gamesSection = getSectionById('games');
   assert.equal(gamesSection.en.tabLabel, 'Gaming');
   assert.equal(gamesSection.fa.tabLabel, 'گیم و بازی');
@@ -54,6 +65,25 @@ test('SECTIONS defines 5 themed realms with dedicated Gaming and AI labels', () 
   assert.equal(aiSection.fa.tabLabel, 'هوش مصنوعی');
   const searchSection = getSectionById('search');
   assert.equal(searchSection.isCenterAction, true);
+  assert.equal(searchSection.fa.tabLabel, 'جستجو');
+  assert.equal(searchSection.fa.navLabel, 'جستجو');
+  assert.equal(searchSection.en.tabLabel, 'Search');
+  assert.equal(searchSection.en.navLabel, 'Search');
+  const studioSection = getSectionById('studio');
+  assert.equal(studioSection.fa.tabLabel, 'حساب');
+  assert.equal(studioSection.en.tabLabel, 'Account');
+});
+
+test('getPageVisualTheme returns a distinct full-page theme for all 6 pages', () => {
+  const allIds = ['home', 'games', 'ai', 'web', 'search', 'studio'] as const;
+  const primaryHexes = new Set(allIds.map((id) => getPageVisualTheme(id).primaryHex));
+  assert.equal(primaryHexes.size, 6);
+  assert.equal(PAGE_VISUAL_THEMES.games.heroMediaType, 'video');
+  assert.equal(PAGE_VISUAL_THEMES.ai.heroMediaType, 'video');
+  assert.equal(PAGE_VISUAL_THEMES.web.heroMediaType, 'video');
+  assert.equal(PAGE_VISUAL_THEMES.home.mediaUrl, '');
+  assert.equal(PAGE_VISUAL_THEMES.search.mediaUrl, '');
+  assert.equal(PAGE_VISUAL_THEMES.studio.heroMediaType, 'artwork');
 });
 
 test('filterShowcaseItems filters by category and search query', () => {

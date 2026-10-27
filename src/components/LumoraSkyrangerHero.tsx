@@ -1,5 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import { Search, ShoppingBag, Sparkles, X } from 'lucide-react';
+import {
+  CheckCircle2,
+  Crown,
+  Search,
+  Shield,
+  ShoppingBag,
+  Sparkles,
+  X,
+  Zap,
+} from 'lucide-react';
 import {
   MODASR_PRODUCTS,
   ModasrProduct,
@@ -7,13 +16,12 @@ import {
   DEFAULT_USDT_RATE_TOMAN,
   filterModasrProducts,
 } from '../utils/modasrStore';
+import { SectionId } from '../utils/heroConfig';
 
 export const LUMORA_PLATE_URL =
   'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/a194141a-44ba-44bb-8372-e6720af994ca.jpg';
-
 export const LUMORA_HEAD_CLIP_URL =
   'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/e1b48476-24ab-456a-bb12-13e63bc60973.mp4';
-
 export const LUMORA_HELMET_URL =
   'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/e8c78660-4497-41b9-82ae-a4738a5edd11.jpg';
 
@@ -56,19 +64,71 @@ export function computeIdleDriftTime(
   return Math.max(0, Math.min(duration, ratio * duration));
 }
 
+export interface GazeRotationState {
+  normX: number;
+  normY: number;
+  rotateYDeg: number;
+  rotateXDeg: number;
+  shiftXPx: number;
+  shiftYPx: number;
+}
+
+/**
+ * Computes 3D head/character rotation state for unit test validation.
+ */
+export function computeGazeRotation(
+  pointerX: number,
+  pointerY: number,
+  frameLeft: number,
+  frameTop: number,
+  frameWidth: number,
+  frameHeight: number
+): GazeRotationState {
+  if (frameWidth <= 0 || frameHeight <= 0) {
+    return {
+      normX: 0,
+      normY: 0,
+      rotateYDeg: 0,
+      rotateXDeg: 0,
+      shiftXPx: 0,
+      shiftYPx: 0,
+    };
+  }
+  const headCenterX = frameLeft + frameWidth * 0.5;
+  const headCenterY = frameTop + frameHeight * 0.52;
+  const rawX = (pointerX - headCenterX) / (frameWidth * 0.42);
+  const rawY = (pointerY - headCenterY) / (frameHeight * 0.42);
+  const normX = Math.max(-1, Math.min(1, rawX));
+  const normY = Math.max(-1, Math.min(1, rawY));
+
+  return {
+    normX,
+    normY,
+    rotateYDeg: Number((normX * 24).toFixed(2)),
+    rotateXDeg: Number((-normY * 18).toFixed(2)),
+    shiftXPx: Number((normX * 22).toFixed(2)),
+    shiftYPx: Number((normY * 16).toFixed(2)),
+  };
+}
+
 interface LumoraSkyrangerHeroProps {
   onAddToCart?: (product: ModasrProduct) => void;
   usdtRate?: number;
+  externalSearchQuery?: string;
+  onExternalSearchChange?: (query: string) => void;
+  onNavigateSection?: (sectionId: SectionId) => void;
 }
 
 export function LumoraSkyrangerHero({
   onAddToCart,
   usdtRate = DEFAULT_USDT_RATE_TOMAN,
+  externalSearchQuery,
+  onExternalSearchChange,
+  onNavigateSection,
 }: LumoraSkyrangerHeroProps) {
   const stageRef = useRef<HTMLDivElement | null>(null);
   const frameRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const searchBoxRef = useRef<HTMLDivElement | null>(null);
   const pushBtnRef = useRef<HTMLButtonElement | null>(null);
   const cursorDotRef = useRef<HTMLDivElement | null>(null);
   const cursorRingRef = useRef<HTMLDivElement | null>(null);
@@ -77,98 +137,51 @@ export function LumoraSkyrangerHero({
   const [pressing, setPressing] = useState(false);
   const [clipReady, setClipReady] = useState(false);
   const [pointerVisible, setPointerVisible] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchFocused, setSearchFocused] = useState(false);
+
+  // Search query state
+  const [localSearchQuery, setLocalSearchQuery] = useState('');
+  const [showResultsDrawer, setShowResultsDrawer] = useState(false);
+
+  const searchQuery =
+    externalSearchQuery !== undefined ? externalSearchQuery : localSearchQuery;
+
+  const updateSearchQuery = (val: string) => {
+    setLocalSearchQuery(val);
+    onExternalSearchChange?.(val);
+    if (val.trim().length > 0) {
+      setShowResultsDrawer(true);
+    }
+  };
 
   const matchedProducts = filterModasrProducts(
     MODASR_PRODUCTS,
     'all',
     searchQuery
-  ).slice(0, 4);
+  );
 
-  // Entrance Web Animations Timeline
-  useEffect(() => {
-    if (
-      typeof window === 'undefined' ||
-      (window.matchMedia &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-    ) {
-      return;
-    }
+  const QUICK_TAGS = [
+    { label: 'Claude Pro', query: 'Claude' },
+    { label: 'Spotify', query: 'Spotify' },
+    { label: 'PS5 Gift Card', query: 'PlayStation' },
+    { label: 'ChatGPT Plus', query: 'ChatGPT' },
+    { label: 'V2Ray VIP', query: 'V2Ray' },
+  ];
 
-    const anims: Animation[] = [];
-
-    if (
-      searchBoxRef.current &&
-      typeof searchBoxRef.current.animate === 'function'
-    ) {
-      anims.push(
-        searchBoxRef.current.animate(
-          [
-            {
-              opacity: 0,
-              filter: 'blur(10px)',
-              transform: 'translateY(-18px) scale(0.96)',
-            },
-            {
-              opacity: 1,
-              filter: 'blur(0px)',
-              transform: 'translateY(0) scale(1)',
-            },
-          ],
-          {
-            duration: 720,
-            delay: 180,
-            easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-            fill: 'both',
-          }
-        )
-      );
-    }
-
-    if (pushBtnRef.current && typeof pushBtnRef.current.animate === 'function') {
-      anims.push(
-        pushBtnRef.current.animate(
-          [
-            { opacity: 0, transform: 'scale(0.35)' },
-            { opacity: 1, transform: 'scale(1.06)' },
-            { opacity: 1, transform: 'scale(1)' },
-          ],
-          {
-            duration: 620,
-            delay: 680,
-            easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
-            fill: 'both',
-          }
-        )
-      );
-    }
-
-    return () => {
-      anims.forEach((a) => a.cancel());
-    };
-  }, []);
-
-  // Load Head-Turn Clip via Blob URL & Scrub with Cursor + Idle Sine Drift
+  // Head-turn scrubbing logic strictly driven by the video clip without code transforms
   useEffect(() => {
     const video = videoRef.current;
     const stage = stageRef.current;
-    if (!video || !stage) return;
-
-    const reducedMotion =
-      typeof window !== 'undefined' &&
-      window.matchMedia &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (reducedMotion) return;
+    const frame = frameRef.current;
+    if (!video || !stage || !frame) return;
 
     let objectUrl: string | null = null;
     let cancelled = false;
 
+    // Load full clip as blob for instant zero-lag seeking
     const loadClipAsBlob = (url: string, fallbackUrl?: string) => {
       fetch(url)
         .then((res) => {
-          if (!res.ok) throw new Error('Blob fetch failed');
+          if (!res.ok) throw new Error('Failed to load blob');
           return res.blob();
         })
         .then((blob) => {
@@ -189,12 +202,12 @@ export function LumoraSkyrangerHero({
     const handleVideoError = () => {
       if (!triedFallback && !cancelled) {
         triedFallback = true;
-        loadClipAsBlob('/assets/lumora-head-turn.webm');
+        loadClipAsBlob(LUMORA_HEAD_CLIP_URL);
       }
     };
 
     video.addEventListener('error', handleVideoError);
-    loadClipAsBlob(LUMORA_HEAD_CLIP_URL, '/assets/lumora-head-turn.webm');
+    loadClipAsBlob('/assets/lumora-head-turn.mp4', LUMORA_HEAD_CLIP_URL);
 
     let duration = 5.04;
     let targetTime = duration * 0.5;
@@ -202,7 +215,6 @@ export function LumoraSkyrangerHero({
     let lastMoveTime = performance.now();
     let hasRevealed = false;
 
-    // Cursor coordinates
     let pointerX = window.innerWidth * 0.5;
     let pointerY = window.innerHeight * 0.5;
     let ringX = pointerX;
@@ -216,7 +228,7 @@ export function LumoraSkyrangerHero({
         try {
           video.currentTime = shownTime;
         } catch {
-          // ignore initial seek error before buffer
+          // ignore
         }
       }
     };
@@ -231,25 +243,34 @@ export function LumoraSkyrangerHero({
     video.addEventListener('loadedmetadata', handleLoadedMetadata);
     video.addEventListener('seeked', handleSeeked);
 
-    const handlePointerMove = (e: PointerEvent) => {
-      pointerX = e.clientX;
-      pointerY = e.clientY;
+    const updateGazeFromPointer = (clientX: number, clientY: number) => {
+      pointerX = clientX;
+      pointerY = clientY;
       lastMoveTime = performance.now();
+
+      const frameRect = frame.getBoundingClientRect();
+      targetTime = mapPointerXToClipTime(
+        clientX,
+        frameRect.left,
+        frameRect.width,
+        duration
+      );
+    };
+
+    const handlePointerMove = (e: PointerEvent) => {
       setPointerVisible(true);
+      updateGazeFromPointer(e.clientX, e.clientY);
+    };
 
-      if (cursorDotRef.current) {
-        cursorDotRef.current.style.transform = `translate3d(${pointerX}px, ${pointerY}px, 0)`;
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        updateGazeFromPointer(e.touches[0].clientX, e.touches[0].clientY);
       }
+    };
 
-      const frameEl = frameRef.current;
-      if (frameEl) {
-        const rect = frameEl.getBoundingClientRect();
-        targetTime = mapPointerXToClipTime(
-          e.clientX,
-          rect.left,
-          rect.width,
-          duration
-        );
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        updateGazeFromPointer(e.touches[0].clientX, e.touches[0].clientY);
       }
     };
 
@@ -257,260 +278,341 @@ export function LumoraSkyrangerHero({
       setPointerVisible(false);
     };
 
-    stage.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
     stage.addEventListener('pointerleave', handlePointerLeave);
 
-    let rafId = 0;
-    const tick = (now: number) => {
-      const idleMs = now - lastMoveTime;
-      if (idleMs > 3500) {
-        const idleElapsedSec = (idleMs - 3500) * 0.001;
-        targetTime = computeIdleDriftTime(idleElapsedSec, duration);
+    // RAF Animation Loop: eases scrubbed time and handles idle drift
+    let rafId: number;
+    const tick = () => {
+      const now = performance.now();
+      const idleElapsed = (now - lastMoveTime) / 1000;
+
+      if (idleElapsed > 3.5) {
+        targetTime = computeIdleDriftTime(idleElapsed, duration);
       }
 
       shownTime = easeValue(shownTime, targetTime, 0.14);
-
-      if (
-        video.readyState >= 2 &&
-        !video.seeking &&
-        Math.abs(video.currentTime - shownTime) > 0.008
-      ) {
+      if (video && !video.seeking && Math.abs(video.currentTime - shownTime) > 0.018) {
         try {
-          video.currentTime = shownTime;
+          video.currentTime = Math.max(0, Math.min(duration, shownTime));
         } catch {
-          // ignore transient seek state
+          // ignore seek bounds
         }
       }
 
-      // Ease 44px ring toward pointer (x0.55 per frame)
+      // Cursor ring tracking
       ringX = easeValue(ringX, pointerX, 0.55);
       ringY = easeValue(ringY, pointerY, 0.55);
+      if (cursorDotRef.current) {
+        cursorDotRef.current.style.transform = `translate3d(${pointerX}px, ${pointerY}px, 0)`;
+      }
       if (cursorRingRef.current) {
         cursorRingRef.current.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
       }
 
-      rafId = window.requestAnimationFrame(tick);
+      rafId = requestAnimationFrame(tick);
     };
 
-    rafId = window.requestAnimationFrame(tick);
+    rafId = requestAnimationFrame(tick);
 
     return () => {
       cancelled = true;
-      window.cancelAnimationFrame(rafId);
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchstart', handleTouchStart);
+      stage.removeEventListener('pointerleave', handlePointerLeave);
       video.removeEventListener('error', handleVideoError);
       video.removeEventListener('loadedmetadata', handleLoadedMetadata);
       video.removeEventListener('seeked', handleSeeked);
-      stage.removeEventListener('pointermove', handlePointerMove);
-      stage.removeEventListener('pointerleave', handlePointerLeave);
-      if (objectUrl) {
-        URL.revokeObjectURL(objectUrl);
-      }
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
   }, []);
 
   const handlePushClick = () => {
     setPressing(true);
     setHelmetOn((prev) => !prev);
-    window.setTimeout(() => {
-      setPressing(false);
-    }, 320);
+    setTimeout(() => setPressing(false), 320);
   };
 
   return (
     <div
       ref={stageRef}
-      dir="ltr"
-      data-testid="lumora-skyranger-stage"
-      className="lumora-stage"
+      dir="rtl"
+      data-testid="search-hub-container"
+      className="search-hub-container font-vazir relative w-full overflow-hidden"
     >
-      {/* 1440x810 (16:9) Responsive Unit Frame */}
+      {/* Fine Pointer Cursor */}
       <div
-        ref={frameRef}
-        data-testid="lumora-frame"
-        className="lumora-frame"
-      >
-        {/* Base Plate (1920x1080) */}
-        <img
-          src={LUMORA_PLATE_URL}
-          alt="Cadet Skyranger in space suit before glowing planet horizon"
-          data-testid="lumora-plate"
-          className="lumora-plate"
-          draggable={false}
-        />
+        ref={cursorDotRef}
+        aria-hidden="true"
+        className={`search-cursor-dot ${pointerVisible ? 'is-visible' : ''}`}
+      />
+      <div
+        ref={cursorRingRef}
+        aria-hidden="true"
+        className={`search-cursor-ring ${pointerVisible ? 'is-visible' : ''}`}
+      />
 
-        {/* Scrubbed Head-Turn Clip (510, 255, 435x450) */}
-        <video
-          ref={videoRef}
-          data-testid="lumora-head-clip"
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-          className={`lumora-head-clip ${clipReady ? 'is-ready' : ''}`}
-        />
-
-        {/* Glass Bubble Helmet (533, 288, 360x360, mix-blend-mode: screen) */}
-        <img
-          src={LUMORA_HELMET_URL}
-          alt=""
-          aria-hidden="true"
-          data-testid="lumora-helmet"
-          data-helmet-on={helmetOn ? 'true' : 'false'}
-          className={`lumora-helmet ${helmetOn ? 'is-on' : ''}`}
-          draggable={false}
-        />
-
-        {/* Chest PUSH ME Button: 75u circle at (675, 720) */}
-        <button
-          ref={pushBtnRef}
-          type="button"
-          aria-pressed={helmetOn}
-          onClick={handlePushClick}
-          data-testid="lumora-push-btn"
-          className={`lumora-push-btn ${pressing ? 'is-pressing' : ''}`}
+      {/* 1. TOP SEARCH & FILTER BAR (Pinned cleanly above, leaving character free) */}
+      <div className="relative z-30 w-full max-w-2xl px-3 pt-2 sm:pt-4 flex flex-col items-center gap-2 sm:gap-2.5">
+        {/* Navigation pill row (Desktop/Tablet; on mobile bottom dock provides direct navigation) */}
+        <div
+          data-testid="search-hub-nav-pills"
+          className="hidden md:flex items-center justify-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full bg-slate-950/85 backdrop-blur-xl border border-cyan-500/30 shadow-[0_0_24px_rgba(0,210,255,0.18)] overflow-x-auto max-w-full"
         >
-          <span>PUSH</span>
-          <span>ME</span>
-        </button>
-      </div>
-
-      {/* GREEN-CIRCLED AREA ABOVE CHARACTER HEAD: Interactive Glass Search Bar */}
-      <div
-        ref={searchBoxRef}
-        dir="rtl"
-        data-testid="lumora-hero-search-container"
-        className="lumora-search-zone font-vazir"
-      >
-        <div className="lumora-search-box">
-          <Search className="w-5 h-5 text-cyan-300 shrink-0" />
-          <input
-            type="text"
-            value={searchQuery}
-            onFocus={() => setSearchFocused(true)}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              setSearchFocused(true);
-            }}
-            placeholder="جستجوی محصول (ChatGPT، PS5، Spotify، V2Ray...)"
-            aria-label="جستجوی سریع محصولات دیجیتال"
-            data-testid="lumora-search-input"
-            className="lumora-search-input"
-          />
-          {searchQuery ? (
-            <button
-              type="button"
-              aria-label="پاک کردن جستجو"
-              onClick={() => setSearchQuery('')}
-              className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-colors cursor-pointer"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          ) : (
-            <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-cyan-400/15 border border-cyan-300/35 text-[11px] font-bold text-cyan-200 whitespace-nowrap">
-              <Sparkles className="w-3 h-3" />
-              <span>جستجوی هوشمند</span>
-            </span>
-          )}
+          <button
+            type="button"
+            onClick={() => onNavigateSection?.('games')}
+            className="px-3 py-1 rounded-full text-xs font-semibold text-white/70 hover:text-white transition-colors cursor-pointer whitespace-nowrap"
+          >
+            گیم و بازی
+          </button>
+          <button
+            type="button"
+            onClick={() => onNavigateSection?.('ai')}
+            className="px-3 py-1 rounded-full text-xs font-semibold text-white/70 hover:text-white transition-colors cursor-pointer whitespace-nowrap"
+          >
+            هوش مصنوعی
+          </button>
+          <div className="px-4 py-1 rounded-full text-xs font-black bg-cyan-400 text-slate-950 shadow-[0_0_16px_rgba(34,211,238,0.7)] whitespace-nowrap">
+            جستجو
+          </div>
+          <button
+            type="button"
+            onClick={() => onNavigateSection?.('web')}
+            className="px-3 py-1 rounded-full text-xs font-semibold text-white/70 hover:text-white transition-colors cursor-pointer whitespace-nowrap"
+          >
+            اتصال و اپ
+          </button>
+          <button
+            type="button"
+            onClick={() => onNavigateSection?.('studio')}
+            className="px-3 py-1 rounded-full text-xs font-semibold text-white/70 hover:text-white transition-colors cursor-pointer whitespace-nowrap"
+          >
+            حساب
+          </button>
         </div>
 
-        {/* Quick Search Filter Tags */}
-        <div className="lumora-search-tags">
-          {['ChatGPT Plus', 'PS5 Gift Card', 'Spotify', 'Claude Pro', 'V2Ray VIP'].map(
-            (tag) => (
+        {/* Glowing Search Input */}
+        <div className="w-full relative">
+          <div
+            data-testid="search-hub-input-wrapper"
+            className="w-full flex items-center gap-3 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-slate-950/90 backdrop-blur-2xl border-2 border-cyan-400/80 shadow-[0_0_28px_rgba(34,211,238,0.45),inset_0_1px_3px_rgba(255,255,255,0.4)] transition-all duration-300 focus-within:border-cyan-300 focus-within:shadow-[0_0_36px_rgba(34,211,238,0.65)]"
+          >
+            <Search className="w-5 h-5 text-cyan-300 shrink-0" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => updateSearchQuery(e.target.value)}
+              placeholder="جستجوی محصول (ChatGPT، PS5، Spotify، V2Ray...)"
+              aria-label="جستجوی سریع محصولات دیجیتال"
+              data-testid="search-hub-main-input"
+              className="flex-1 bg-transparent text-white placeholder-white/50 text-xs sm:text-sm font-medium focus:outline-none"
+            />
+            {searchQuery ? (
               <button
-                key={tag}
                 type="button"
-                onClick={() => {
-                  setSearchQuery(tag);
-                  setSearchFocused(true);
-                }}
-                className={`px-3 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer border ${
-                  searchQuery === tag
-                    ? 'bg-cyan-400 text-slate-950 border-cyan-300 shadow-[0_0_15px_rgba(34,211,238,0.5)]'
-                    : 'bg-slate-950/65 text-slate-200 border-white/15 hover:border-cyan-400/50 hover:text-white backdrop-blur-md'
+                onClick={() => updateSearchQuery('')}
+                aria-label="پاک کردن جستجو"
+                className="p-1 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            ) : (
+              <div className="hidden sm:flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cyan-400/15 border border-cyan-300/35 text-[11px] font-bold text-cyan-200">
+                <Sparkles className="w-3 h-3" />
+                <span>۵۰+ محصول</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Quick Filter Chips */}
+        <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+          {QUICK_TAGS.map((tag) => {
+            const isSelected =
+              searchQuery.toLowerCase().includes(tag.query.toLowerCase());
+            return (
+              <button
+                key={tag.label}
+                type="button"
+                data-testid={`search-tag-${tag.label.replace(/\s+/g, '-').toLowerCase()}`}
+                onClick={() => updateSearchQuery(tag.query)}
+                className={`px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer border ${
+                  isSelected
+                    ? 'bg-cyan-400 text-slate-950 border-cyan-300 shadow-[0_0_16px_rgba(34,211,238,0.6)] font-bold'
+                    : 'bg-slate-950/70 hover:bg-slate-900 border-white/20 text-white/85 hover:text-white hover:border-cyan-400/50'
                 }`}
               >
-                {tag}
+                {tag.label}
               </button>
-            )
-          )}
+            );
+          })}
         </div>
+      </div>
 
-        {/* Live Search Results Dropdown (Shown when typing or focused) */}
-        {(searchQuery.trim().length > 0 || searchFocused) && (
-          <div
-            data-testid="lumora-search-results"
-            className="lumora-search-results"
-          >
-            <div className="flex items-center justify-between px-3 py-1.5 border-b border-white/10 text-[11px] text-slate-300">
-              <span>
-                {searchQuery.trim()
-                  ? `نتایج مرتبط با «${searchQuery}»`
-                  : 'محصولات پرطرفدار آماده تحویل'}
-              </span>
+      {/* 2. SEARCH RESULTS OVERLAY (Only visible when user searches) */}
+      {searchQuery.trim().length > 0 && showResultsDrawer && (
+        <div
+          data-testid="search-results-panel"
+          className="relative z-40 w-full max-w-3xl px-4 mt-3 animate-scale-in"
+        >
+          <div className="rounded-3xl bg-[#06121E]/95 backdrop-blur-2xl border-2 border-cyan-400/50 shadow-[0_16px_50px_rgba(0,0,0,0.85),0_0_40px_rgba(34,211,238,0.25)] p-4 sm:p-5 max-h-[55vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-2.5 mb-3 border-b border-white/10">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-cyan-300" />
+                <span className="text-xs sm:text-sm font-bold text-white">
+                  نتایج جستجو برای «{searchQuery}»
+                </span>
+                <span className="px-2 py-0.5 rounded-full bg-cyan-400/20 text-cyan-300 text-[11px] font-black">
+                  {matchedProducts.length} محصول
+                </span>
+              </div>
               <button
                 type="button"
-                onClick={() => setSearchFocused(false)}
-                className="text-cyan-300 hover:text-white font-semibold cursor-pointer"
+                onClick={() => setShowResultsDrawer(false)}
+                className="text-xs text-white/70 hover:text-white flex items-center gap-1 cursor-pointer bg-white/10 px-2.5 py-1 rounded-full"
               >
-                بستن
+                <span>مشاهده کاراکتر</span>
+                <X className="w-3.5 h-3.5" />
               </button>
             </div>
 
             {matchedProducts.length === 0 ? (
-              <div className="p-3 text-center text-xs text-slate-300">
-                محصولی با این عبارت یافت نشد.
+              <div className="text-center py-6">
+                <p className="text-sm text-white/70">
+                  محصولی با عبارت «{searchQuery}» یافت نشد.
+                </p>
+                <div className="flex flex-wrap justify-center gap-2 mt-3">
+                  {QUICK_TAGS.map((t) => (
+                    <button
+                      key={t.label}
+                      type="button"
+                      onClick={() => updateSearchQuery(t.query)}
+                      className="px-3 py-1 rounded-lg bg-white/10 hover:bg-cyan-500/20 text-xs text-cyan-200 cursor-pointer"
+                    >
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             ) : (
-              <div className="divide-y divide-white/10">
-                {matchedProducts.map((prod) => {
-                  const toman = convertUsdToToman(prod.priceUsd, usdtRate);
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                {matchedProducts.map((product) => {
+                  const tomanPrice = convertUsdToToman(product.priceUsd, usdtRate);
                   return (
                     <div
-                      key={prod.id}
-                      className="flex items-center justify-between gap-3 px-3 py-2 hover:bg-white/10 transition-colors"
+                      key={product.id}
+                      data-testid={`search-product-card-${product.id}`}
+                      className="group relative rounded-2xl bg-slate-900/80 hover:bg-slate-900 border border-white/15 hover:border-cyan-400/60 p-3 flex flex-col justify-between transition-all duration-200 hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]"
                     >
-                      <div className="min-w-0 text-right">
-                        <div className="text-xs font-bold text-white truncate">
-                          {prod.titleFa}
+                      <div>
+                        <div className="flex items-center justify-between gap-2 mb-1.5">
+                          <span className="text-[10px] font-bold text-cyan-300 px-2 py-0.5 rounded-md bg-cyan-400/10 border border-cyan-400/20">
+                            {product.platformBrand}
+                          </span>
+                          <span className="text-[10px] font-semibold text-emerald-400 flex items-center gap-1">
+                            <Zap className="w-3 h-3" />
+                            <span>تحویل آنی</span>
+                          </span>
                         </div>
-                        <div className="text-[11px] text-cyan-300 tabular-nums">
-                          ${prod.priceUsd.toFixed(2)} ·{' '}
-                          {toman.toLocaleString('fa-IR')} تومان
-                        </div>
+                        <h4 className="text-xs font-bold text-white group-hover:text-cyan-200 transition-colors line-clamp-1">
+                          {product.titleFa}
+                        </h4>
+                        <p className="text-[11px] text-white/60 line-clamp-2 mt-1">
+                          {product.subtitleFa}
+                        </p>
                       </div>
-                      {onAddToCart && (
+
+                      <div className="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-between gap-2">
+                        <div>
+                          <div className="text-xs font-black text-white tabular-nums">
+                            {tomanPrice.toLocaleString('fa-IR')} تومان
+                          </div>
+                          <div className="text-[10px] text-white/45 tabular-nums">
+                            ${product.priceUsd.toFixed(2)} USD
+                          </div>
+                        </div>
                         <button
                           type="button"
-                          onClick={() => onAddToCart(prod)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-[11px] shrink-0 cursor-pointer"
+                          data-testid={`search-add-to-cart-${product.id}`}
+                          onClick={() => onAddToCart?.(product)}
+                          className="px-2.5 py-1.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-xs flex items-center gap-1 transition-all cursor-pointer shadow-md active:scale-95"
                         >
-                          <ShoppingBag className="w-3.5 h-3.5" />
-                          <span>خرید</span>
+                          <ShoppingBag className="w-3 h-3" />
+                          <span>افزودن</span>
                         </button>
-                      )}
+                      </div>
                     </div>
                   );
                 })}
               </div>
             )}
           </div>
-        )}
+        </div>
+      )}
+
+      {/* 3. 1440x810 FRAME: CADET HERO WITH PIXEL-PERFECT ALIGNED HEAD CLIP & HELMET */}
+      <div
+        ref={frameRef}
+        data-testid="search-cadet-frame"
+        className="search-cadet-frame"
+      >
+        {/* Full Plate Image */}
+        <img
+          src="/assets/lumora-plate.jpg"
+          alt="MODASR Cadet"
+          referrerPolicy="no-referrer"
+          className="search-cadet-plate"
+          draggable={false}
+        />
+
+        {/* Head-turn video clip: Exactly (510, 255, 435x450) matching the plate without transforms */}
+        <video
+          ref={videoRef}
+          data-testid="search-character-head-video"
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          className={`search-cadet-head-video ${clipReady ? 'is-ready' : ''}`}
+        />
+
+        {/* Clear Glass Bubble Helmet: Exactly (533, 288, 360x360) */}
+        <img
+          src="/assets/lumora-helmet.jpg"
+          alt="Space Helmet"
+          aria-hidden="true"
+          referrerPolicy="no-referrer"
+          data-testid="search-character-helmet"
+          className={`search-cadet-helmet ${helmetOn ? 'is-active' : ''}`}
+          draggable={false}
+        />
+
+        {/* Real PUSH ME Button laid exactly at (675, 720, 75u) over printed chest button */}
+        <button
+          ref={pushBtnRef}
+          type="button"
+          aria-pressed={helmetOn}
+          onClick={handlePushClick}
+          data-testid="search-character-push-btn"
+          className={`search-cadet-push-btn ${pressing ? 'is-pressing' : ''}`}
+        >
+          <span>PUSH</span>
+          <span>ME</span>
+        </button>
       </div>
 
-      {/* Custom Ring + Dot Cursor */}
-      <div
-        ref={cursorDotRef}
-        aria-hidden="true"
-        style={{ opacity: pointerVisible ? 1 : 0 }}
-        className="lumora-cursor-dot hidden md:block"
-      />
-      <div
-        ref={cursorRingRef}
-        aria-hidden="true"
-        style={{ opacity: pointerVisible ? 1 : 0 }}
-        className="lumora-cursor-ring hidden md:block"
-      />
+      {/* Floating Status Note at bottom (Desktop/Tablet) */}
+      <div className="hidden sm:flex absolute bottom-3 inset-x-4 items-center justify-center pointer-events-none z-20">
+        <div className="flex items-center gap-2 bg-slate-950/75 backdrop-blur-md px-3.5 py-1 rounded-full border border-cyan-400/30 text-[11px] text-cyan-200 shadow-lg">
+          <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
+          <span>چرخش روان سر با حرکت لمس و ماوس · فشردن PUSH ME برای کلاه</span>
+        </div>
+      </div>
     </div>
   );
 }

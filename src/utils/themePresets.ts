@@ -84,6 +84,7 @@ export const THEME_PRESETS: ThemePreset[] = [
 ];
 
 export const SECTION_DEFAULT_PRESET: Record<SectionId, ThemePresetId> = {
+  home: 'neural-nexus',
   games: 'crimson-overdrive',
   ai: 'neural-nexus',
   search: 'cyber-glitch',

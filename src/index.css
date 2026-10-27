@@ -273,7 +273,7 @@
 }
 
 /* =====================================================================
-   ENGRAVED BRIDGE & STAGECOACH GLASS HALO FOOTER
+   FULL-WIDTH ENGRAVED BRIDGE & STAGECOACH + ABOUT & LINKS FOOTER (Home/Dashboard)
 ====================================================================== */
 :root {
   --paper: #ebeee7;
@@ -287,56 +287,51 @@
 .footer {
   position: relative;
   width: 100%;
-  padding: clamp(24px, 4vw, 52px) clamp(14px, 3.5vw, 48px) clamp(32px, 5vw, 64px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin-top: 24px;
+  padding: 0;
+  display: block;
   overflow: hidden;
   background: transparent;
   isolation: isolate;
 }
 
-/* Outer glowing glass aura behind the bridge & horse capsule */
+/* Outer glowing glass aura behind the full-width footer */
 .footer__glass-aura {
   position: absolute;
-  inset: 8% 6%;
-  border-radius: 44px;
+  inset: 0;
   background: radial-gradient(
-    ellipse 80% 70% at 50% 60%,
+    ellipse 90% 80% at 50% 50%,
     rgba(45, 212, 191, 0.28) 0%,
-    rgba(167, 243, 208, 0.22) 38%,
-    rgba(255, 255, 255, 0.12) 65%,
+    rgba(167, 243, 208, 0.22) 42%,
+    rgba(255, 255, 255, 0.12) 70%,
     transparent 100%
   );
-  filter: blur(34px);
+  filter: blur(36px);
   z-index: 0;
   pointer-events: none;
 }
 
-/* Main frosted glass halo container housing ONLY the bridge & horses */
+/* Full-bleed frosted glass container housing About Us, Quick Access & Viaduct Bridge */
 .footer__glass-stage {
   position: relative;
   z-index: 1;
-  width: min(100%, 1280px);
-  height: clamp(220px, 31vw, 390px);
-  border-radius: clamp(24px, 3vw, 38px);
+  width: 100%;
+  border-top-left-radius: clamp(28px, 3.5vw, 44px);
+  border-top-right-radius: clamp(28px, 3.5vw, 44px);
   overflow: hidden;
   background: linear-gradient(
     180deg,
-    rgba(235, 238, 231, 0.78) 0%,
-    rgba(235, 238, 231, 0.92) 55%,
-    rgba(222, 234, 226, 0.96) 100%
+    rgba(235, 238, 231, 0.92) 0%,
+    rgba(235, 238, 231, 0.96) 58%,
+    rgba(222, 234, 226, 0.98) 100%
   );
   backdrop-filter: blur(22px) saturate(165%);
   -webkit-backdrop-filter: blur(22px) saturate(165%);
-  border: 1.5px solid rgba(255, 255, 255, 0.72);
+  border-top: 2px solid rgba(255, 255, 255, 0.85);
   box-shadow:
-    0 0 0 1px rgba(45, 212, 191, 0.32),
-    0 0 55px rgba(45, 212, 191, 0.32),
-    0 0 110px rgba(255, 255, 255, 0.2),
-    0 24px 60px rgba(2, 6, 23, 0.55),
-    inset 0 2px 8px rgba(255, 255, 255, 0.88),
-    inset 0 -16px 36px rgba(45, 212, 191, 0.2);
+    0 -12px 55px rgba(45, 212, 191, 0.28),
+    0 -2px 20px rgba(255, 255, 255, 0.25),
+    inset 0 2px 10px rgba(255, 255, 255, 0.9);
 }
 
 /* Inner luminous glass halo rim around the stage */
@@ -347,21 +342,32 @@
   z-index: 2;
   pointer-events: none;
   background: radial-gradient(
-    ellipse 92% 82% at 50% 55%,
-    transparent 50%,
-    rgba(255, 255, 255, 0.42) 82%,
-    rgba(45, 212, 191, 0.28) 100%
+    ellipse 95% 88% at 50% 55%,
+    transparent 55%,
+    rgba(255, 255, 255, 0.38) 85%,
+    rgba(45, 212, 191, 0.22) 100%
   );
-  box-shadow: inset 0 0 42px rgba(255, 255, 255, 0.62);
 }
 
-/* Video anchored to the bottom of the frame so ONLY the bridge & horses fill the glass stage */
+/* Full-width panoramic viaduct bridge & horse stagecoach wrapper */
+.footer__panorama-wrap {
+  position: relative;
+  width: 100%;
+  height: clamp(190px, 25vw, 320px);
+  margin-top: -18px;
+  padding-bottom: 76px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Video cropped to the bridge & stagecoach so there is no empty white sky gap above the bridge */
 .footer__video {
   position: absolute;
-  inset: 0;
-  display: block;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
-  height: 100%;
+  height: 145%;
   object-fit: cover;
   object-position: 50% 100%;
   mix-blend-mode: multiply;
@@ -370,7 +376,7 @@
   user-select: none;
 }
 
-/* Specular diagonal glass reflection sheen over the bridge & stagecoach */
+/* Specular diagonal glass reflection sheen */
 .footer__glass-sheen {
   position: absolute;
   inset: 0;
@@ -378,96 +384,129 @@
   pointer-events: none;
   background: linear-gradient(
     125deg,
-    rgba(255, 255, 255, 0.45) 0%,
-    rgba(255, 255, 255, 0.14) 26%,
+    rgba(255, 255, 255, 0.32) 0%,
+    rgba(255, 255, 255, 0.1) 26%,
     rgba(255, 255, 255, 0) 50%,
-    rgba(45, 212, 191, 0.14) 82%,
-    rgba(255, 255, 255, 0.35) 100%
+    rgba(45, 212, 191, 0.12) 82%,
+    rgba(255, 255, 255, 0.28) 100%
   );
 }
 
 @media (max-width: 640px) {
-  .footer {
-    padding: 18px 12px 28px;
-  }
-
-  .footer__glass-stage {
-    height: clamp(195px, 52vw, 250px);
-    border-radius: 24px;
+  .footer__panorama-wrap {
+    height: clamp(185px, 48vw, 240px);
+    margin-top: -12px;
+    padding-bottom: 72px;
   }
 }
-
 /* =====================================================================
-   LUMORA "CADET SKYRANGER" 3D INTERACTIVE HERO (Search Section)
+   DEDICATED SEARCH SECTION: LUMORA CADET SKYRANGER (1440x810 FRAME)
 ====================================================================== */
-.lumora-stage {
-  --u: max(calc(100vw / 1440), calc(100vh / 810));
+
+.search-hub-container {
+  --u: max(calc(100vw / 1440), calc(100dvh / 810));
   position: relative;
   width: 100%;
-  height: 100%;
-  background: #02040d;
-  color: #ffffff;
-  font-family: "Urbanist", sans-serif;
+  min-height: calc(100dvh - 72px);
+  height: calc(100dvh - 72px);
+  background: #02040D;
   overflow: hidden;
   user-select: none;
 }
 
+/* Custom Fine Pointer Cursor */
 @media (pointer: fine) {
-  .lumora-stage,
-  .lumora-stage button,
-  .lumora-stage a {
+  .search-hub-container {
     cursor: none;
+  }
+  .search-hub-container button,
+  .search-hub-container input,
+  .search-hub-container a {
+    cursor: pointer;
   }
 }
 
-.lumora-frame {
-  position: absolute;
-  width: calc(1440 * var(--u));
-  height: calc(810 * var(--u));
-  left: calc(50% - 720 * var(--u));
-  top: calc(50% - 405 * var(--u));
+.search-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ffffff;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  transform: translate3d(-100px, -100px, 0);
 }
 
-.lumora-plate {
+.search-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  margin-top: -22px;
+  margin-left: -22px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.4);
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  transform: translate3d(-100px, -100px, 0);
+}
+
+.search-cursor-dot.is-visible,
+.search-cursor-ring.is-visible {
+  opacity: 1;
+}
+
+/* 1440x810 Centered Frame - strictly without CSS transform on frame or head */
+.search-cadet-frame {
+  position: absolute;
+  left: calc(50% - (720 * var(--u)));
+  top: calc(50% - (405 * var(--u)));
+  width: calc(1440 * var(--u));
+  height: calc(810 * var(--u));
+  pointer-events: auto;
+}
+
+/* Plate Image: Fills the 1440x810 frame completely */
+.search-cadet-plate {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: fill;
   pointer-events: none;
-  user-select: none;
+  z-index: 1;
 }
 
-.lumora-head-clip {
+/* Head Clip: (510, 255), 435x450, object-fit: fill, soft radial mask */
+.search-cadet-head-video {
   position: absolute;
   left: calc(510 * var(--u));
   top: calc(255 * var(--u));
   width: calc(435 * var(--u));
   height: calc(450 * var(--u));
   object-fit: fill;
-  -webkit-mask-image: radial-gradient(
-    ellipse 50% 50% at 50% 46%,
-    #000 0%,
-    #000 72%,
-    transparent 99%
-  );
-  mask-image: radial-gradient(
-    ellipse 50% 50% at 50% 46%,
-    #000 0%,
-    #000 72%,
-    transparent 99%
-  );
-  opacity: 0;
-  transition: opacity 0.6s ease;
   pointer-events: none;
-  user-select: none;
+  z-index: 5;
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 46%, black 72%, transparent 99%);
+  mask-image: radial-gradient(ellipse 50% 50% at 50% 46%, black 72%, transparent 99%);
+  opacity: 0;
+  transition: opacity 600ms ease;
 }
 
-.lumora-head-clip.is-ready {
+.search-cadet-head-video.is-ready {
   opacity: 1;
 }
 
-.lumora-helmet {
+/* Helmet: 360x360 at (533, 288) */
+.search-cadet-helmet {
   position: absolute;
   left: calc(533 * var(--u));
   top: calc(288 * var(--u));
@@ -475,201 +514,75 @@
   height: calc(360 * var(--u));
   object-fit: fill;
   mix-blend-mode: screen;
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    #000 0%,
-    #000 76%,
-    transparent 92%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    #000 0%,
-    #000 76%,
-    transparent 92%
-  );
-  opacity: 0;
-  transform: translateY(calc(-70 * var(--u))) scale(0.96);
-  transition:
-    transform 720ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    opacity 520ms ease;
   pointer-events: none;
-  user-select: none;
+  z-index: 8;
+  -webkit-mask-image: linear-gradient(to bottom, black 76%, transparent 92%);
+  mask-image: linear-gradient(to bottom, black 76%, transparent 92%);
+  transform: translateY(calc(-70 * var(--u)));
+  opacity: 0;
+  transition: transform 720ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 500ms ease;
 }
 
-.lumora-helmet.is-on {
+.search-cadet-helmet.is-active {
+  transform: translateY(0);
   opacity: 1;
-  transform: translateY(0) scale(1);
 }
 
-/* Interactive Search Bar in the Top Zone Above Character's Head */
-.lumora-search-zone {
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin-inline: auto;
-  top: clamp(64px, 11vh, 110px);
-  width: min(92vw, 620px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  z-index: 25;
-}
-
-.lumora-search-box {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 18px;
-  border-radius: 999px;
-  background: rgba(8, 15, 34, 0.76);
-  backdrop-filter: blur(20px) saturate(165%);
-  -webkit-backdrop-filter: blur(20px) saturate(165%);
-  border: 1.5px solid rgba(103, 232, 249, 0.55);
-  box-shadow:
-    0 0 28px rgba(34, 211, 238, 0.35),
-    0 0 64px rgba(59, 130, 246, 0.25),
-    inset 0 1px 3px rgba(255, 255, 255, 0.35);
-  transition:
-    border-color 220ms ease,
-    box-shadow 220ms ease;
-}
-
-.lumora-search-box:focus-within {
-  border-color: #22d3ee;
-  box-shadow:
-    0 0 36px rgba(34, 211, 238, 0.55),
-    0 0 80px rgba(59, 130, 246, 0.38),
-    inset 0 1px 4px rgba(255, 255, 255, 0.5);
-}
-
-.lumora-search-input {
-  flex: 1;
-  min-width: 0;
-  background: transparent;
-  border: 0;
-  outline: none;
-  color: #ffffff;
-  font-size: clamp(13px, 1.15vw, 15px);
-  font-weight: 600;
-}
-
-.lumora-search-input::placeholder {
-  color: rgba(205, 210, 230, 0.75);
-}
-
-.lumora-search-tags {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 6px;
-}
-
-.lumora-search-results {
-  width: 100%;
-  margin-top: 2px;
-  border-radius: 20px;
-  overflow: hidden;
-  background: rgba(7, 12, 26, 0.92);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  border: 1px solid rgba(103, 232, 249, 0.4);
-  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.75);
-}
-
-.lumora-push-btn {
+/* PUSH ME Button: 75u circle at (675, 720) */
+.search-cadet-push-btn {
   position: absolute;
   left: calc(675 * var(--u));
   top: calc(720 * var(--u));
   width: calc(75 * var(--u));
   height: calc(75 * var(--u));
   border-radius: 50%;
-  background: radial-gradient(
-    circle at 35% 28%,
-    #ff6b6b 0%,
-    #ef233c 48%,
-    #9b0014 100%
-  );
-  border: calc(4 * var(--u)) solid #111625;
-  box-shadow:
-    0 0 0 calc(1.5 * var(--u)) rgba(255, 255, 255, 0.28),
-    inset 0 calc(3 * var(--u)) calc(6 * var(--u)) rgba(255, 255, 255, 0.45),
-    0 calc(8 * var(--u)) calc(20 * var(--u)) rgba(0, 0, 0, 0.6);
-  font-family: "Urbanist", sans-serif;
-  font-weight: 700;
-  font-size: calc(16.5 * var(--u));
-  line-height: 1.02;
-  color: #ffffff;
+  background: radial-gradient(circle at 35% 35%, #ff4b6b 0%, #dc2626 55%, #7f1d1d 100%);
+  border: calc(3.5 * var(--u)) solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 calc(25 * var(--u)) rgba(239, 68, 68, 0.65), inset 0 2px 4px rgba(255, 255, 255, 0.5);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 0;
-  z-index: 15;
-  transition:
-    transform 160ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 320ms ease;
+  color: #ffffff;
+  font-family: inherit;
+  font-weight: 900;
+  font-size: calc(16.5 * var(--u));
+  line-height: 1.05;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  z-index: 20;
+  animation: pushBtnGlow 2.8s ease-in-out infinite;
 }
 
-.lumora-push-btn.is-pressing {
+@keyframes pushBtnGlow {
+  0%, 100% {
+    box-shadow: 0 0 calc(20 * var(--u)) rgba(239, 68, 68, 0.7), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 calc(36 * var(--u)) rgba(239, 68, 68, 1), 0 0 calc(55 * var(--u)) rgba(239, 68, 68, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.7);
+  }
+}
+
+.search-cadet-push-btn:hover {
+  box-shadow: 0 0 calc(36 * var(--u)) rgba(239, 68, 68, 0.95);
+}
+
+.search-cadet-push-btn.is-pressing {
   transform: scale(0.88);
 }
 
-.lumora-push-btn[aria-pressed="true"] {
-  box-shadow:
-    0 0 calc(26 * var(--u)) rgba(255, 59, 78, 0.95),
-    0 0 calc(52 * var(--u)) rgba(239, 35, 60, 0.65),
-    0 0 0 calc(1.5 * var(--u)) rgba(255, 255, 255, 0.55),
-    inset 0 calc(3 * var(--u)) calc(6 * var(--u)) rgba(255, 255, 255, 0.55);
-}
-
-.lumora-cursor-dot {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 7px;
-  height: 7px;
-  margin-left: -3.5px;
-  margin-top: -3.5px;
-  border-radius: 50%;
-  background: #ffffff;
-  pointer-events: none;
-  z-index: 60;
-  will-change: transform;
-}
-
-.lumora-cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 44px;
-  height: 44px;
-  margin-left: -22px;
-  margin-top: -22px;
-  border-radius: 50%;
-  border: 1.5px solid #ffffff;
-  pointer-events: none;
-  z-index: 59;
-  will-change: transform;
+.search-cadet-push-btn[aria-pressed="true"] {
+  box-shadow: 0 0 calc(42 * var(--u)) rgba(239, 68, 68, 1);
 }
 
 @media (max-width: 820px) {
-  .lumora-search-zone {
-    top: 62px;
-    width: 92vw;
+  .search-hub-container {
+    --u: clamp(0.60px, calc((100dvh - 175px) / 720), 0.84px);
   }
-
-  .lumora-search-box {
-    padding: 10px 14px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .lumora-head-clip {
-    display: none;
+  .search-cadet-frame {
+    left: 50%;
+    transform: translateX(-50%);
+    top: auto;
+    bottom: calc(82px + env(safe-area-inset-bottom, 0px));
   }
 }
-
-

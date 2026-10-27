@@ -7,6 +7,7 @@ import {
   mapPointerXToClipTime,
   easeValue,
   computeIdleDriftTime,
+  computeGazeRotation,
 } from './LumoraSkyrangerHero';
 
 test('Lumora media URLs match specification', () => {
@@ -32,4 +33,25 @@ test('easeValue and computeIdleDriftTime behave deterministically', () => {
   assert.ok(Math.abs(easeValue(0, 100, 0.55) - 55) < 1e-6);
   // At elapsed = 0, sin(0) = 0 -> midpoint (2.52s)
   assert.ok(Math.abs(computeIdleDriftTime(0, 5.04) - 2.52) < 1e-6);
+});
+
+test('computeGazeRotation turns head toward touched or pointed coordinates', () => {
+  // Touch far left & top of a 390x844 mobile viewport
+  const topLeft = computeGazeRotation(30, 80, 0, 0, 390, 844);
+  assert.ok(topLeft.rotateYDeg < -15);
+  assert.ok(topLeft.rotateXDeg > 10);
+  assert.ok(topLeft.shiftXPx < -10);
+  assert.ok(topLeft.shiftYPx < -8);
+
+  // Touch far right & bottom of a 390x844 mobile viewport
+  const bottomRight = computeGazeRotation(360, 760, 0, 0, 390, 844);
+  assert.ok(bottomRight.rotateYDeg > 15);
+  assert.ok(bottomRight.rotateXDeg < -10);
+  assert.ok(bottomRight.shiftXPx > 10);
+  assert.ok(bottomRight.shiftYPx > 8);
+
+  // Touch dead center of head (50%, 52%) -> 0 rotation
+  const center = computeGazeRotation(195, 844 * 0.52, 0, 0, 390, 844);
+  assert.equal(center.rotateYDeg, 0);
+  assert.equal(center.rotateXDeg, 0);
 });
