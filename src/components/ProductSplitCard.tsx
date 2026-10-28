@@ -761,27 +761,21 @@ export function ProductSplitCard({
       data-revealed="true"
       data-glass-card="true"
       onClick={() => onShowDetails?.(product)}
-      className="group relative rounded-[26px] bg-white/[0.14] hover:bg-white/[0.19] backdrop-blur-2xl border border-white/45 hover:border-white/80 overflow-hidden transition-all duration-300 shadow-[0_16px_42px_rgba(0,0,0,0.28),inset_0_1px_2px_rgba(255,255,255,0.75)] hover:shadow-[0_18px_48px_rgba(255,255,255,0.22),inset_0_1px_3px_rgba(255,255,255,0.9)] cursor-pointer select-none"
+      className="group relative rounded-[26px] bg-[#031416]/94 hover:bg-[#041a1d]/96 backdrop-blur-2xl border border-teal-500/25 hover:border-teal-400/55 overflow-hidden transition-all duration-300 shadow-[0_18px_46px_rgba(0,0,0,0.65)] cursor-pointer select-none"
     >
-      {/* Top specular glass highlight line */}
+      {/* Top specular highlight line */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-8 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/90 to-transparent pointer-events-none z-20"
+        className="absolute inset-x-8 top-0 h-[1px] bg-gradient-to-r from-transparent via-teal-400/50 to-transparent pointer-events-none z-20"
       />
 
       {/* Brand gradient aura scaled at 1.5 and 0 opacity, dropping to scale 1 and opacity 100 on group-hover */}
       <div
         aria-hidden="true"
         style={{
-          background: `radial-gradient(circle at 30% 50%, ${style.accentGlow} 0%, transparent 70%)`,
+          background: `radial-gradient(circle at 30% 50%, ${style.pedestalColor}22 0%, transparent 70%)`,
         }}
         className="absolute inset-0 scale-150 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 pointer-events-none z-0"
-      />
-
-      {/* Clear white frosted glass reflection sheen */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-br from-white/[0.22] via-white/[0.06] to-white/[0.14] pointer-events-none z-0"
       />
 
       <div
@@ -790,15 +784,17 @@ export function ProductSplitCard({
       >
         {/* RIGHT PANEL: 3D HOLOGRAM PEDESTAL & FLOATING SQUIRCLE ICON (38% width) */}
         <div
-          style={{ background: style.bgGradient }}
-          className="relative w-[38%] sm:w-[39%] shrink-0 overflow-hidden flex flex-col items-center justify-center border-l border-white/35 backdrop-blur-2xl"
+          style={{
+            background: `radial-gradient(circle at 50% 44%, ${style.pedestalColor}26 0%, rgba(4, 15, 23, 0.94) 66%, #02080d 100%)`,
+          }}
+          className="relative w-[38%] sm:w-[39%] shrink-0 overflow-hidden flex flex-col items-center justify-center border-l border-teal-500/20"
         >
           {/* Ambient Cyber Grid & Star Dots */}
           <div
             aria-hidden="true"
             style={{
               backgroundImage:
-                'radial-gradient(rgba(255,255,255,0.32) 1px, transparent 1px)',
+                'radial-gradient(rgba(45,212,191,0.22) 1px, transparent 1px)',
               backgroundSize: '18px 18px',
             }}
             className="absolute inset-0 opacity-35 pointer-events-none"
@@ -808,15 +804,15 @@ export function ProductSplitCard({
           <div
             aria-hidden="true"
             style={{
-              borderColor: 'rgba(255,255,255,0.45)',
-              boxShadow: `0 0 40px ${style.accentGlow}, inset 0 0 20px rgba(255,255,255,0.22)`,
+              borderColor: `${style.pedestalColor}40`,
+              boxShadow: `0 0 36px ${style.pedestalColor}25, inset 0 0 18px ${style.pedestalColor}15`,
             }}
-            className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border border-dashed bg-white/[0.12] backdrop-blur-xl flex items-center justify-center relative"
+            className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border border-dashed bg-[#04121a]/70 backdrop-blur-md flex items-center justify-center relative"
           >
             {/* Outer Orbital Ring */}
             <div
               aria-hidden="true"
-              style={{ borderColor: 'rgba(255,255,255,0.38)' }}
+              style={{ borderColor: `${style.pedestalColor}30` }}
               className="absolute inset-2 rounded-full border"
             />
 
@@ -953,14 +949,14 @@ export function ProductSplitCard({
           >
             <div
               style={{
-                borderColor: 'rgba(255,255,255,0.65)',
-                background: `radial-gradient(ellipse at center, rgba(255,255,255,0.45) 0%, ${style.pedestalColor}40 45%, transparent 72%)`,
+                borderColor: `${style.pedestalColor}65`,
+                background: `radial-gradient(ellipse at center, ${style.pedestalColor}45 0%, ${style.pedestalColor}20 45%, transparent 72%)`,
               }}
               className="w-28 sm:w-32 h-5 rounded-[100%] border"
             />
             <div
               style={{
-                borderColor: 'rgba(255,255,255,0.38)',
+                borderColor: `${style.pedestalColor}38`,
               }}
               className="w-36 sm:w-40 h-4 -mt-3 rounded-[100%] border"
             />
@@ -969,30 +965,30 @@ export function ProductSplitCard({
           {/* Large Faint Watermark Letters at Bottom-Right */}
           <span
             aria-hidden="true"
-            className="absolute bottom-1 right-2.5 font-podium font-black text-2xl sm:text-3xl tracking-wider text-white/25 pointer-events-none select-none uppercase"
+            className="absolute bottom-1 right-2.5 font-podium font-black text-2xl sm:text-3xl tracking-wider text-white/10 pointer-events-none select-none uppercase"
           >
             {style.watermark}
           </span>
         </div>
 
         {/* LEFT PANEL: PRODUCT DETAILS, PRICING & QUICK ADD BUTTON (62% width) */}
-        <div className="flex-1 p-3.5 sm:p-5 flex flex-col justify-between text-center bg-white/[0.08] backdrop-blur-2xl">
+        <div className="flex-1 p-3.5 sm:p-5 flex flex-col justify-between text-center bg-gradient-to-br from-[#041c1d]/95 via-[#031516]/95 to-[#020f11]/98">
           <div>
             {/* Row 1: Brand + Category Kicker */}
-            <div className="flex items-center justify-center gap-2 text-[11px] sm:text-xs font-medium text-white/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]">
-              <span className="font-semibold text-white">
+            <div className="flex items-center justify-center gap-2 text-[11px] sm:text-xs font-medium text-white/70">
+              <span className="font-semibold text-white/90">
                 {product.platformBrand}
               </span>
               <span>{categorySubLabel}</span>
             </div>
 
             {/* Row 2: Bold White Title */}
-            <h3 className="mt-1 text-[15px] sm:text-[18px] font-black text-white leading-snug line-clamp-1 drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+            <h3 className="mt-1 text-[15px] sm:text-[18px] font-black text-white leading-snug line-clamp-1">
               {cleanTitle}
             </h3>
 
             {/* Row 3: Truncated Description */}
-            <p className="mt-1 text-[11px] sm:text-xs text-white/85 line-clamp-1 leading-relaxed drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
+            <p className="mt-1 text-[11px] sm:text-xs text-white/65 line-clamp-1 leading-relaxed">
               {isRtl ? product.subtitleFa : product.subtitleEn}
             </p>
           </div>
@@ -1000,23 +996,23 @@ export function ProductSplitCard({
           {/* Row 4 & 5: Price + Strikethrough + USD */}
           <div className="my-2">
             <div className="flex flex-wrap items-baseline justify-center gap-x-1.5 gap-y-0.5">
-              <span className="text-[11px] sm:text-xs text-white/90 font-medium">
+              <span className="text-[11px] sm:text-xs text-white/70 font-medium">
                 {isRtl ? 'شروع از' : 'From'}
               </span>
-              <span className="text-[17px] sm:text-[21px] font-black text-white tracking-tight tabular-nums drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
+              <span className="text-[17px] sm:text-[21px] font-black text-white tracking-tight tabular-nums">
                 {tomanPrice.toLocaleString('fa-IR')} تومان
               </span>
-              <span className="text-[11px] sm:text-xs text-white/70 line-through tabular-nums">
+              <span className="text-[11px] sm:text-xs text-white/45 line-through tabular-nums">
                 {oldTomanPrice.toLocaleString('fa-IR')} تومان
               </span>
             </div>
 
-            <div className="mt-0.5 text-[11px] sm:text-xs font-bold text-[#99F6E4] tabular-nums drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]">
+            <div className="mt-0.5 text-[11px] sm:text-xs font-bold text-[#2DD4BF] tabular-nums">
               {formatPersianUsd(product.priceUsd)}
             </div>
           </div>
 
-          {/* Row 6: Full-Width Glass-Finished Mint-Teal Quick Add Button */}
+          {/* Row 6: Full-Width Mint-Teal Quick Add Button */}
           <button
             type="button"
             data-testid={`quick-add-btn-${product.id}`}
@@ -1024,7 +1020,7 @@ export function ProductSplitCard({
               e.stopPropagation();
               onAddToCart(product);
             }}
-            className="w-full py-2.5 sm:py-3 px-4 rounded-2xl bg-[#2BBAA5]/90 hover:bg-[#34CDB6] backdrop-blur-xl border border-white/60 active:scale-[0.98] text-[#041815] font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all duration-200 shadow-[0_6px_20px_rgba(43,186,165,0.35),inset_0_1px_2px_rgba(255,255,255,0.75)] cursor-pointer"
+            className="w-full py-2.5 sm:py-3 px-4 rounded-2xl bg-[#2BBAA5] hover:bg-[#34CDB6] active:scale-[0.98] text-[#041815] font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all duration-200 shadow-[0_6px_20px_rgba(43,186,165,0.3)] cursor-pointer"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>{isRtl ? 'افزودن سریع' : 'Quick Add'}</span>

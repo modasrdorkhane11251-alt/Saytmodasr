@@ -93,110 +93,37 @@ export function SectionBackdrop({
         style={{ opacity: isHomeBackdrop ? 1 : 0 }}
         className="absolute inset-0 w-full h-full transition-opacity duration-700"
       >
-        {/* Base Deep Midnight-Sapphire & Velvet Indigo Mesh */}
+        {/* Base Deep Obsidian-Emerald & Midnight Canvas */}
         <div
           style={{
             background:
-              'radial-gradient(125% 95% at 15% 10%, #132a4a 0%, #0b1528 45%, #060a14 100%)',
+              'radial-gradient(125% 95% at 50% 0%, #06181a 0%, #030a0e 52%, #010407 100%)',
           }}
           className="absolute inset-0"
         />
 
-        {/* Ambient Aurora Silk Domes (Teal Cyan, Royal Violet, Rose Coral, and Warm Sky) */}
+        {/* Subtle Edge Ambient Emerald & Deep Cyan Glows (Matching Reference Screenshot) */}
         <div
           style={{
             background:
-              'radial-gradient(circle at 82% 18%, rgba(0, 245, 212, 0.34) 0%, rgba(56, 189, 248, 0.16) 32%, transparent 65%)',
+              'radial-gradient(circle at 95% 28%, rgba(16, 185, 129, 0.14) 0%, rgba(6, 182, 212, 0.06) 35%, transparent 65%)',
           }}
           className="absolute inset-0"
         />
         <div
           style={{
             background:
-              'radial-gradient(circle at 18% 48%, rgba(99, 102, 241, 0.36) 0%, rgba(168, 85, 247, 0.18) 36%, transparent 68%)',
+              'radial-gradient(circle at 5% 65%, rgba(20, 184, 166, 0.12) 0%, rgba(14, 165, 233, 0.05) 38%, transparent 68%)',
           }}
           className="absolute inset-0"
         />
         <div
           style={{
             background:
-              'radial-gradient(circle at 75% 82%, rgba(244, 63, 94, 0.26) 0%, rgba(251, 146, 60, 0.12) 35%, transparent 65%)',
+              'radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.1) 0%, transparent 60%)',
           }}
           className="absolute inset-0"
         />
-        <div
-          style={{
-            background:
-              'radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.07) 0%, transparent 60%)',
-          }}
-          className="absolute inset-0"
-        />
-
-        {/* Subtle Architectural Glass Horizon Rings & Perspective Grid */}
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 1440 900"
-          preserveAspectRatio="xMidYMid slice"
-          className="absolute inset-0 w-full h-full opacity-40"
-        >
-          <defs>
-            <linearGradient id="homeArcGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#00f5d4" stopOpacity="0.55" />
-              <stop offset="50%" stopColor="#ffffff" stopOpacity="0.25" />
-              <stop offset="100%" stopColor="#818cf8" stopOpacity="0.45" />
-            </linearGradient>
-            <linearGradient id="homeArcGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#f43f5e" stopOpacity="0.4" />
-              <stop offset="50%" stopColor="#38bdf8" stopOpacity="0.25" />
-              <stop offset="100%" stopColor="#00f5d4" stopOpacity="0.05" />
-            </linearGradient>
-            <radialGradient id="homeOrbGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.35" />
-              <stop offset="45%" stopColor="#38bdf8" stopOpacity="0.14" />
-              <stop offset="100%" stopColor="#000000" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-
-          {/* Soft Luminous Glass Bokeh Sphere Top-Right */}
-          <circle cx="1140" cy="210" r="240" fill="url(#homeOrbGlow)" />
-          {/* Soft Luminous Glass Bokeh Sphere Center-Left */}
-          <circle cx="290" cy="490" r="280" fill="url(#homeOrbGlow)" />
-
-          {/* Sweeping Architectural Light Curves */}
-          <ellipse
-            cx="720"
-            cy="450"
-            rx="620"
-            ry="290"
-            fill="none"
-            stroke="url(#homeArcGrad1)"
-            strokeWidth="1.2"
-            transform="rotate(-11 720 450)"
-          />
-          <ellipse
-            cx="720"
-            cy="450"
-            rx="460"
-            ry="210"
-            fill="none"
-            stroke="url(#homeArcGrad2)"
-            strokeWidth="1"
-            strokeDasharray="8 10"
-            transform="rotate(9 720 450)"
-          />
-          <path
-            d="M -100,680 C 360,510 1080,820 1540,560"
-            fill="none"
-            stroke="url(#homeArcGrad1)"
-            strokeWidth="1.5"
-          />
-          <path
-            d="M -100,260 C 420,440 980,120 1540,340"
-            fill="none"
-            stroke="url(#homeArcGrad2)"
-            strokeWidth="1.2"
-          />
-        </svg>
       </div>
 
       {/* =====================================================================
@@ -307,8 +234,8 @@ export function SectionBackdrop({
         data-testid="gaming-hero-video"
         src={HERO_VIDEO_URL}
         poster={HERO_POSTER_URL}
-        preload="auto"
-        autoPlay
+        preload={showGamingVideo ? 'auto' : 'none'}
+        autoPlay={showGamingVideo}
         muted
         loop
         playsInline
@@ -326,8 +253,8 @@ export function SectionBackdrop({
         data-testid="ai-hero-video"
         src={AI_HERO_VIDEO_URL}
         poster={AI_HERO_POSTER_URL}
-        preload="auto"
-        autoPlay
+        preload={showAiVideo ? 'auto' : 'none'}
+        autoPlay={showAiVideo}
         muted
         loop
         playsInline
@@ -345,8 +272,8 @@ export function SectionBackdrop({
         data-testid="web-hero-video"
         src={WEB_HERO_VIDEO_URL}
         poster={WEB_HERO_POSTER_URL}
-        preload="auto"
-        autoPlay
+        preload={showWebVideo ? 'auto' : 'none'}
+        autoPlay={showWebVideo}
         muted
         loop
         playsInline
