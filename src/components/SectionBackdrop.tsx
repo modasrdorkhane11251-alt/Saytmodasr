@@ -9,7 +9,7 @@ import {
   SectionId,
   getPageVisualTheme,
 } from '../utils/heroConfig';
-import { ThemePresetId, getPresetById } from '../utils/themePresets';
+import { ThemePresetId } from '../utils/themePresets';
 
 interface SectionBackdropProps {
   activeSection: SectionId;
@@ -17,256 +17,22 @@ interface SectionBackdropProps {
   isRtl: boolean;
 }
 
-interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  size: number;
-  phase: number;
-}
-
 export function SectionBackdrop({
   activeSection,
   activePresetId,
-  isRtl,
 }: SectionBackdropProps) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const gamingVideoRef = useRef<HTMLVideoElement | null>(null);
   const aiVideoRef = useRef<HTMLVideoElement | null>(null);
   const webVideoRef = useRef<HTMLVideoElement | null>(null);
-  const preset = getPresetById(activePresetId);
   const pageTheme = getPageVisualTheme(activeSection);
 
-  // Real-time Custom Canvas Shader & Particle Renderer
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animationFrameId = 0;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
-
-    const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize);
-
-    // Initialize deterministic particle field
-    const particleCount = 46;
-    const particles: Particle[] = Array.from({ length: particleCount }, (_, i) => ({
-      x: ((i * 137.5) % 100) * 0.01 * width,
-      y: ((i * 73.1) % 100) * 0.01 * height,
-      vx: ((i % 7) - 3) * 0.28 || 0.22,
-      vy: ((i % 5) - 2) * 0.28 || -0.22,
-      size: (i % 3) + 1.6,
-      phase: i * 0.6,
-    }));
-
-    const startTime = performance.now();
-
-    const renderFrame = (now: number) => {
-      const t = (now - startTime) * 0.001;
-      ctx.clearRect(0, 0, width, height);
-
-      const focalX = isRtl ? width * 0.28 : width * 0.72;
-      const focalY = height * 0.48;
-
-      // 1. Base Volumetric Shader Gradient tailored to active page
-      const radialGrad = ctx.createRadialGradient(
-        focalX,
-        focalY,
-        20,
-        focalX,
-        focalY,
-        Math.max(width, height) * 0.75
-      );
-      radialGrad.addColorStop(0, `${pageTheme.primaryHex}28`);
-      radialGrad.addColorStop(0.5, `${pageTheme.secondaryHex}16`);
-      radialGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      ctx.fillStyle = radialGrad;
-      ctx.fillRect(0, 0, width, height);
-
-      // 2. Page-Specific & Preset-Specific Full-Viewport Canvas Shader Effects
-      if (activeSection === 'ai') {
-        // Synaptic Neural Matrix Nodes & Connections
-        particles.forEach((p, i) => {
-          p.x = (p.x + p.vx + width) % width;
-          p.y = (p.y + p.vy + height) % height;
-
-          ctx.fillStyle = `${pageTheme.primaryHex}75`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * 0.9, 0, Math.PI * 2);
-          ctx.fill();
-
-          for (let j = i + 1; j < particles.length; j++) {
-            const p2 = particles[j];
-            const dx = p.x - p2.x;
-            const dy = p.y - p2.y;
-            const dist = Math.hypot(dx, dy);
-            if (dist < 140) {
-              ctx.strokeStyle = `${pageTheme.primaryHex}${Math.floor(
-                (1 - dist / 140) * 34
-              )
-                .toString(16)
-                .padStart(2, '0')}`;
-              ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.stroke();
-            }
-          }
-        });
-      } else if (activePresetId === 'cyber-glitch' && activeSection !== 'search') {
-        // Cyber Grid & Scanline Bars
-        ctx.strokeStyle = `${pageTheme.primaryHex}24`;
-        ctx.lineWidth = 1;
-        const gridSpacing = 54;
-        const offset = (t * 26) % gridSpacing;
-        for (let y = offset; y < height; y += gridSpacing) {
-          ctx.beginPath();
-          ctx.moveTo(0, y);
-          ctx.lineTo(width, y);
-          ctx.stroke();
-        }
-
-        // Animated Holographic Data Slices & Floating Diamonds
-        for (let g = 0; g < 6; g++) {
-          const sliceY = ((Math.sin(t * 1.9 + g * 1.7) * 0.5 + 0.5) * height) | 0;
-          const sliceW = 100 + ((g * 45) % 160);
-          const sliceX =
-            ((Math.cos(t * 1.4 + g * 2.3) * 0.5 + 0.5) * (width - sliceW)) | 0;
-          ctx.fillStyle =
-            g % 2 === 0
-              ? `${pageTheme.primaryHex}28`
-              : `${pageTheme.secondaryHex}28`;
-          ctx.fillRect(sliceX, sliceY, sliceW, 3);
-        }
-
-        particles.forEach((p) => {
-          p.x = (p.x + p.vx * 0.5 + width) % width;
-          p.y = (p.y + p.vy * 0.5 + height) % height;
-          ctx.fillStyle = `${pageTheme.primaryHex}80`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * 0.85, 0, Math.PI * 2);
-          ctx.fill();
-        });
-      } else if (activeSection === 'web' || activePresetId === 'cosmic-flow') {
-        // Indigo Cosmic Connectivity Aurora Ribbons & Starfield
-        for (let band = 0; band < 4; band++) {
-          ctx.beginPath();
-          ctx.strokeStyle =
-            band % 2 === 0
-              ? `${pageTheme.primaryHex}40`
-              : `${pageTheme.secondaryHex}35`;
-          ctx.lineWidth = 2.4;
-          for (let x = 0; x <= width; x += 20) {
-            const y =
-              height * (0.22 + band * 0.18) +
-              Math.sin(x * 0.003 + t * 0.9 + band * 1.4) * 55 +
-              Math.cos(x * 0.007 - t * 0.6) * 25;
-            if (x === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-          }
-          ctx.stroke();
-        }
-
-        particles.forEach((p) => {
-          p.x = (p.x + p.vx * 0.6 + width) % width;
-          p.y = (p.y + p.vy * 0.6 + height) % height;
-          const alpha = Math.floor((Math.sin(t * 2 + p.phase) * 0.4 + 0.6) * 190)
-            .toString(16)
-            .padStart(2, '0');
-          ctx.fillStyle = `${pageTheme.secondaryHex}${alpha}`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * 0.95, 0, Math.PI * 2);
-          ctx.fill();
-        });
-      } else if (activeSection === 'games' || activePresetId === 'crimson-overdrive') {
-        // Rising Crimson Ember Vortex Particles across Full Gaming Page
-        particles.forEach((p) => {
-          p.y = (p.y - Math.abs(p.vy) * 1.9 + height) % height;
-          p.x = (p.x + Math.sin(t + p.phase) * 0.55 + width) % width;
-          ctx.fillStyle = `${pageTheme.primaryHex}95`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * 1.2, 0, Math.PI * 2);
-          ctx.fill();
-        });
-      } else if (activeSection === 'studio' || activePresetId === 'obsidian-prism') {
-        // Golden VIP Account Light Beams & Prism Dust
-        ctx.save();
-        ctx.strokeStyle = `${pageTheme.primaryHex}26`;
-        ctx.lineWidth = 52;
-        for (let b = 0; b < 3; b++) {
-          const beamX = focalX + (b - 1) * 140 + Math.sin(t * 0.5 + b) * 30;
-          ctx.beginPath();
-          ctx.moveTo(beamX - 120, 0);
-          ctx.lineTo(beamX + 120, height);
-          ctx.stroke();
-        }
-        ctx.restore();
-
-        particles.forEach((p) => {
-          p.y = (p.y - 0.35 + height) % height;
-          ctx.fillStyle = `${pageTheme.primaryHex}85`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * 0.95, 0, Math.PI * 2);
-          ctx.fill();
-        });
-      } else {
-        // Home / Royal Emerald Command Hub — Quantum Emerald Rings & Floating Orbs
-        ctx.save();
-        ctx.strokeStyle = `${pageTheme.primaryHex}24`;
-        ctx.lineWidth = 1.5;
-        for (let r = 1; r <= 3; r++) {
-          ctx.beginPath();
-          ctx.arc(
-            width * 0.5,
-            height * 0.45,
-            r * 130 + Math.sin(t * 0.8 + r) * 14,
-            0,
-            Math.PI * 2
-          );
-          ctx.stroke();
-        }
-        ctx.restore();
-
-        particles.forEach((p) => {
-          p.x = (p.x + p.vx * 0.5 + width) % width;
-          p.y = (p.y + p.vy * 0.5 + height) % height;
-          ctx.fillStyle = `${pageTheme.primaryHex}78`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fill();
-        });
-      }
-
-      animationFrameId = window.requestAnimationFrame(renderFrame);
-    };
-
-    animationFrameId = window.requestAnimationFrame(renderFrame);
-
-    return () => {
-      window.cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [
-    activeSection,
-    activePresetId,
-    pageTheme.primaryHex,
-    pageTheme.secondaryHex,
-    isRtl,
-  ]);
-
-  // Dedicated Video / Artwork visibility per page
+  // Videos ONLY on their dedicated category pages ('games', 'ai', 'web') — NO video on 'home' or 'studio'
   const showGamingVideo = activeSection === 'games';
   const showAiVideo = activeSection === 'ai';
   const showWebVideo = activeSection === 'web';
-  const showStudioArtwork = activeSection === 'studio';
+
+  const isHomeBackdrop = activeSection === 'home' || activeSection === 'search';
+  const isAccountBackdrop = activeSection === 'studio';
 
   // Explicitly manage mobile & desktop HTML5 video playback when switching tabs
   useEffect(() => {
@@ -316,23 +82,226 @@ export function SectionBackdrop({
       data-active-section={activeSection}
       data-theme-preset={activePresetId}
       data-page-theme={pageTheme.id}
-      style={{
-        backgroundColor: pageTheme.ambientBaseHex,
-        backgroundImage: pageTheme.fullPageGradient,
-      }}
-      className="fixed inset-0 w-full h-full overflow-hidden z-0 pointer-events-none transition-all duration-700"
+      className="fixed inset-0 w-full h-full overflow-hidden z-0 pointer-events-none bg-[#070b14]"
     >
-      {/* 1A. Full-Viewport Gaming Video & Poster Layer (Covers Entire 'games' Page) */}
-      <img
-        src={HERO_POSTER_URL}
-        alt=""
-        aria-hidden="true"
-        style={{
-          filter: preset.videoFilter,
-          opacity: showGamingVideo ? 0.92 : 0,
-        }}
-        className="absolute inset-0 w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[76%_center] lg:object-center transition-opacity duration-700"
-      />
+      {/* =====================================================================
+          A. BESPOKE LUXURY PRISMATIC AURORA BACKDROP FOR HOME ('home' / 'search')
+             Designed specifically to make transparent white glass cards glow
+      ====================================================================== */}
+      <div
+        data-testid="home-luxury-backdrop"
+        style={{ opacity: isHomeBackdrop ? 1 : 0 }}
+        className="absolute inset-0 w-full h-full transition-opacity duration-700"
+      >
+        {/* Base Deep Midnight-Sapphire & Velvet Indigo Mesh */}
+        <div
+          style={{
+            background:
+              'radial-gradient(125% 95% at 15% 10%, #132a4a 0%, #0b1528 45%, #060a14 100%)',
+          }}
+          className="absolute inset-0"
+        />
+
+        {/* Ambient Aurora Silk Domes (Teal Cyan, Royal Violet, Rose Coral, and Warm Sky) */}
+        <div
+          style={{
+            background:
+              'radial-gradient(circle at 82% 18%, rgba(0, 245, 212, 0.34) 0%, rgba(56, 189, 248, 0.16) 32%, transparent 65%)',
+          }}
+          className="absolute inset-0"
+        />
+        <div
+          style={{
+            background:
+              'radial-gradient(circle at 18% 48%, rgba(99, 102, 241, 0.36) 0%, rgba(168, 85, 247, 0.18) 36%, transparent 68%)',
+          }}
+          className="absolute inset-0"
+        />
+        <div
+          style={{
+            background:
+              'radial-gradient(circle at 75% 82%, rgba(244, 63, 94, 0.26) 0%, rgba(251, 146, 60, 0.12) 35%, transparent 65%)',
+          }}
+          className="absolute inset-0"
+        />
+        <div
+          style={{
+            background:
+              'radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.07) 0%, transparent 60%)',
+          }}
+          className="absolute inset-0"
+        />
+
+        {/* Subtle Architectural Glass Horizon Rings & Perspective Grid */}
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 1440 900"
+          preserveAspectRatio="xMidYMid slice"
+          className="absolute inset-0 w-full h-full opacity-40"
+        >
+          <defs>
+            <linearGradient id="homeArcGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#00f5d4" stopOpacity="0.55" />
+              <stop offset="50%" stopColor="#ffffff" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#818cf8" stopOpacity="0.45" />
+            </linearGradient>
+            <linearGradient id="homeArcGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#f43f5e" stopOpacity="0.4" />
+              <stop offset="50%" stopColor="#38bdf8" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#00f5d4" stopOpacity="0.05" />
+            </linearGradient>
+            <radialGradient id="homeOrbGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.35" />
+              <stop offset="45%" stopColor="#38bdf8" stopOpacity="0.14" />
+              <stop offset="100%" stopColor="#000000" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+
+          {/* Soft Luminous Glass Bokeh Sphere Top-Right */}
+          <circle cx="1140" cy="210" r="240" fill="url(#homeOrbGlow)" />
+          {/* Soft Luminous Glass Bokeh Sphere Center-Left */}
+          <circle cx="290" cy="490" r="280" fill="url(#homeOrbGlow)" />
+
+          {/* Sweeping Architectural Light Curves */}
+          <ellipse
+            cx="720"
+            cy="450"
+            rx="620"
+            ry="290"
+            fill="none"
+            stroke="url(#homeArcGrad1)"
+            strokeWidth="1.2"
+            transform="rotate(-11 720 450)"
+          />
+          <ellipse
+            cx="720"
+            cy="450"
+            rx="460"
+            ry="210"
+            fill="none"
+            stroke="url(#homeArcGrad2)"
+            strokeWidth="1"
+            strokeDasharray="8 10"
+            transform="rotate(9 720 450)"
+          />
+          <path
+            d="M -100,680 C 360,510 1080,820 1540,560"
+            fill="none"
+            stroke="url(#homeArcGrad1)"
+            strokeWidth="1.5"
+          />
+          <path
+            d="M -100,260 C 420,440 980,120 1540,340"
+            fill="none"
+            stroke="url(#homeArcGrad2)"
+            strokeWidth="1.2"
+          />
+        </svg>
+      </div>
+
+      {/* =====================================================================
+          B. BESPOKE ROYAL CHAMPAGNE & EMERALD VAULT BACKDROP FOR ACCOUNT ('studio')
+             Executive VIP Lounge aesthetic with warm gold & emerald light domes
+      ====================================================================== */}
+      <div
+        data-testid="account-luxury-backdrop"
+        style={{ opacity: isAccountBackdrop ? 1 : 0 }}
+        className="absolute inset-0 w-full h-full transition-opacity duration-700"
+      >
+        {/* Base Royal Obsidian & Deep Velvet Plum-Onyx Canvas */}
+        <div
+          style={{
+            background:
+              'radial-gradient(120% 95% at 80% 12%, #241934 0%, #111322 48%, #070810 100%)',
+          }}
+          className="absolute inset-0"
+        />
+
+        {/* Warm Champagne Gold, Imperial Emerald & Soft Rose Light Domes */}
+        <div
+          style={{
+            background:
+              'radial-gradient(circle at 78% 20%, rgba(251, 191, 36, 0.32) 0%, rgba(245, 158, 11, 0.14) 34%, transparent 66%)',
+          }}
+          className="absolute inset-0"
+        />
+        <div
+          style={{
+            background:
+              'radial-gradient(circle at 20% 62%, rgba(16, 185, 129, 0.28) 0%, rgba(20, 184, 166, 0.14) 36%, transparent 68%)',
+          }}
+          className="absolute inset-0"
+        />
+        <div
+          style={{
+            background:
+              'radial-gradient(circle at 65% 85%, rgba(139, 92, 246, 0.26) 0%, rgba(236, 72, 153, 0.12) 35%, transparent 65%)',
+          }}
+          className="absolute inset-0"
+        />
+
+        {/* Precision Swiss-Chronograph / VIP Vault Geometric Rings */}
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 1440 900"
+          preserveAspectRatio="xMidYMid slice"
+          className="absolute inset-0 w-full h-full opacity-45"
+        >
+          <defs>
+            <linearGradient id="vipGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#fde68a" stopOpacity="0.65" />
+              <stop offset="50%" stopColor="#ffffff" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#10b981" stopOpacity="0.45" />
+            </linearGradient>
+            <radialGradient id="vipCrownGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.28" />
+              <stop offset="55%" stopColor="#10b981" stopOpacity="0.1" />
+              <stop offset="100%" stopColor="#000000" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+
+          <circle cx="1060" cy="240" r="290" fill="url(#vipCrownGlow)" />
+          <circle cx="360" cy="640" r="260" fill="url(#vipCrownGlow)" />
+
+          {/* Concentric VIP Dial Rings */}
+          <circle
+            cx="1060"
+            cy="240"
+            r="190"
+            fill="none"
+            stroke="url(#vipGoldGrad)"
+            strokeWidth="1.2"
+          />
+          <circle
+            cx="1060"
+            cy="240"
+            r="250"
+            fill="none"
+            stroke="url(#vipGoldGrad)"
+            strokeWidth="1"
+            strokeDasharray="6 12"
+          />
+          <circle
+            cx="360"
+            cy="640"
+            r="180"
+            fill="none"
+            stroke="url(#vipGoldGrad)"
+            strokeWidth="1.1"
+            strokeDasharray="10 8"
+          />
+          <path
+            d="M -60,540 Q 720,240 1500,620"
+            fill="none"
+            stroke="url(#vipGoldGrad)"
+            strokeWidth="1.3"
+          />
+        </svg>
+      </div>
+
+      {/* =====================================================================
+          1. Full-Viewport High-Quality Gaming Video Layer (ONLY on 'games')
+      ====================================================================== */}
       <video
         ref={gamingVideoRef}
         data-testid="gaming-hero-video"
@@ -344,22 +313,14 @@ export function SectionBackdrop({
         loop
         playsInline
         style={{
-          filter: preset.videoFilter,
-          opacity: showGamingVideo ? 0.92 : 0,
+          opacity: showGamingVideo ? 1 : 0,
         }}
-        className="absolute inset-0 w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[76%_center] lg:object-center transition-all duration-700"
+        className="absolute inset-0 w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[76%_center] lg:object-center transition-opacity duration-500"
       />
 
-      {/* 1B. Full-Viewport AI Video & Poster Layer (Covers Entire 'ai' Page) */}
-      <img
-        src={AI_HERO_POSTER_URL}
-        alt=""
-        aria-hidden="true"
-        style={{
-          opacity: showAiVideo ? 0.92 : 0,
-        }}
-        className="absolute inset-0 w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[76%_center] lg:object-center transition-opacity duration-700"
-      />
+      {/* =====================================================================
+          2. Full-Viewport High-Quality AI Video Layer (ONLY on 'ai')
+      ====================================================================== */}
       <video
         ref={aiVideoRef}
         data-testid="ai-hero-video"
@@ -371,21 +332,14 @@ export function SectionBackdrop({
         loop
         playsInline
         style={{
-          opacity: showAiVideo ? 0.92 : 0,
+          opacity: showAiVideo ? 1 : 0,
         }}
-        className="absolute inset-0 w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[76%_center] lg:object-center transition-opacity duration-700"
+        className="absolute inset-0 w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[76%_center] lg:object-center transition-opacity duration-500"
       />
 
-      {/* 1C. Full-Viewport Web & Apps Video & Poster Layer (Covers Entire 'web' Page) */}
-      <img
-        src={WEB_HERO_POSTER_URL}
-        alt=""
-        aria-hidden="true"
-        style={{
-          opacity: showWebVideo ? 0.92 : 0,
-        }}
-        className="absolute inset-0 w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[76%_center] lg:object-center transition-opacity duration-700"
-      />
+      {/* =====================================================================
+          3. Full-Viewport High-Quality Web & Apps Video Layer (ONLY on 'web')
+      ====================================================================== */}
       <video
         ref={webVideoRef}
         data-testid="web-hero-video"
@@ -397,36 +351,12 @@ export function SectionBackdrop({
         loop
         playsInline
         style={{
-          opacity: showWebVideo ? 0.92 : 0,
+          opacity: showWebVideo ? 1 : 0,
         }}
-        className="absolute inset-0 w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[76%_center] lg:object-center transition-opacity duration-700"
-      />
-
-      {/* 1F. Full-Viewport Account / Studio Golden Obsidian VIP Artwork Layer ('studio') */}
-      <img
-        src={HERO_POSTER_URL}
-        alt=""
-        aria-hidden="true"
-        style={{
-          opacity: showStudioArtwork ? 0.58 : 0,
-          filter: 'hue-rotate(38deg) saturate(1.45) brightness(0.75) contrast(1.18)',
-        }}
-        className="absolute inset-0 w-full h-full object-cover object-[85%_center] sm:object-center transition-opacity duration-700"
-      />
-
-      {/* 2. Page-Tinted Atmospheric Veil (Never opaque black — keeps artwork/video vivid across the whole scroll) */}
-      <div
-        style={{
-          background: `linear-gradient(180deg, rgba(2,6,14,0.16) 0%, ${pageTheme.ambientBaseHex}48 55%, ${pageTheme.ambientBaseHex}78 100%)`,
-        }}
-        className="absolute inset-0 z-[5]"
-      />
-
-      {/* 3. Real-Time Custom Canvas Shader & Particle Layer */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full z-10 pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[76%_center] lg:object-center transition-opacity duration-500"
       />
     </div>
   );
 }
+
+

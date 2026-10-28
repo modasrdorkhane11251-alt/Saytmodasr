@@ -437,7 +437,7 @@ export default function App() {
         activeSection === 'ai' ||
         activeSection === 'web'
       ) && (
-        <header className="sticky top-0 z-30 bg-black/35 backdrop-blur-xl border-b border-white/10 flex items-center justify-between gap-8 px-6 sm:px-10 lg:px-16 py-4">
+        <header className="sticky top-0 z-30 bg-white/[0.12] backdrop-blur-2xl border-b border-white/35 shadow-[0_4px_24px_rgba(0,0,0,0.18),inset_0_-1px_1px_rgba(255,255,255,0.45)] flex items-center justify-between gap-8 px-6 sm:px-10 lg:px-16 py-4">
           <a
             href="#top"
             onClick={(e) => {
@@ -454,7 +454,7 @@ export default function App() {
               type="button"
               onClick={() => setLang((prev) => (prev === 'en' ? 'fa' : 'en'))}
               aria-label="Switch Language"
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 text-xs font-medium text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-white/[0.16] hover:bg-white/[0.24] backdrop-blur-xl border border-white/40 shadow-[inset_0_1px_1.5px_rgba(255,255,255,0.65)] text-xs font-medium text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
             >
               <Globe className="w-3.5 h-3.5 text-teal-300" />
               <span>{lang === 'en' ? 'فارسی' : 'EN'}</span>

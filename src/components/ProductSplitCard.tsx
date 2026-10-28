@@ -21,303 +21,303 @@ interface ProductVisualStyle {
 export const VISUAL_STYLES: Record<ProductIconType, ProductVisualStyle> = {
   openai: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(20, 184, 166, 0.36) 0%, rgba(5, 46, 38, 0.92) 55%, #031512 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(20, 184, 166, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#2dd4bf',
     ringColor: '#c084fc',
-    squircleLeft: '#e6fffa',
-    squircleRight: '#81e6d9',
+    squircleLeft: '#ffffff',
+    squircleRight: '#e6fffa',
     glassGradient:
-      'linear-gradient(135deg, rgba(204, 251, 241, 0.95) 0%, rgba(45, 212, 191, 0.75) 42%, rgba(13, 148, 136, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(240, 253, 250, 0.82) 100%)',
     watermark: 'AI',
-    accentGlow: 'rgba(45, 212, 191, 0.5)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   canva: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(139, 92, 246, 0.4) 0%, rgba(30, 18, 62, 0.92) 55%, #0b071a 100%)',
-    pedestalColor: '#a855f7',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(168, 85, 247, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
+    pedestalColor: '#c084fc',
     ringColor: '#e879f9',
-    squircleLeft: '#f3e8ff',
-    squircleRight: '#c084fc',
+    squircleLeft: '#ffffff',
+    squircleRight: '#f3e8ff',
     glassGradient:
-      'linear-gradient(135deg, rgba(243, 232, 255, 0.95) 0%, rgba(192, 132, 252, 0.75) 42%, rgba(126, 34, 206, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(250, 245, 255, 0.82) 100%)',
     watermark: 'CC',
-    accentGlow: 'rgba(168, 85, 247, 0.52)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   claude: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(249, 115, 22, 0.34) 0%, rgba(45, 22, 12, 0.92) 55%, #120905 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(251, 146, 60, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#fb923c',
     ringColor: '#f472b6',
-    squircleLeft: '#ffedd5',
-    squircleRight: '#fdba74',
+    squircleLeft: '#ffffff',
+    squircleRight: '#ffedd5',
     glassGradient:
-      'linear-gradient(135deg, rgba(255, 237, 213, 0.95) 0%, rgba(251, 146, 60, 0.75) 42%, rgba(194, 65, 12, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(255, 247, 237, 0.82) 100%)',
     watermark: 'AI',
-    accentGlow: 'rgba(251, 146, 60, 0.45)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   cursor: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(56, 189, 248, 0.35) 0%, rgba(10, 32, 54, 0.92) 55%, #040f1c 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(56, 189, 248, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#38bdf8',
     ringColor: '#c084fc',
-    squircleLeft: '#e0f2fe',
-    squircleRight: '#7dd3fc',
+    squircleLeft: '#ffffff',
+    squircleRight: '#e0f2fe',
     glassGradient:
-      'linear-gradient(135deg, rgba(224, 242, 254, 0.95) 0%, rgba(56, 189, 248, 0.75) 42%, rgba(2, 132, 199, 0.98) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(240, 249, 255, 0.82) 100%)',
     watermark: 'ID',
-    accentGlow: 'rgba(56, 189, 248, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   gemini: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(99, 102, 241, 0.38) 0%, rgba(20, 22, 58, 0.92) 55%, #080a1c 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(129, 140, 248, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#818cf8',
     ringColor: '#e879f9',
-    squircleLeft: '#e0e7ff',
-    squircleRight: '#a5b4fc',
+    squircleLeft: '#ffffff',
+    squircleRight: '#e0e7ff',
     glassGradient:
-      'linear-gradient(135deg, rgba(224, 231, 255, 0.95) 0%, rgba(129, 140, 248, 0.75) 42%, rgba(67, 56, 202, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(238, 242, 255, 0.82) 100%)',
     watermark: 'AI',
-    accentGlow: 'rgba(129, 140, 248, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   midjourney: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(45, 212, 191, 0.35) 0%, rgba(8, 38, 46, 0.92) 55%, #041217 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(45, 212, 191, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#2dd4bf',
     ringColor: '#a855f7',
-    squircleLeft: '#ccfbf1',
-    squircleRight: '#5eead4',
+    squircleLeft: '#ffffff',
+    squircleRight: '#ccfbf1',
     glassGradient:
-      'linear-gradient(135deg, rgba(204, 251, 241, 0.95) 0%, rgba(45, 212, 191, 0.72) 42%, rgba(15, 118, 110, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(240, 253, 250, 0.82) 100%)',
     watermark: 'MJ',
-    accentGlow: 'rgba(45, 212, 191, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   spotify: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(34, 197, 94, 0.35) 0%, rgba(6, 42, 24, 0.92) 55%, #03140b 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(74, 222, 128, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#4ade80',
     ringColor: '#c084fc',
-    squircleLeft: '#dcfce7',
-    squircleRight: '#86efac',
+    squircleLeft: '#ffffff',
+    squircleRight: '#dcfce7',
     glassGradient:
-      'linear-gradient(135deg, rgba(220, 252, 231, 0.95) 0%, rgba(74, 222, 128, 0.75) 42%, rgba(21, 128, 61, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(240, 253, 244, 0.82) 100%)',
     watermark: 'SP',
-    accentGlow: 'rgba(74, 222, 128, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   netflix: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(244, 63, 94, 0.36) 0%, rgba(48, 10, 20, 0.92) 55%, #140408 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(251, 113, 133, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#fb7185',
     ringColor: '#e879f9',
-    squircleLeft: '#ffe4e6',
-    squircleRight: '#fda4af',
+    squircleLeft: '#ffffff',
+    squircleRight: '#ffe4e6',
     glassGradient:
-      'linear-gradient(135deg, rgba(255, 228, 230, 0.95) 0%, rgba(251, 113, 133, 0.75) 42%, rgba(190, 18, 60, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(255, 241, 242, 0.82) 100%)',
     watermark: 'TV',
-    accentGlow: 'rgba(251, 113, 133, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   youtube: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(239, 68, 68, 0.36) 0%, rgba(48, 12, 12, 0.92) 55%, #140505 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(248, 113, 113, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#f87171',
     ringColor: '#f472b6',
-    squircleLeft: '#fee2e2',
-    squircleRight: '#fca5a5',
+    squircleLeft: '#ffffff',
+    squircleRight: '#fee2e2',
     glassGradient:
-      'linear-gradient(135deg, rgba(254, 226, 226, 0.95) 0%, rgba(248, 113, 113, 0.75) 42%, rgba(185, 28, 28, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(254, 242, 242, 0.82) 100%)',
     watermark: 'YT',
-    accentGlow: 'rgba(248, 113, 113, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   telegram: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(14, 165, 233, 0.36) 0%, rgba(8, 35, 56, 0.92) 55%, #04111c 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(56, 189, 248, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#38bdf8',
     ringColor: '#c084fc',
-    squircleLeft: '#e0f2fe',
-    squircleRight: '#7dd3fc',
+    squircleLeft: '#ffffff',
+    squircleRight: '#e0f2fe',
     glassGradient:
-      'linear-gradient(135deg, rgba(224, 242, 254, 0.95) 0%, rgba(56, 189, 248, 0.75) 42%, rgba(3, 105, 161, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(240, 249, 255, 0.82) 100%)',
     watermark: 'TG',
-    accentGlow: 'rgba(56, 189, 248, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   discord: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(99, 102, 241, 0.36) 0%, rgba(22, 20, 58, 0.92) 55%, #09081a 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(129, 140, 248, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#818cf8',
     ringColor: '#e879f9',
-    squircleLeft: '#e0e7ff',
-    squircleRight: '#a5b4fc',
+    squircleLeft: '#ffffff',
+    squircleRight: '#e0e7ff',
     glassGradient:
-      'linear-gradient(135deg, rgba(224, 231, 255, 0.95) 0%, rgba(129, 140, 248, 0.75) 42%, rgba(67, 56, 202, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(238, 242, 255, 0.82) 100%)',
     watermark: 'DC',
-    accentGlow: 'rgba(129, 140, 248, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   tradingview: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(6, 182, 212, 0.36) 0%, rgba(8, 36, 48, 0.92) 55%, #041117 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(34, 211, 238, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#22d3ee',
     ringColor: '#a855f7',
-    squircleLeft: '#cffafe',
-    squircleRight: '#67e8f9',
+    squircleLeft: '#ffffff',
+    squircleRight: '#cffafe',
     glassGradient:
-      'linear-gradient(135deg, rgba(207, 250, 254, 0.95) 0%, rgba(34, 211, 238, 0.75) 42%, rgba(14, 116, 144, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(236, 254, 255, 0.82) 100%)',
     watermark: 'FX',
-    accentGlow: 'rgba(34, 211, 238, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   psn: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(59, 130, 246, 0.38) 0%, rgba(10, 26, 62, 0.92) 55%, #040b1c 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(96, 165, 250, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#60a5fa',
     ringColor: '#c084fc',
-    squircleLeft: '#dbeAFE',
-    squircleRight: '#93c5fd',
+    squircleLeft: '#ffffff',
+    squircleRight: '#dbeafe',
     glassGradient:
-      'linear-gradient(135deg, rgba(219, 234, 254, 0.95) 0%, rgba(96, 165, 250, 0.75) 42%, rgba(29, 78, 216, 0.98) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(239, 246, 255, 0.82) 100%)',
     watermark: 'PS',
-    accentGlow: 'rgba(96, 165, 250, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   xbox: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(34, 197, 94, 0.36) 0%, rgba(8, 42, 20, 0.92) 55%, #031409 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(74, 222, 128, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#4ade80',
     ringColor: '#a855f7',
-    squircleLeft: '#dcfce7',
-    squircleRight: '#86efac',
+    squircleLeft: '#ffffff',
+    squircleRight: '#dcfce7',
     glassGradient:
-      'linear-gradient(135deg, rgba(220, 252, 231, 0.95) 0%, rgba(74, 222, 128, 0.75) 42%, rgba(21, 128, 61, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(240, 253, 244, 0.82) 100%)',
     watermark: 'XB',
-    accentGlow: 'rgba(74, 222, 128, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   steam: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(56, 189, 248, 0.38) 0%, rgba(15, 28, 52, 0.94) 55%, #050b14 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(56, 189, 248, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#38bdf8',
     ringColor: '#60a5fa',
-    squircleLeft: '#f0f9ff',
-    squircleRight: '#7dd3fc',
+    squircleLeft: '#ffffff',
+    squircleRight: '#f0f9ff',
     glassGradient:
-      'linear-gradient(135deg, rgba(224, 242, 254, 0.95) 0%, rgba(56, 189, 248, 0.72) 42%, rgba(15, 23, 42, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(240, 249, 255, 0.82) 100%)',
     watermark: 'ST',
-    accentGlow: 'rgba(56, 189, 248, 0.52)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   apple: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(148, 163, 184, 0.32) 0%, rgba(20, 28, 40, 0.92) 55%, #070b12 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(203, 213, 225, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#38bdf8',
     ringColor: '#c084fc',
-    squircleLeft: '#f8fafc',
-    squircleRight: '#cbd5e1',
+    squircleLeft: '#ffffff',
+    squircleRight: '#f8fafc',
     glassGradient:
-      'linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(203, 213, 225, 0.75) 42%, rgba(51, 65, 85, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(248, 250, 252, 0.82) 100%)',
     watermark: 'AP',
-    accentGlow: 'rgba(148, 163, 184, 0.45)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   googleplay: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(45, 212, 191, 0.34) 0%, rgba(8, 38, 42, 0.92) 55%, #041315 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(45, 212, 191, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#2dd4bf',
     ringColor: '#c084fc',
-    squircleLeft: '#ccfbf1',
-    squircleRight: '#7dd3fc',
+    squircleLeft: '#ffffff',
+    squircleRight: '#ccfbf1',
     glassGradient:
-      'linear-gradient(135deg, rgba(204, 251, 241, 0.95) 0%, rgba(45, 212, 191, 0.75) 42%, rgba(13, 148, 136, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(240, 253, 250, 0.82) 100%)',
     watermark: 'GP',
-    accentGlow: 'rgba(45, 212, 191, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   nintendo: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(244, 63, 94, 0.36) 0%, rgba(48, 12, 20, 0.92) 55%, #140508 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(251, 113, 133, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#fb7185',
     ringColor: '#e879f9',
-    squircleLeft: '#ffe4e6',
-    squircleRight: '#fda4af',
+    squircleLeft: '#ffffff',
+    squircleRight: '#ffe4e6',
     glassGradient:
-      'linear-gradient(135deg, rgba(255, 228, 230, 0.95) 0%, rgba(251, 113, 133, 0.75) 42%, rgba(190, 18, 60, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(255, 241, 242, 0.82) 100%)',
     watermark: 'NS',
-    accentGlow: 'rgba(251, 113, 133, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   razer: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(132, 204, 22, 0.36) 0%, rgba(18, 38, 8, 0.92) 55%, #071203 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(163, 230, 53, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#a3e635',
     ringColor: '#c084fc',
-    squircleLeft: '#ecfccb',
-    squircleRight: '#bef264',
+    squircleLeft: '#ffffff',
+    squircleRight: '#ecfccb',
     glassGradient:
-      'linear-gradient(135deg, rgba(236, 252, 203, 0.95) 0%, rgba(163, 230, 53, 0.75) 42%, rgba(77, 124, 15, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(247, 254, 231, 0.82) 100%)',
     watermark: 'RZ',
-    accentGlow: 'rgba(163, 230, 53, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   codm: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(245, 158, 11, 0.36) 0%, rgba(44, 28, 6, 0.92) 55%, #140c02 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(251, 191, 36, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#fbbf24',
     ringColor: '#f472b6',
-    squircleLeft: '#fef3c7',
-    squircleRight: '#fcd34d',
+    squircleLeft: '#ffffff',
+    squircleRight: '#fef3c7',
     glassGradient:
-      'linear-gradient(135deg, rgba(254, 243, 199, 0.95) 0%, rgba(251, 191, 36, 0.75) 42%, rgba(180, 83, 9, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(254, 252, 232, 0.82) 100%)',
     watermark: 'CP',
-    accentGlow: 'rgba(251, 191, 36, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   pubg: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(245, 158, 11, 0.36) 0%, rgba(44, 26, 6, 0.92) 55%, #140b02 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(251, 191, 36, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#fbbf24',
     ringColor: '#e879f9',
-    squircleLeft: '#fef3c7',
-    squircleRight: '#fcd34d',
+    squircleLeft: '#ffffff',
+    squircleRight: '#fef3c7',
     glassGradient:
-      'linear-gradient(135deg, rgba(254, 243, 199, 0.95) 0%, rgba(251, 191, 36, 0.75) 42%, rgba(180, 83, 9, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(254, 252, 232, 0.82) 100%)',
     watermark: 'UC',
-    accentGlow: 'rgba(251, 191, 36, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   freefire: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(249, 115, 22, 0.36) 0%, rgba(46, 20, 6, 0.92) 55%, #140802 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(251, 146, 60, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#fb923c',
     ringColor: '#f472b6',
-    squircleLeft: '#ffedd5',
-    squircleRight: '#fdba74',
+    squircleLeft: '#ffffff',
+    squircleRight: '#ffedd5',
     glassGradient:
-      'linear-gradient(135deg, rgba(255, 237, 213, 0.95) 0%, rgba(251, 146, 60, 0.75) 42%, rgba(194, 65, 12, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(255, 247, 237, 0.82) 100%)',
     watermark: 'FF',
-    accentGlow: 'rgba(251, 146, 60, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   supercell: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(234, 179, 8, 0.36) 0%, rgba(42, 32, 6, 0.92) 55%, #120d02 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(250, 204, 21, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#facc15',
     ringColor: '#c084fc',
-    squircleLeft: '#fef9c3',
-    squircleRight: '#fde047',
+    squircleLeft: '#ffffff',
+    squircleRight: '#fef9c3',
     glassGradient:
-      'linear-gradient(135deg, rgba(254, 249, 195, 0.95) 0%, rgba(250, 204, 21, 0.75) 42%, rgba(161, 98, 7, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(254, 252, 232, 0.82) 100%)',
     watermark: 'SC',
-    accentGlow: 'rgba(250, 204, 21, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   genshin: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(168, 85, 247, 0.38) 0%, rgba(32, 16, 56, 0.92) 55%, #0c0617 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(192, 132, 252, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#c084fc',
     ringColor: '#38bdf8',
-    squircleLeft: '#f3e8ff',
-    squircleRight: '#d8b4fe',
+    squircleLeft: '#ffffff',
+    squircleRight: '#f3e8ff',
     glassGradient:
-      'linear-gradient(135deg, rgba(243, 232, 255, 0.95) 0%, rgba(192, 132, 252, 0.75) 42%, rgba(107, 33, 168, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(250, 245, 255, 0.82) 100%)',
     watermark: 'GI',
-    accentGlow: 'rgba(192, 132, 252, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
   vpn: {
     bgGradient:
-      'radial-gradient(circle at 50% 42%, rgba(20, 184, 166, 0.36) 0%, rgba(6, 40, 38, 0.92) 55%, #031312 100%)',
+      'radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.24) 0%, rgba(45, 212, 191, 0.18) 55%, rgba(255, 255, 255, 0.06) 100%)',
     pedestalColor: '#2dd4bf',
     ringColor: '#c084fc',
-    squircleLeft: '#ccfbf1',
-    squircleRight: '#5eead4',
+    squircleLeft: '#ffffff',
+    squircleRight: '#ccfbf1',
     glassGradient:
-      'linear-gradient(135deg, rgba(204, 251, 241, 0.95) 0%, rgba(45, 212, 191, 0.75) 42%, rgba(13, 148, 136, 0.96) 100%)',
+      'linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.52) 48%, rgba(240, 253, 250, 0.82) 100%)',
     watermark: 'VP',
-    accentGlow: 'rgba(45, 212, 191, 0.48)',
+    accentGlow: 'rgba(255, 255, 255, 0.55)',
   },
 };
 
@@ -327,7 +327,7 @@ function renderBrandEmblem(iconType: ProductIconType) {
       return (
         <svg
           viewBox="0 0 24 24"
-          className="w-10 h-10 text-[#051814]"
+          className="w-10 h-10 text-[#051814] drop-shadow-sm"
           fill="currentColor"
           aria-label="OpenAI Official Logo"
         >
@@ -336,58 +336,63 @@ function renderBrandEmblem(iconType: ProductIconType) {
       );
     case 'canva':
       return (
-        <div className="w-11 h-11 rounded-full bg-[#0d0e12] border border-white/25 flex items-center justify-center shadow-lg">
-          <span className="text-white font-serif italic font-extrabold text-[15px] tracking-tight select-none">
-            Canva
-          </span>
+        <div className="w-11 h-11 rounded-full overflow-hidden border border-white/60 flex items-center justify-center shadow-sm bg-white">
+          <svg
+            viewBox="0 0 24 24"
+            className="w-full h-full text-[#0b0d13]"
+            fill="currentColor"
+            aria-label="Canva Official Script Logo"
+          >
+            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zM6.962 7.68c.754 0 1.337.549 1.405 1.2.069.583-.171 1.097-.822 1.406-.343.171-.48.172-.549.069-.034-.069 0-.137.069-.206.617-.514.617-.926.548-1.508-.034-.378-.308-.618-.583-.618-1.2 0-2.914 2.674-2.674 4.629.103.754.549 1.646 1.509 1.646.308 0 .65-.103.96-.24.5-.264.799-.47 1.097-.8-.073-.885.704-2.046 1.851-2.046.515 0 .926.205.96.583.068.514-.377.582-.514.582s-.378-.034-.378-.17c-.034-.138.309-.07.275-.378-.035-.206-.24-.274-.446-.274-.72 0-1.131.994-1.029 1.611.035.275.172.549.447.549.205 0 .514-.31.617-.755.068-.308.343-.514.583-.514.102 0 .17.034.205.171v.138c-.034.137-.137.548-.102.651 0 .069.034.171.17.171.092 0 .436-.18.777-.459.117-.59.253-1.298.253-1.357.034-.24.137-.48.617-.48.103 0 .171.034.205.171v.138l-.136.617c.445-.583 1.097-.994 1.508-.994.172 0 .309.102.309.274 0 .103 0 .274-.069.446-.137.377-.309.96-.412 1.474 0 .137.035.274.207.274.171 0 .685-.206 1.096-.754l.007-.004c-.002-.068-.007-.134-.007-.202 0-.411.035-.754.104-.994.068-.274.411-.514.617-.514.103 0 .205.069.205.171 0 .035 0 .103-.034.137-.137.446-.24.857-.24 1.269 0 .24.034.582.102.788 0 .034.035.069.07.069.068 0 .548-.445.89-1.028-.308-.206-.48-.549-.48-.96 0-.72.446-1.097.858-1.097.343 0 .617.24.617.72 0 .308-.103.65-.274.96h.102a.77.77 0 0 0 .584-.24.293.293 0 0 1 .134-.117c.335-.425.83-.74 1.41-.74.48 0 .924.205.959.582.068.515-.378.618-.515.618l-.002-.002c-.138 0-.377-.035-.377-.172 0-.137.309-.068.274-.376-.034-.206-.24-.275-.446-.275-.686 0-1.13.891-1.028 1.611.034.275.171.583.445.583.206 0 .515-.308.652-.754.068-.274.343-.514.583-.514.103 0 .17.034.205.171 0 .069 0 .206-.137.652-.17.308-.171.48-.137.617.034.274.171.48.309.583.034.034.068.102.068.102 0 .069-.034.138-.137.138-.034 0-.068 0-.103-.035-.514-.205-.72-.548-.789-.891-.205.24-.445.377-.72.377-.445 0-.89-.411-.96-.926a1.609 1.609 0 0 1 .075-.649c-.203.13-.422.203-.623.203h-.17c-.447.652-.927 1.098-1.27 1.303a.896.896 0 0 1-.377.104c-.068 0-.171-.035-.205-.104-.095-.152-.156-.392-.193-.667-.481.527-1.145.805-1.453.805-.343 0-.548-.206-.582-.55v-.376c.102-.754.377-1.2.377-1.337a.074.074 0 0 0-.069-.07c-.24 0-1.028.824-1.166 1.373l-.103.445c-.068.309-.377.515-.582.515-.103 0-.172-.035-.206-.172v-.137l.046-.233c-.435.31-.87.508-1.075.508-.308 0-.48-.172-.514-.412-.206.274-.445.412-.754.412-.352 0-.696-.24-.862-.593-.244.275-.523.553-.852.764-.48.309-1.028.549-1.68.549-.582 0-1.097-.309-1.371-.583-.412-.377-.651-.96-.686-1.509-.205-1.68.823-3.84 2.4-4.8.378-.205.755-.343 1.132-.343zm9.77 3.291c-.104 0-.172.172-.172.343 0 .274.137.583.309.755a1.74 1.74 0 0 0 .102-.583c0-.343-.137-.515-.24-.515z" />
+          </svg>
         </div>
       );
     case 'claude':
       return (
         <svg
-          viewBox="0 0 24 24"
-          className="w-10 h-10 text-[#C2410C]"
-          fill="currentColor"
-          aria-label="Anthropic Claude Official Asterisk"
+          viewBox="0 0 256 257"
+          className="w-9 h-9 drop-shadow-sm"
+          fill="none"
+          aria-label="Anthropic Claude Official Logo"
         >
-          {/* Authentic Anthropic Claude starburst asterisk */}
-          <path d="M12 2a1.2 1.2 0 0 1 1.15.86l1.32 4.38 4.38-1.32a1.2 1.2 0 0 1 1.48 1.48l-1.32 4.38 4.38 1.32a1.2 1.2 0 0 1 0 2.3l-4.38 1.32 1.32 4.38a1.2 1.2 0 0 1-1.48 1.48l-4.38-1.32-1.32 4.38a1.2 1.2 0 0 1-2.3 0l-1.32-4.38-4.38 1.32a1.2 1.2 0 0 1-1.48-1.48l1.32-4.38-4.38-1.32a1.2 1.2 0 0 1 0-2.3l4.38-1.32-1.32-4.38a1.2 1.2 0 0 1 1.48-1.48l4.38 1.32 1.32-4.38A1.2 1.2 0 0 1 12 2z" />
+          <path
+            fill="#D97757"
+            d="m50.228 170.321 50.357-28.257.843-2.463-.843-1.361h-2.462l-8.426-.518-28.775-.778-24.952-1.037-24.175-1.296-6.092-1.297L0 125.796l.583-3.759 5.12-3.434 7.324.648 16.202 1.101 24.304 1.685 17.629 1.037 26.118 2.722h4.148l.583-1.685-1.426-1.037-1.101-1.037-25.147-17.045-27.22-18.017-14.258-10.37-7.713-5.25-3.888-4.925-1.685-10.758 7-7.713 9.397.649 2.398.648 9.527 7.323 20.35 15.75L94.817 91.9l3.889 3.24 1.555-1.102.195-.777-1.75-2.917-14.453-26.118-15.425-26.572-6.87-11.018-1.814-6.61c-.648-2.723-1.102-4.991-1.102-7.778l7.972-10.823L71.42 0 82.05 1.426l4.472 3.888 6.61 15.101 10.694 23.786 16.591 32.34 4.861 9.592 2.592 8.879.973 2.722h1.685v-1.556l1.36-18.211 2.528-22.36 2.463-28.776.843-8.1 4.018-9.722 7.971-5.25 6.222 2.981 5.12 7.324-.713 4.73-3.046 19.768-5.962 30.98-3.889 20.739h2.268l2.593-2.593 10.499-13.934 17.628-22.036 7.778-8.749 9.073-9.657 5.833-4.601h11.018l8.1 12.055-3.628 12.443-11.342 14.388-9.398 12.184-13.48 18.147-8.426 14.518.778 1.166 2.01-.194 30.46-6.481 16.462-2.982 19.637-3.37 8.88 4.148.971 4.213-3.5 8.62-20.998 5.184-24.628 4.926-36.682 8.685-.454.324.519.648 16.526 1.555 7.065.389h17.304l32.21 2.398 8.426 5.574 5.055 6.805-.843 5.184-12.962 6.611-17.498-4.148-40.83-9.721-14-3.5h-1.944v1.167l11.666 11.406 21.387 19.314 26.767 24.887 1.36 6.157-3.434 4.86-3.63-.518-23.526-17.693-9.073-7.972-20.545-17.304h-1.36v1.814l4.73 6.935 25.017 37.59 1.296 11.536-1.814 3.76-6.481 2.268-7.13-1.297-14.647-20.544-15.1-23.138-12.185-20.739-1.49.843-7.194 77.448-3.37 3.953-7.778 2.981-6.48-4.925-3.436-7.972 3.435-15.749 4.148-20.544 3.37-16.333 3.046-20.285 1.815-6.74-.13-.454-1.49.194-15.295 20.999-23.267 31.433-18.406 19.702-4.407 1.75-7.648-3.954.713-7.064 4.277-6.286 25.47-32.405 15.36-20.092 9.917-11.6-.065-1.686h-.583L44.07 198.125l-12.055 1.555-5.185-4.86.648-7.972 2.463-2.593 20.35-13.999-.064.065Z"
+          />
         </svg>
       );
     case 'cursor':
       return (
         <svg
-          viewBox="0 0 32 32"
-          className="w-10 h-10 drop-shadow-md"
+          viewBox="0 0 466.73 532.09"
+          className="w-9 h-9 drop-shadow-sm"
           fill="none"
-          aria-label="Cursor AI Official Isometric Cube"
+          aria-label="Cursor AI Official Logo"
         >
-          {/* Authentic Cursor 3D isometric cube facets */}
-          <path d="M16 2.5L28.5 9.7V22.3L16 29.5L3.5 22.3V9.7L16 2.5Z" fill="#0369A1" />
-          <path d="M16 2.5L28.5 9.7L16 16.9L3.5 9.7L16 2.5Z" fill="#38BDF8" />
-          <path d="M16 16.9L28.5 9.7V22.3L16 29.5V16.9Z" fill="#0284C7" />
-          <path d="M16 16.9L3.5 9.7V22.3L16 29.5V16.9Z" fill="#0C4A6E" />
-          <path d="M16 7.5L23.5 11.8L16 16.1L8.5 11.8L16 7.5Z" fill="#F0F9FF" fillOpacity="0.95" />
+          <path
+            fill="#0f172a"
+            d="M457.43,125.94L244.42,2.96c-6.84-3.95-15.28-3.95-22.12,0L9.3,125.94c-5.75,3.32-9.3,9.46-9.3,16.11v247.99c0,6.65,3.55,12.79,9.3,16.11l213.01,122.98c6.84,3.95,15.28,3.95,22.12,0l213.01-122.98c5.75-3.32,9.3-9.46,9.3-16.11v-247.99c0-6.65-3.55-12.79-9.3-16.11h-.01ZM444.05,151.99l-205.63,356.16c-1.39,2.4-5.06,1.42-5.06-1.36v-233.21c0-4.66-2.49-8.97-6.53-11.31L24.87,145.67c-2.4-1.39-1.42-5.06,1.36-5.06h411.26c5.84,0,9.49,6.33,6.57,11.39h-.01Z"
+          />
         </svg>
       );
     case 'gemini':
       return (
         <svg
           viewBox="0 0 24 24"
-          className="w-10 h-10 drop-shadow-md"
+          className="w-9 h-9 drop-shadow-sm"
           fill="none"
           aria-label="Google Gemini Official Spark Star"
         >
           <defs>
             <linearGradient id="geminiOfficialGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#1A73E8" />
-              <stop offset="35%" stopColor="#8AB4F8" />
-              <stop offset="70%" stopColor="#C58AF9" />
-              <stop offset="100%" stopColor="#F28B82" />
+              <stop offset="0%" stopColor="#2563EB" />
+              <stop offset="45%" stopColor="#7C3AED" />
+              <stop offset="80%" stopColor="#DB2777" />
+              <stop offset="100%" stopColor="#EA580C" />
             </linearGradient>
           </defs>
           <path
-            d="M12 2C12 7.523 7.523 12 2 12c5.523 0 10 4.477 10 10 0-5.523 4.477-10 10-10-5.523 0-10-4.477-10-10z"
+            d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81"
             fill="url(#geminiOfficialGrad)"
           />
         </svg>
@@ -395,65 +400,92 @@ function renderBrandEmblem(iconType: ProductIconType) {
     case 'midjourney':
       return (
         <svg
-          viewBox="0 0 24 24"
-          className="w-10 h-10 text-[#042f2e]"
-          fill="currentColor"
-          aria-label="Midjourney Official Sailboat"
+          viewBox="0 0 698 583"
+          className="w-9 h-9 drop-shadow-sm"
+          fill="none"
+          aria-label="Midjourney Official Sailboat Logo"
         >
-          {/* Authentic Midjourney wireframe boat emblem */}
-          <path d="M11.9 2.5L12 2.4l.1.1 5.8 9.3-2.8 1.5-3-5.7-.1 13.9h-1.1V7.5L7.9 13.2l-2.8-1.5 5.7-9.2zm-8.2 14h16.6l-2.4 4.5H6.1l-2.4-4.5zm3 2.8h10.6l1-1.7H6.7l1 1.7z" />
+          <path
+            d="M9 573.5C29 573.5 59 531.5 94 525.5C114 525.5 129 567.5 179 573.5C214 573.5 229 531.5 264 531.5C299 531.5 314 573.5 349 573.5C384 573.5 399 531.5 434 531.5C469 531.5 484 573.5 519 573.5C554 573.5 569 531.5 604 531.5C639 531.5 654 573.5 689 573.5"
+            stroke="#0f172a"
+            strokeWidth="42"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M77.4 531.7L54.5 487.9L644.5 449.9C598.1 492.1 538.5 526.3 478.2 554.3"
+            stroke="#0f172a"
+            strokeWidth="42"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M289.4 79.9004C389.8 110.6 530.2 258.9 578 418.3C551.8 408 532.2 397.5 495.4 406.9C459.8 277.4 396.1 153.7 289.4 79.9004Z"
+            stroke="#0f172a"
+            strokeWidth="42"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M102.7 9.00049C231.3 64.0005 407.7 217.1 440.1 421C291.8 361.2 178.9 393.1 100.3 441.6C220.2 289.2 166.4 115.9 102.7 9.00049Z"
+            stroke="#0f172a"
+            strokeWidth="42"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       );
     case 'spotify':
       return (
-        <div className="w-10 h-10 rounded-full bg-[#052e16] border border-[#22c55e]/40 flex items-center justify-center shadow-lg">
-          <svg
-            viewBox="0 0 24 24"
-            className="w-7 h-7 text-[#22c55e]"
-            fill="currentColor"
-            aria-label="Spotify Official Wave Logo"
-          >
-            <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.625.625 0 0 1-.282-1.218c3.808-.87 7.076-.5 9.717 1.118a.625.625 0 0 1 .207.857zm1.224-2.72a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.781.781 0 0 1-.453-1.496c3.633-1.102 8.147-.568 11.233 1.333a.78.78 0 0 1 .257 1.072zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.936.936 0 1 1-.548-1.791c3.53-1.072 9.404-.865 13.116 1.338a.937.937 0 0 1-.95 1.612z" />
-          </svg>
-        </div>
+        <svg
+          viewBox="0 0 24 24"
+          className="w-10 h-10 text-[#16a34a] drop-shadow-sm"
+          fill="currentColor"
+          aria-label="Spotify Official Logo"
+        >
+          <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
+        </svg>
       );
     case 'netflix':
       return (
         <svg
           viewBox="0 0 24 24"
-          className="w-8 h-10 drop-shadow-md"
+          className="w-8 h-9 drop-shadow-sm"
           fill="none"
           aria-label="Netflix Official Ribbon N"
         >
-          <path d="M4 2v20l5.5-2.2V2H4z" fill="#B81D24" />
-          <path d="M14.5 2v17.8L20 22V2h-5.5z" fill="#B81D24" />
-          <path d="M4 2l10.5 17.8h5.5L9.5 2H4z" fill="#E50914" />
+          <path d="M4 2v20l5.2-1.8V2H4z" fill="#B1060F" />
+          <path d="M14.8 2v18.2L20 22V2h-5.2z" fill="#B1060F" />
+          <path d="M4 2l10.8 19.8L20 22 9.2 2H4z" fill="#E50914" />
         </svg>
       );
     case 'youtube':
       return (
-        <div className="w-11 h-8 rounded-xl bg-[#DC2626] border border-white/20 flex items-center justify-center shadow-lg">
-          <div className="w-0 h-0 border-y-[6px] border-y-transparent border-l-[11px] border-l-white ml-0.5" />
-        </div>
+        <svg
+          viewBox="0 0 24 24"
+          className="w-10 h-10 text-[#FF0000] drop-shadow-sm"
+          fill="currentColor"
+          aria-label="YouTube Official Logo"
+        >
+          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+        </svg>
       );
     case 'telegram':
       return (
-        <div className="w-10 h-10 rounded-full bg-[#0284C7] border border-white/20 flex items-center justify-center shadow-lg">
-          <svg
-            viewBox="0 0 24 24"
-            className="w-6 h-6 text-white"
-            fill="currentColor"
-            aria-label="Telegram Official Paper Plane"
-          >
-            <path d="M21.5 3.5L2.7 10.8c-.9.4-.9 1.7.1 2l4.7 1.5 1.8 5.4c.3.9 1.4 1.1 2 .4l2.7-2.8 4.8 3.5c.8.6 2 .1 2.2-.9l2.7-15c.2-1-.8-1.8-1.7-1.4z" />
-          </svg>
-        </div>
+        <svg
+          viewBox="0 0 24 24"
+          className="w-10 h-10 text-[#0284C7] drop-shadow-sm"
+          fill="currentColor"
+          aria-label="Telegram Official Logo"
+        >
+          <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+        </svg>
       );
     case 'psn':
       return (
         <svg
           viewBox="0 0 24 24"
-          className="w-10 h-10 text-[#003791] drop-shadow-md"
+          className="w-10 h-10 text-[#003791] drop-shadow-sm"
           fill="currentColor"
           aria-label="PlayStation Official Interlocking PS Logo"
         >
@@ -473,7 +505,7 @@ function renderBrandEmblem(iconType: ProductIconType) {
       );
     case 'steam':
       return (
-        <div className="w-11 h-11 rounded-full overflow-hidden border border-white/35 flex items-center justify-center shadow-[0_4px_14px_rgba(0,0,0,0.55)]">
+        <div className="w-11 h-11 rounded-full overflow-hidden border border-white/75 flex items-center justify-center shadow-sm">
           <svg
             viewBox="0 0 65 65"
             className="w-full h-full"
@@ -506,11 +538,11 @@ function renderBrandEmblem(iconType: ProductIconType) {
       return (
         <svg
           viewBox="0 0 24 24"
-          className="w-10 h-10 text-slate-900 drop-shadow-sm"
+          className="w-9 h-9 text-[#0f172a] drop-shadow-sm"
           fill="currentColor"
-          aria-label="Apple Official Silhouette Logo"
+          aria-label="Apple Official Logo"
         >
-          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.38c.62-.75 1.04-1.8 0.93-2.85-.9.04-1.99.6-2.63 1.35-.56.65-1.05 1.72-.92 2.74 1 .08 2.02-.49 2.62-1.24z" />
+          <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701" />
         </svg>
       );
     case 'googleplay':
@@ -521,107 +553,113 @@ function renderBrandEmblem(iconType: ProductIconType) {
           fill="none"
           aria-label="Google Play Official Multi-Color Triangle"
         >
-          <path d="M3.6 2.4c-.3.4-.4.9-.4 1.6v16c0 .7.1 1.2.4 1.6l.1.1 9.2-9.2v-.2L3.7 2.3l-.1.1z" fill="#00E676" />
-          <path d="M16 15.3l-3.1-3.1v-.2l3.1-3.1.1.1 3.7 2.1c1 .6 1 1.5 0 2.1l-3.8 2.1z" fill="#FFD600" />
-          <path d="M12.9 12.1L3.6 21.6c.4.4 1 .5 1.8.1l10.7-6.1-3.2-3.5z" fill="#FF1744" />
-          <path d="M12.9 11.9l3.2-3.5L5.4 2.3c-.8-.5-1.4-.3-1.8.1l9.3 9.5z" fill="#00B0FF" />
+          <path d="M3.6 2.4c-.3.4-.4.9-.4 1.6v16c0 .7.1 1.2.4 1.6l.1.1 9.2-9.2v-.2L3.7 2.3l-.1.1z" fill="#00C853" />
+          <path d="M16 15.3l-3.1-3.1v-.2l3.1-3.1.1.1 3.7 2.1c1 .6 1 1.5 0 2.1l-3.8 2.1z" fill="#FFAB00" />
+          <path d="M12.9 12.1L3.6 21.6c.4.4 1 .5 1.8.1l10.7-6.1-3.2-3.5z" fill="#D50000" />
+          <path d="M12.9 11.9l3.2-3.5L5.4 2.3c-.8-.5-1.4-.3-1.8.1l9.3 9.5z" fill="#0091EA" />
         </svg>
       );
     case 'nintendo':
       return (
         <svg
           viewBox="0 0 24 24"
-          className="w-10 h-10 text-[#E60012] drop-shadow-sm"
+          className="w-9 h-9 text-[#E60012] drop-shadow-sm"
           fill="currentColor"
           aria-label="Nintendo Switch Official Joy-Con Logo"
         >
-          <path d="M8.2 2C4.8 2 2 4.8 2 8.2v7.6C2 19.2 4.8 22 8.2 22h2V2h-2zm-1 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm1.8 5.5H7.2v-1.8H9v1.8zM15.8 2c3.4 0 6.2 2.8 6.2 6.2v7.6c0 3.4-2.8 6.2-6.2 6.2h-2V2h2zm-1 3.5h1.8v1.8h-1.8V5.5zm1 7.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
+          <path d="M14.176 24h3.674c3.376 0 6.15-2.774 6.15-6.15V6.15C24 2.775 21.226 0 17.85 0H14.1c-.074 0-.15.074-.15.15v23.7c-.001.076.075.15.226.15zm4.574-13.199c1.351 0 2.399 1.125 2.399 2.398 0 1.352-1.125 2.4-2.399 2.4-1.35 0-2.4-1.049-2.4-2.4-.075-1.349 1.05-2.398 2.4-2.398zM11.4 0H6.15C2.775 0 0 2.775 0 6.15v11.7C0 21.226 2.775 24 6.15 24h5.25c.074 0 .15-.074.15-.149V.15c.001-.076-.075-.15-.15-.15zM9.676 22.051H6.15c-2.326 0-4.201-1.875-4.201-4.201V6.15c0-2.326 1.875-4.201 4.201-4.201H9.6l.076 20.102zM3.75 7.199c0 1.275.975 2.25 2.25 2.25s2.25-.975 2.25-2.25c0-1.273-.975-2.25-2.25-2.25s-2.25.977-2.25 2.25z" />
         </svg>
       );
     case 'razer':
       return (
         <svg
           viewBox="0 0 24 24"
-          className="w-10 h-10 text-[#00E700] drop-shadow-md"
+          className="w-9 h-9 text-[#15803d] drop-shadow-sm"
           fill="currentColor"
           aria-label="Razer Official Triple-Headed Snake Logo"
         >
-          <path d="M12 2C8 6 4 10 5 14c.7 2.8 3 4 5 3-1.5-.5-2.2-1.7-2-3 .3-1.8 2.5-3.5 4-5.5 1.5 2 3.7 3.7 4 5.5.2 1.3-.5 2.5-2 3 2 1 4.3-.2 5-3 1-4-3-8-7-12zm-3.5 14c-.8 0-1.5.7-1.5 1.5s.7 1.5 1.5 1.5 1.5-.7 1.5-1.5-.7-1.5-1.5-1.5zm7 0c-.8 0-1.5.7-1.5 1.5s.7 1.5 1.5 1.5 1.5-.7 1.5-1.5-.7-1.5-1.5-1.5z" />
+          <path d="M23.4 0a.385.385 0 00-.278.125L22.91.35l-.401.182a.711.711 0 00-.417 0 .305.305 0 01-.171 0 1.005 1.005 0 00-.567 0A.936.936 0 0021 .596a.877.877 0 00-.412.337l-.037.048a1.246 1.246 0 00-.898.684 1.07 1.07 0 00-.07.225 1.935 1.935 0 00-.337-.193 2.026 2.026 0 00-2.063.305 2.08 2.08 0 00-.69 2.139c.086.376.23.737.428 1.069.496.776 1.079 1.494 1.737 2.138.526.512.996 1.078 1.401 1.69l.053.096c.396.754.321 1.31-.219 1.647a1.358 1.358 0 01-.572.198 2.491 2.491 0 00-.144-2.07 2.342 2.342 0 00-.3-.406c-.79-.866-1.63-.674-1.962-.449a.385.385 0 00-.15.455l.027.058a.385.385 0 00.38.188 1.07 1.07 0 01.962.582c.23.384.23.862 0 1.246a4.812 4.812 0 01-.534-.535l-.07-.07-.037-.042a3.368 3.368 0 00-1.92-1.208 3.09 3.09 0 00-.406-1.455 4.368 4.368 0 00-1.358-1.48 2.673 2.673 0 00-.267-.16 3.085 3.085 0 00-2.251-2.717 2.7 2.7 0 00-2.968 1.139c-.053.086-.112.171-.165.267a12.26 12.26 0 00-1.038 2.78 11.64 11.64 0 01-.775 2.187l-.059.107c-.213.374-.406.583-.609.647a.406.406 0 01-.374-.064c-.203-.14-.155-.423 0-.973a3.33 3.33 0 00.128-.45c.07-.33-.005-.673-.203-.946a1.07 1.07 0 00-.786-.411c-.49-.018-.94.27-1.128.722l-.08.15a.968.968 0 00-.316-.46.936.936 0 00-.294-.129 1.016 1.016 0 00-.535-.198.342.342 0 01-.17-.053.711.711 0 00-.434-.097l-.326-.256-.144-.278c-.18-.35-.707-.238-.727.155a.385.385 0 00.032.727l.305.075.342.267c.026.14.093.268.192.37.043.04.072.092.086.149.058.184.167.347.315.47a.877.877 0 00.727.465h.06c.262.313.662.477 1.068.439a1.07 1.07 0 00.23-.054 1.935 1.935 0 000 .38 2.026 2.026 0 001.3 1.636 2.08 2.08 0 002.208-.481c.276-.26.51-.562.695-.893.422-.817.75-1.68.978-2.572.179-.711.433-1.401.76-2.058l.058-.096c.454-.722.973-.936 1.535-.637.18.096.338.231.46.396-.714.12-1.34.543-1.717 1.16-.084.146-.152.3-.203.46-.353 1.117.23 1.748.593 1.925.16.077.353.035.466-.102l.037-.053a.385.385 0 000-.423 1.07 1.07 0 010-1.128c.218-.384.627-.62 1.07-.615-.04.245-.1.486-.177.722l-.034.093a3.533 3.533 0 00-.084 2.324 3.09 3.09 0 00-1.07 1.07 4.368 4.368 0 00-.603 1.913 2.674 2.674 0 000 .31 3.085 3.085 0 00-1.23 3.31 2.7 2.7 0 002.47 2h.31a12.26 12.26 0 002.925-.493 11.64 11.64 0 012.283-.422h.117c.304-.037.61.035.866.203.102.09.152.224.134.358 0 .246-.289.348-.855.466a3.33 3.33 0 00-.45.117 1.192 1.192 0 00-.721.647 1.07 1.07 0 00.037.888c.229.435.704.683 1.193.62h.165a.968.968 0 00-.235.502.936.936 0 000 .364c-.019.183.013.368.091.535.03.054.045.115.043.176-.002.151.045.3.133.422l-.058.412-.166.262a.385.385 0 00.497.535c.287.265.74-.016.63-.39l-.085-.3.064-.433a.711.711 0 00.22-.353.305.305 0 01.085-.15c.131-.141.218-.318.252-.508a.936.936 0 00.122-.336.877.877 0 00-.085-.535v-.053c.134-.376.08-.794-.144-1.123a1.07 1.07 0 00-.16-.171c.115-.05.226-.11.33-.182a2.026 2.026 0 00.77-1.94 2.08 2.08 0 00-1.518-1.674 3.71 3.71 0 00-1.123-.155c-.919.043-1.83.19-2.716.438-.697.198-1.414.322-2.138.369h-.112c-.85-.032-1.294-.374-1.316-1.01-.007-.204.031-.407.113-.594.459.559 1.138.89 1.86.909.17 0 .338-.018.503-.054 1.144-.25 1.4-1.069 1.374-1.475a.385.385 0 00-.321-.353h-.064a.385.385 0 00-.353.235 1.07 1.07 0 01-.984.535 1.214 1.214 0 01-1.069-.631c.233-.088.473-.158.716-.209h.155a3.368 3.368 0 002.01-1.069c.449.243.95.372 1.46.374.679.01 1.35-.138 1.962-.433.094-.044.185-.094.273-.15a3.085 3.085 0 003.48-.587 2.7 2.7 0 00.498-3.139 6.884 6.884 0 00-.15-.273 12.259 12.259 0 00-1.887-2.288 11.64 11.64 0 01-1.508-1.764l-.064-.102a1.294 1.294 0 01-.257-.85.406.406 0 01.16-.267c.225-.107.444.08.83.508.1.118.21.228.326.331.25.225.584.334.92.3a1.07 1.07 0 00.748-.476c.263-.416.24-.951-.06-1.342l-.085-.145c.18.035.365.019.535-.048a.936.936 0 00.32-.197c.178-.076.33-.2.44-.359a.342.342 0 01.133-.123.711.711 0 00.3-.326l.384-.155h.31a.385.385 0 00.353-.577l-.005.01a.385.385 0 00-.118-.128A.385.385 0 0023.4 0z" />
         </svg>
       );
     case 'codm':
       return (
-        <svg
-          viewBox="0 0 24 24"
-          className="w-10 h-10 text-[#78350F] drop-shadow-md"
-          fill="currentColor"
-          aria-label="Call of Duty Mobile Official Skull & Shield"
-        >
-          <path d="M12 2L3 6v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V6l-9-4zm0 4c2.8 0 5 2.2 5 5 0 1.5-.6 2.8-1.6 3.7v1.8h-1.5v-1.2h-1v1.2h-1.8v-1.2h-1v1.2H8.6v-1.8C7.6 13.8 7 12.5 7 11c0-2.8 2.2-5 5-5zm-2 4.5a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zm4 0a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z" />
-        </svg>
+        <div className="flex flex-col items-center justify-center px-1">
+          <svg
+            viewBox="0 0 24 24"
+            className="w-9 h-3.5 text-[#0f172a]"
+            fill="currentColor"
+            aria-label="Activision Call of Duty Mobile Official Logo"
+          >
+            <path d="M1.88 8.91L0 14.284h.985l.27-.718h1.252l.269.718h.985zm3.224.359l-.537.984h2.15v4.03H7.7v-4.03h1.522l1.882 4.837 1.791-4.837h4.567l-.537-.984H12.18l-1.074 2.865L9.94 9.269zm16.21 1.163v3.762h.986v-1.523l1.7 1.702v-3.76h-.896v1.342z" />
+          </svg>
+          <span className="mt-0.5 px-1.5 py-0.5 rounded bg-[#0f172a] font-sans font-black text-[9px] leading-none tracking-tighter text-[#FACC15] uppercase">
+            CODM
+          </span>
+        </div>
       );
     case 'pubg':
       return (
-        <svg
-          viewBox="0 0 24 24"
-          className="w-10 h-10 text-[#78350F] drop-shadow-md"
-          fill="currentColor"
-          aria-label="PUBG Mobile Level 3 Helmet Official Silhouette"
-        >
-          <path d="M12 2C6.5 2 2 6.5 2 12c0 2.5 1 4.8 2.5 6.5l1.5-2C5 15.2 4.5 13.7 4.5 12c0-4.1 3.4-7.5 7.5-7.5s7.5 3.4 7.5 7.5c0 1.7-.5 3.2-1.5 4.5l1.5 2c1.5-1.7 2.5-4 2.5-6.5 0-5.5-4.5-10-10-10zm-6 9v3h12v-3H6zm1 8.5c1.4.9 3.1 1.5 5 1.5s3.6-.6 5-1.5l-1.2-2.5H8.2l-1.2 2.5z" />
-        </svg>
+        <div className="flex flex-col items-center justify-center">
+          <div className="px-2 py-0.5 rounded bg-[#F59E0B] border border-[#0f172a]/20 text-[#0c0a07] font-sans font-black text-[11px] leading-none tracking-tighter uppercase shadow-sm">
+            PUBG
+          </div>
+          <span className="mt-1 text-[7px] font-black tracking-widest text-[#0f172a] uppercase">
+            MOBILE
+          </span>
+        </div>
       );
     case 'freefire':
       return (
         <svg
-          viewBox="0 0 24 24"
-          className="w-10 h-10 text-[#C2410C] drop-shadow-md"
-          fill="currentColor"
-          aria-label="Garena Free Fire Official Flame Wings"
+          viewBox="0 0 40 40"
+          className="w-9 h-9 drop-shadow-sm"
+          fill="none"
+          aria-label="Garena Free Fire Official FF Logo"
         >
-          <path d="M12 2C9.5 5 6 9.5 7 13.5c.7 2.8 3 4.5 5 4.5s4.3-1.7 5-4.5C18 9.5 14.5 5 12 2zm0 18c-3.5 0-6.5-1.5-7.5-3.5 1.5.5 3.5.5 5.5-.5-2-1.5-3-3.5-3-5.5 2 1 4.5 1 6.5-1 1 2 2 3.5 3.5 4.5-1.5 1-3.5 1.5-5 1.5z" />
+          <path d="M6 11h11l-1.5 3.5H10v4h5.5L14 22h-4v8H6V11z" fill="#0f172a" />
+          <path d="M23 11h11l-1.5 3.5H27v4h5.5L31 22h-4v8h-4V11z" fill="#0f172a" />
+          <path d="M20 5l2.2 6v20L20 35l-2.2-4V11L20 5z" fill="#EA580C" />
         </svg>
       );
     case 'supercell':
       return (
-        <svg
-          viewBox="0 0 24 24"
-          className="w-10 h-10 text-[#A16207] drop-shadow-md"
-          fill="currentColor"
-          aria-label="Supercell Official Crown Crest"
-        >
-          <path d="M5 4l3.5 4L12 3l3.5 5L19 4l1 13H4L5 4zm-1 15h16v2H4v-2z" />
-          <circle cx="12" cy="13" r="1.5" />
-        </svg>
+        <div className="flex flex-col items-center justify-center leading-none">
+          <span className="font-sans font-black text-[9.5px] tracking-widest text-[#0f172a] uppercase">
+            SUPER
+          </span>
+          <span className="font-sans font-black text-[9.5px] tracking-widest text-[#CA8A04] uppercase mt-0.5">
+            CELL
+          </span>
+        </div>
       );
     case 'genshin':
       return (
         <svg
           viewBox="0 0 24 24"
-          className="w-10 h-10 text-[#6B21A8] drop-shadow-md"
-          fill="currentColor"
-          aria-label="Genshin Impact Primogem Official Emblem"
+          className="w-9 h-9 drop-shadow-sm"
+          fill="none"
+          aria-label="Genshin Impact Official Star Crest"
         >
-          <path d="M12 2L15.5 9L22 12L15.5 15L12 22L8.5 15L2 12L8.5 9L12 2Z" />
-          <path d="M12 5.5L14.5 10L19 12L14.5 14L12 18.5L9.5 14L5 12L9.5 10L12 5.5Z" fill="#F3E8FF" />
+          <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z" fill="#7E22CE" />
+          <circle cx="12" cy="12" r="2.6" fill="#FAF5FF" />
         </svg>
       );
     case 'tradingview':
       return (
         <svg
           viewBox="0 0 24 24"
-          className="w-10 h-10 text-[#0E7490] drop-shadow-md"
+          className="w-9 h-9 text-[#0f172a] drop-shadow-sm"
           fill="currentColor"
           aria-label="TradingView Official Logo"
         >
-          <path d="M3 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm5-6h3v12H8V8zm5 4h3v8h-3v-8zm5-7h3v15h-3V5z" />
+          <path d="M15.8654 8.2789c0 1.3541-1.0978 2.4519-2.452 2.4519-1.354 0-2.4519-1.0978-2.4519-2.452 0-1.354 1.0978-2.4518 2.452-2.4518 1.3541 0 2.4519 1.0977 2.4519 2.4519zM9.75 6H0v4.9038h4.8462v7.2692H9.75Zm8.5962 0H24l-5.1058 12.173h-5.6538z" />
         </svg>
       );
     case 'discord':
       return (
         <svg
           viewBox="0 0 24 24"
-          className="w-10 h-10 text-[#4338CA] drop-shadow-md"
+          className="w-9 h-9 text-[#5865F2] drop-shadow-sm"
           fill="currentColor"
           aria-label="Discord Official Clyde Mascot"
         >
@@ -632,7 +670,7 @@ function renderBrandEmblem(iconType: ProductIconType) {
       return (
         <svg
           viewBox="0 0 24 24"
-          className="w-10 h-10 text-[#0F766E] drop-shadow-md"
+          className="w-9 h-9 text-[#0d9488] drop-shadow-sm"
           fill="currentColor"
           aria-label="MODASR Connect Official Shield"
         >
@@ -723,12 +761,12 @@ export function ProductSplitCard({
       data-revealed="true"
       data-glass-card="true"
       onClick={() => onShowDetails?.(product)}
-      className="group relative rounded-[26px] bg-[#061C19]/65 backdrop-blur-2xl border border-white/20 hover:border-[#2BBAA5]/80 overflow-hidden transition-all duration-300 shadow-[0_16px_42px_rgba(0,0,0,0.45),inset_0_1px_1.5px_rgba(255,255,255,0.3)] hover:shadow-[0_18px_48px_rgba(43,186,165,0.25),inset_0_1px_2px_rgba(255,255,255,0.5)] cursor-pointer select-none"
+      className="group relative rounded-[26px] bg-white/[0.14] hover:bg-white/[0.19] backdrop-blur-2xl border border-white/45 hover:border-white/80 overflow-hidden transition-all duration-300 shadow-[0_16px_42px_rgba(0,0,0,0.28),inset_0_1px_2px_rgba(255,255,255,0.75)] hover:shadow-[0_18px_48px_rgba(255,255,255,0.22),inset_0_1px_3px_rgba(255,255,255,0.9)] cursor-pointer select-none"
     >
       {/* Top specular glass highlight line */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-white/55 to-transparent pointer-events-none z-20"
+        className="absolute inset-x-8 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/90 to-transparent pointer-events-none z-20"
       />
 
       {/* Brand gradient aura scaled at 1.5 and 0 opacity, dropping to scale 1 and opacity 100 on group-hover */}
@@ -740,10 +778,10 @@ export function ProductSplitCard({
         className="absolute inset-0 scale-150 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 pointer-events-none z-0"
       />
 
-      {/* Subtle diagonal glass reflection sheen */}
+      {/* Clear white frosted glass reflection sheen */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-white/[0.02] pointer-events-none z-0"
+        className="absolute inset-0 bg-gradient-to-br from-white/[0.22] via-white/[0.06] to-white/[0.14] pointer-events-none z-0"
       />
 
       <div
@@ -753,36 +791,36 @@ export function ProductSplitCard({
         {/* RIGHT PANEL: 3D HOLOGRAM PEDESTAL & FLOATING SQUIRCLE ICON (38% width) */}
         <div
           style={{ background: style.bgGradient }}
-          className="relative w-[38%] sm:w-[39%] shrink-0 overflow-hidden flex flex-col items-center justify-center border-l border-white/15 backdrop-blur-xl"
+          className="relative w-[38%] sm:w-[39%] shrink-0 overflow-hidden flex flex-col items-center justify-center border-l border-white/35 backdrop-blur-2xl"
         >
           {/* Ambient Cyber Grid & Star Dots */}
           <div
             aria-hidden="true"
             style={{
               backgroundImage:
-                'radial-gradient(rgba(255,255,255,0.18) 1px, transparent 1px)',
+                'radial-gradient(rgba(255,255,255,0.32) 1px, transparent 1px)',
               backgroundSize: '18px 18px',
             }}
-            className="absolute inset-0 opacity-25 pointer-events-none"
+            className="absolute inset-0 opacity-35 pointer-events-none"
           />
 
           {/* Holographic Wireframe Globe / Aura behind icon */}
           <div
             aria-hidden="true"
             style={{
-              borderColor: `${style.pedestalColor}40`,
-              boxShadow: `0 0 40px ${style.accentGlow}`,
+              borderColor: 'rgba(255,255,255,0.45)',
+              boxShadow: `0 0 40px ${style.accentGlow}, inset 0 0 20px rgba(255,255,255,0.22)`,
             }}
-            className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border border-dashed bg-white/[0.03] backdrop-blur-md flex items-center justify-center relative"
+            className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border border-dashed bg-white/[0.12] backdrop-blur-xl flex items-center justify-center relative"
           >
             {/* Outer Orbital Ring */}
             <div
               aria-hidden="true"
-              style={{ borderColor: `${style.pedestalColor}30` }}
+              style={{ borderColor: 'rgba(255,255,255,0.38)' }}
               className="absolute inset-2 rounded-full border"
             />
 
-            {/* 3D Perspective Stage for Crystal Glass Squircle (چرخش نرم و کامل ۳۶۰ درجه سه بعدی) */}
+            {/* 3D Perspective Stage for Crystal White Glass Squircle (چرخش نرم و کامل ۳۶۰ درجه سه بعدی) */}
             <div
               data-testid={`product-glass-squircle-${product.id}`}
               style={{
@@ -796,115 +834,115 @@ export function ProductSplitCard({
                 }}
                 className="relative w-full h-full animate-glass-spin-3d group-hover:[animation-play-state:paused]"
               >
-                {/* FRONT FACE (وجه جلویی کریستال شیشه‌ای) */}
+                {/* FRONT FACE (وجه جلویی کریستال شیشه‌ای شفاف سفید) */}
                 <div
                   style={{
                     background: style.glassGradient,
-                    boxShadow: `-5px 7px 0px rgba(255,255,255,0.48), -8px 12px 24px rgba(0,0,0,0.55), 0 16px 36px -4px ${style.accentGlow}, inset 0 2px 4px rgba(255,255,255,0.95), inset 2px 0 3px rgba(255,255,255,0.7), inset -3px -5px 10px rgba(0,0,0,0.45)`,
+                    boxShadow: `-5px 7px 0px rgba(255,255,255,0.72), -8px 12px 24px rgba(0,0,0,0.28), 0 14px 32px -4px ${style.accentGlow}, inset 0 2px 6px rgba(255,255,255,0.98), inset 2px 0 4px rgba(255,255,255,0.88), inset -2px -3px 8px rgba(255,255,255,0.55)`,
                     transform: 'translateZ(5px)',
                     backfaceVisibility: 'hidden',
                     WebkitBackfaceVisibility: 'hidden',
                   }}
-                  className="absolute inset-0 rounded-[20px] border border-white/85 backdrop-blur-xl flex items-center justify-center overflow-hidden shadow-2xl"
+                  className="absolute inset-0 rounded-[20px] border border-white/95 backdrop-blur-2xl flex items-center justify-center overflow-hidden shadow-2xl"
                 >
-                  {/* Glass Top Curve Specular Sheen (انعکاس نور هلالی بالای شیشه) */}
+                  {/* Glass Top Curve Specular Sheen (انعکاس نور هلالی بالای شیشه سفید شفاف) */}
                   <div
                     aria-hidden="true"
-                    className="absolute inset-x-0 top-0 h-[48%] rounded-t-[19px] bg-gradient-to-b from-white/80 via-white/25 to-transparent pointer-events-none z-10"
+                    className="absolute inset-x-0 top-0 h-[50%] rounded-t-[19px] bg-gradient-to-b from-white/95 via-white/45 to-transparent pointer-events-none z-10"
                   />
 
-                  {/* Glass Diagonal Reflection Arc */}
+                  {/* Pure White Crystal Diagonal Reflection Arc */}
                   <div
                     aria-hidden="true"
-                    className="absolute inset-0 bg-gradient-to-br from-white/45 via-transparent to-black/25 pointer-events-none z-10"
+                    className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/15 to-white/40 pointer-events-none z-10"
                   />
 
                   {/* Animated Glass Specular Sheen Beam (نور بازتابی متحرک روی شیشه) */}
                   <div
                     aria-hidden="true"
-                    className="absolute -inset-full w-[200%] h-[200%] bg-gradient-to-r from-transparent via-white/80 to-transparent pointer-events-none z-15 animate-glass-sheen blur-[0.8px]"
+                    className="absolute -inset-full w-[200%] h-[200%] bg-gradient-to-r from-transparent via-white/95 to-transparent pointer-events-none z-15 animate-glass-sheen blur-[0.8px]"
                   />
 
                   {/* Distinctive Glass Refraction Aperture Notch at Top Edge */}
                   <div
                     aria-hidden="true"
-                    className="absolute top-1.5 right-2 w-3.5 h-1.5 rounded-full border border-white/95 bg-white/45 backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.95)] pointer-events-none z-20 animate-glass-aperture"
+                    className="absolute top-1.5 right-2 w-3.5 h-1.5 rounded-full border border-white bg-white/75 backdrop-blur-md shadow-[inset_0_1px_2px_rgba(255,255,255,1)] pointer-events-none z-20 animate-glass-aperture"
                   />
 
                   {/* Bottom Prism Rim Highlight */}
                   <div
                     aria-hidden="true"
-                    className="absolute inset-x-2.5 bottom-1 h-[1.5px] bg-white/65 blur-[0.3px] rounded-full pointer-events-none z-10"
+                    className="absolute inset-x-2.5 bottom-1 h-[1.5px] bg-white/90 blur-[0.2px] rounded-full pointer-events-none z-10"
                   />
 
-                  {/* Embedded Brand Emblem Inside Crystal Glass Body */}
-                  <div className="relative z-20 drop-shadow-[0_2px_5px_rgba(0,0,0,0.6)]">
+                  {/* Embedded Brand Emblem Inside Crystal White Glass Body */}
+                  <div className="relative z-20 drop-shadow-[0_2px_6px_rgba(0,0,0,0.22)]">
                     {renderBrandEmblem(product.iconType)}
                   </div>
                 </div>
 
-                {/* BACK FACE (وجه پشتی با لوگوی برند و مُهر اصالت مودسر برای چرخش کامل ۳۶۰ درجه بدون تار شدن یا معکوس شدن) */}
+                {/* BACK FACE (وجه پشتی کریستال شیشه‌ای شفاف سفید با لوگوی برند و مُهر اصالت مودسر) */}
                 <div
                   style={{
                     background: style.glassGradient,
-                    boxShadow: `-5px 7px 0px rgba(255,255,255,0.48), -8px 12px 24px rgba(0,0,0,0.55), 0 16px 36px -4px ${style.accentGlow}, inset 0 2px 4px rgba(255,255,255,0.95), inset 2px 0 3px rgba(255,255,255,0.7), inset -3px -5px 10px rgba(0,0,0,0.45)`,
+                    boxShadow: `-5px 7px 0px rgba(255,255,255,0.72), -8px 12px 24px rgba(0,0,0,0.28), 0 14px 32px -4px ${style.accentGlow}, inset 0 2px 6px rgba(255,255,255,0.98), inset 2px 0 4px rgba(255,255,255,0.88), inset -2px -3px 8px rgba(255,255,255,0.55)`,
                     transform: 'rotateY(180deg) translateZ(5px)',
                     backfaceVisibility: 'hidden',
                     WebkitBackfaceVisibility: 'hidden',
                   }}
-                  className="absolute inset-0 rounded-[20px] border border-white/85 backdrop-blur-xl flex items-center justify-center overflow-hidden shadow-2xl"
+                  className="absolute inset-0 rounded-[20px] border border-white/95 backdrop-blur-2xl flex items-center justify-center overflow-hidden shadow-2xl"
                 >
                   {/* Reverse Face Top Curve Sheen */}
                   <div
                     aria-hidden="true"
-                    className="absolute inset-x-0 top-0 h-[48%] rounded-t-[19px] bg-gradient-to-b from-white/80 via-white/25 to-transparent pointer-events-none z-10"
+                    className="absolute inset-x-0 top-0 h-[50%] rounded-t-[19px] bg-gradient-to-b from-white/95 via-white/45 to-transparent pointer-events-none z-10"
                   />
 
-                  {/* Reverse Diagonal Arc */}
+                  {/* Reverse Pure White Diagonal Arc */}
                   <div
                     aria-hidden="true"
-                    className="absolute inset-0 bg-gradient-to-bl from-white/45 via-transparent to-black/25 pointer-events-none z-10"
+                    className="absolute inset-0 bg-gradient-to-bl from-white/70 via-white/15 to-white/40 pointer-events-none z-10"
                   />
 
                   {/* Reverse Aperture Notch */}
                   <div
                     aria-hidden="true"
-                    className="absolute top-1.5 left-2 w-3.5 h-1.5 rounded-full border border-white/95 bg-white/45 backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.95)] pointer-events-none z-20"
+                    className="absolute top-1.5 left-2 w-3.5 h-1.5 rounded-full border border-white bg-white/75 backdrop-blur-md shadow-[inset_0_1px_2px_rgba(255,255,255,1)] pointer-events-none z-20"
                   />
 
                   {/* Embedded Brand Emblem Inside Back Face */}
-                  <div className="relative z-20 drop-shadow-[0_2px_5px_rgba(0,0,0,0.6)]">
+                  <div className="relative z-20 drop-shadow-[0_2px_6px_rgba(0,0,0,0.22)]">
                     {renderBrandEmblem(product.iconType)}
                   </div>
 
                   {/* Modasr Holographic Verified Stamp */}
                   <span
                     aria-hidden="true"
-                    className="absolute bottom-1 font-mono text-[7px] font-black tracking-widest text-white/55 uppercase select-none pointer-events-none"
+                    className="absolute bottom-1 font-mono text-[7px] font-black tracking-widest text-slate-800/75 uppercase select-none pointer-events-none"
                   >
                     MODASR ✦
                   </span>
                 </div>
 
-                {/* Physical Crystal Glass Core/Thickness Rim */}
+                {/* Physical Crystal White Glass Core/Thickness Rim */}
                 <div
                   aria-hidden="true"
                   style={{
                     transform: 'translateZ(0px)',
                   }}
-                  className="absolute inset-0 rounded-[20px] border-2 border-white/30 bg-white/[0.08] pointer-events-none"
+                  className="absolute inset-0 rounded-[20px] border-2 border-white/75 bg-white/35 pointer-events-none"
                 />
               </div>
             </div>
 
-            {/* Neon Magenta/Violet Elliptical Ring Under Squircle */}
+            {/* Luminous Elliptical Ring Under Squircle */}
             <div
               aria-hidden="true"
               style={{
                 borderColor: style.ringColor,
                 boxShadow: `0 0 14px ${style.ringColor}`,
               }}
-              className="absolute -bottom-1 w-24 sm:w-28 h-6 rounded-[100%] border opacity-85 pointer-events-none animate-glass-ring"
+              className="absolute -bottom-1 w-24 sm:w-28 h-6 rounded-[100%] border opacity-90 pointer-events-none animate-glass-ring"
             />
           </div>
 
@@ -915,14 +953,14 @@ export function ProductSplitCard({
           >
             <div
               style={{
-                borderColor: `${style.pedestalColor}75`,
-                background: `radial-gradient(ellipse at center, ${style.pedestalColor}55 0%, transparent 72%)`,
+                borderColor: 'rgba(255,255,255,0.65)',
+                background: `radial-gradient(ellipse at center, rgba(255,255,255,0.45) 0%, ${style.pedestalColor}40 45%, transparent 72%)`,
               }}
               className="w-28 sm:w-32 h-5 rounded-[100%] border"
             />
             <div
               style={{
-                borderColor: `${style.pedestalColor}38`,
+                borderColor: 'rgba(255,255,255,0.38)',
               }}
               className="w-36 sm:w-40 h-4 -mt-3 rounded-[100%] border"
             />
@@ -931,17 +969,17 @@ export function ProductSplitCard({
           {/* Large Faint Watermark Letters at Bottom-Right */}
           <span
             aria-hidden="true"
-            className="absolute bottom-1 right-2.5 font-podium font-black text-2xl sm:text-3xl tracking-wider text-white/[0.11] pointer-events-none select-none uppercase"
+            className="absolute bottom-1 right-2.5 font-podium font-black text-2xl sm:text-3xl tracking-wider text-white/25 pointer-events-none select-none uppercase"
           >
             {style.watermark}
           </span>
         </div>
 
         {/* LEFT PANEL: PRODUCT DETAILS, PRICING & QUICK ADD BUTTON (62% width) */}
-        <div className="flex-1 p-3.5 sm:p-5 flex flex-col justify-between text-center bg-white/[0.03] backdrop-blur-xl">
+        <div className="flex-1 p-3.5 sm:p-5 flex flex-col justify-between text-center bg-white/[0.08] backdrop-blur-2xl">
           <div>
             {/* Row 1: Brand + Category Kicker */}
-            <div className="flex items-center justify-center gap-2 text-[11px] sm:text-xs font-medium text-slate-200/90">
+            <div className="flex items-center justify-center gap-2 text-[11px] sm:text-xs font-medium text-white/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]">
               <span className="font-semibold text-white">
                 {product.platformBrand}
               </span>
@@ -949,12 +987,12 @@ export function ProductSplitCard({
             </div>
 
             {/* Row 2: Bold White Title */}
-            <h3 className="mt-1 text-[15px] sm:text-[18px] font-black text-white leading-snug line-clamp-1">
+            <h3 className="mt-1 text-[15px] sm:text-[18px] font-black text-white leading-snug line-clamp-1 drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
               {cleanTitle}
             </h3>
 
             {/* Row 3: Truncated Description */}
-            <p className="mt-1 text-[11px] sm:text-xs text-slate-200/80 line-clamp-1 leading-relaxed">
+            <p className="mt-1 text-[11px] sm:text-xs text-white/85 line-clamp-1 leading-relaxed drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
               {isRtl ? product.subtitleFa : product.subtitleEn}
             </p>
           </div>
@@ -962,18 +1000,18 @@ export function ProductSplitCard({
           {/* Row 4 & 5: Price + Strikethrough + USD */}
           <div className="my-2">
             <div className="flex flex-wrap items-baseline justify-center gap-x-1.5 gap-y-0.5">
-              <span className="text-[11px] sm:text-xs text-slate-300/85 font-medium">
+              <span className="text-[11px] sm:text-xs text-white/90 font-medium">
                 {isRtl ? 'شروع از' : 'From'}
               </span>
-              <span className="text-[17px] sm:text-[21px] font-black text-white tracking-tight tabular-nums">
+              <span className="text-[17px] sm:text-[21px] font-black text-white tracking-tight tabular-nums drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
                 {tomanPrice.toLocaleString('fa-IR')} تومان
               </span>
-              <span className="text-[11px] sm:text-xs text-slate-400/70 line-through tabular-nums">
+              <span className="text-[11px] sm:text-xs text-white/70 line-through tabular-nums">
                 {oldTomanPrice.toLocaleString('fa-IR')} تومان
               </span>
             </div>
 
-            <div className="mt-0.5 text-[11px] sm:text-xs font-semibold text-[#81E6D9] tabular-nums">
+            <div className="mt-0.5 text-[11px] sm:text-xs font-bold text-[#99F6E4] tabular-nums drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]">
               {formatPersianUsd(product.priceUsd)}
             </div>
           </div>
@@ -986,7 +1024,7 @@ export function ProductSplitCard({
               e.stopPropagation();
               onAddToCart(product);
             }}
-            className="w-full py-2.5 sm:py-3 px-4 rounded-2xl bg-[#2BBAA5]/90 hover:bg-[#34CDB6] backdrop-blur-md border border-white/35 active:scale-[0.98] text-[#041815] font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all duration-200 shadow-[0_6px_20px_rgba(43,186,165,0.32),inset_0_1px_1px_rgba(255,255,255,0.5)] cursor-pointer"
+            className="w-full py-2.5 sm:py-3 px-4 rounded-2xl bg-[#2BBAA5]/90 hover:bg-[#34CDB6] backdrop-blur-xl border border-white/60 active:scale-[0.98] text-[#041815] font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all duration-200 shadow-[0_6px_20px_rgba(43,186,165,0.35),inset_0_1px_2px_rgba(255,255,255,0.75)] cursor-pointer"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>{isRtl ? 'افزودن سریع' : 'Quick Add'}</span>

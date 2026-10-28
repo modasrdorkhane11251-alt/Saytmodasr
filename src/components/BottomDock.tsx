@@ -35,21 +35,20 @@ export function BottomDock({
   };
 
   return (
-    <div className="fixed bottom-0 inset-x-0 flex justify-center px-2 sm:px-4 pb-2.5 sm:pb-4 pt-2 z-40 pointer-events-none bg-gradient-to-t from-[#04070B] via-[#04070B]/70 to-transparent">
+    <div className="fixed bottom-0 inset-x-0 flex justify-center px-2 sm:px-4 pb-2.5 sm:pb-4 pt-2 z-40 pointer-events-none bg-gradient-to-t from-black/45 via-black/15 to-transparent">
       <nav
         aria-label="Bottom Page Navigation"
         dir={lang === 'fa' ? 'rtl' : 'ltr'}
         style={{
-          boxShadow: `0 12px 40px -8px rgba(0, 0, 0, 0.9), 0 0 28px -6px ${accentHex}45`,
-          borderColor: `${accentHex}50`,
+          boxShadow: `0 12px 40px -8px rgba(0, 0, 0, 0.35), 0 0 28px -6px ${accentHex}35, inset 0 1px 2px rgba(255, 255, 255, 0.75)`,
         }}
-        className="pointer-events-auto relative grid grid-cols-6 items-center gap-0.5 sm:gap-1.5 px-2 sm:px-4 py-1.5 sm:py-2 rounded-2xl sm:rounded-full bg-[#060B11]/95 backdrop-blur-xl border transition-all duration-300 max-w-2xl w-full"
+        className="pointer-events-auto relative grid grid-cols-6 items-center gap-0.5 sm:gap-1.5 px-2 sm:px-4 py-1.5 sm:py-2 rounded-2xl sm:rounded-full bg-white/[0.15] backdrop-blur-2xl border border-white/45 transition-all duration-300 max-w-2xl w-full"
       >
         {/* Top subtle specular reflection line */}
         <div
-          className="absolute inset-x-8 top-0 h-px opacity-65 pointer-events-none transition-colors duration-500"
+          className="absolute inset-x-8 top-0 h-[1.5px] opacity-90 pointer-events-none transition-colors duration-500"
           style={{
-            background: `linear-gradient(90deg, transparent, ${accentHex}, transparent)`,
+            background: `linear-gradient(90deg, transparent, rgba(255,255,255,0.95), transparent)`,
           }}
         />
 
@@ -89,10 +88,12 @@ export function BottomDock({
               aria-label={label}
               aria-current={isActive ? 'page' : undefined}
               style={{
-                color: isActive ? section.accentHex : 'rgba(255,255,255,0.72)',
+                color: isActive ? section.accentHex : 'rgba(255,255,255,0.88)',
               }}
               className={`group relative min-h-[46px] flex flex-col items-center justify-center py-1.5 px-0.5 sm:px-2 rounded-xl sm:rounded-2xl transition-all duration-200 focus:outline-none cursor-pointer ${
-                isActive ? 'bg-white/[0.08]' : 'hover:bg-white/[0.05] hover:text-white'
+                isActive
+                  ? 'bg-white/[0.22] border border-white/35 shadow-[inset_0_1px_1.5px_rgba(255,255,255,0.65)]'
+                  : 'hover:bg-white/[0.12] hover:text-white'
               }`}
             >
               {getIcon(section.id, isActive)}
