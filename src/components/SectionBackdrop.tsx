@@ -121,8 +121,8 @@ export function SectionBackdrop({
             }
           }
         });
-      } else if (activeSection === 'search' || activePresetId === 'cyber-glitch') {
-        // Sapphire Holographic Catalog Cyber Grid & Scanline Bars
+      } else if (activePresetId === 'cyber-glitch' && activeSection !== 'search') {
+        // Cyber Grid & Scanline Bars
         ctx.strokeStyle = `${pageTheme.primaryHex}24`;
         ctx.lineWidth = 1;
         const gridSpacing = 54;

@@ -43,6 +43,7 @@ import { ScrollReveal } from './ScrollReveal';
 import { CornerBracketSvg, WireframeGlobeSvg } from './LgpsmIcons';
 import { LumoraSkyrangerHero } from './LumoraSkyrangerHero';
 import { MeridianFooter } from './MeridianFooter';
+import { ProductSplitCard } from './ProductSplitCard';
 
 interface ModasrMarketplaceProps {
   activePage?: SectionId;
@@ -153,98 +154,20 @@ function MarketplaceProductCard({
     rootMargin: '120px 0px 120px 0px',
   });
 
-  const isRtl = lang === 'fa';
-  const tomanPrice = convertUsdToToman(product.priceUsd, usdtRate);
-
   return (
     <div
       ref={cardReveal.ref}
-      data-testid={`product-card-${product.id}`}
-      data-scroll-reveal="slide-up"
-      data-cascade-index={cascadeIndex}
-      data-revealed="true"
       className="animate-fade-up h-full"
     >
-      <div className="group h-full rounded-3xl bg-slate-950/60 backdrop-blur-xl hover:bg-slate-950/80 border border-white/15 hover:border-teal-400/55 p-5 flex flex-col justify-between transition-all duration-300 shadow-[0_12px_36px_rgba(0,0,0,0.45)]">
-        <div>
-          {/* Top Row: Icon + Quiet Brand & Kicker */}
-          <div className="flex items-center justify-between gap-3 mb-4">
-            <div className="w-12 h-12 rounded-2xl bg-teal-500/10 border border-teal-400/30 flex items-center justify-center shrink-0">
-              {renderMarketplaceProductIcon(product.iconType)}
-            </div>
-            <div className="text-end">
-              <div className="text-[11px] font-semibold text-teal-300/90">
-                {product.platformBrand}
-              </div>
-              <div className="text-[11px] font-medium text-white/50 mt-0.5">
-                {isRtl ? product.badgeFa : product.badgeEn}
-              </div>
-            </div>
-          </div>
-
-          {/* Product Title */}
-          <h3 className="text-base font-bold text-white leading-snug">
-            {isRtl ? product.titleFa : product.titleEn}
-          </h3>
-          <p className="text-xs text-white/60 mt-1.5 leading-relaxed line-clamp-2">
-            {isRtl ? product.subtitleFa : product.subtitleEn}
-          </p>
-
-          {/* Unboxed Clean Metadata with Typographic Separators (Zero-Pill Discipline) */}
-          <div className="mt-4 pt-3 border-t border-white/10 text-[11px] text-white/65 flex flex-wrap items-center gap-x-2 gap-y-1">
-            <span>{isRtl ? product.durationFa : product.durationEn}</span>
-            <span aria-hidden="true">·</span>
-            <span>{isRtl ? product.regionFa : product.regionEn}</span>
-            <span aria-hidden="true">·</span>
-            <span className="text-teal-300">
-              {isRtl ? product.deliveryFa : product.deliveryEn}
-            </span>
-          </div>
-
-          {product.popularPackagesFa && product.popularPackagesFa.length > 0 && (
-            <div className="mt-2.5 text-[11px] text-white/45 truncate">
-              {isRtl ? 'پکیج‌ها: ' : 'Packages: '}
-              {product.popularPackagesFa.slice(0, 3).join(' / ')}
-            </div>
-          )}
-        </div>
-
-        {/* Price + Actions */}
-        <div className="mt-5 pt-4 border-t border-white/10">
-          <div className="flex items-baseline justify-between mb-3">
-            <div>
-              <div className="text-lg font-black text-white tabular-nums">
-                {currencyMode === 'toman'
-                  ? `≈ ${formatToman(tomanPrice, lang)}`
-                  : `$${product.priceUsd.toFixed(2)}`}
-              </div>
-              <div className="text-[11px] text-white/50 tabular-nums">
-                {currencyMode === 'toman'
-                  ? `$${product.priceUsd.toFixed(2)} USD`
-                  : `≈ ${formatToman(tomanPrice, lang)}`}
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => onAddToCart(product)}
-              className="flex-1 py-2.5 px-3 rounded-xl bg-teal-400 hover:bg-teal-300 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-            >
-              <ShoppingBag className="w-3.5 h-3.5" />
-              <span>{isRtl ? 'افزودن سریع' : 'Quick Add'}</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => onShowDetails(product)}
-              className="py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-white/80 hover:text-white text-xs font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-            >
-              {isRtl ? 'جزئیات' : 'Details'}
-            </button>
-          </div>
-        </div>
-      </div>
+      <ProductSplitCard
+        product={product}
+        cascadeIndex={cascadeIndex}
+        lang={lang}
+        usdtRate={usdtRate}
+        currencyMode={currencyMode}
+        onAddToCart={onAddToCart}
+        onShowDetails={onShowDetails}
+      />
     </div>
   );
 }
@@ -862,7 +785,10 @@ export function ModasrMarketplace({
         </div>
 
         {/* Featured Products Preview on Home Dashboard */}
-        <div className="mt-10 pt-8 border-t border-white/10">
+        <div
+          id="featured-dashboard-products"
+          className="mt-10 pt-8 border-t border-white/10"
+        >
           <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
             <div>
               <h3 className="text-xl sm:text-2xl font-bold text-white">
@@ -890,7 +816,7 @@ export function ModasrMarketplace({
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
             {featuredDashboardProducts.map((product, idx) => (
               <MarketplaceProductCard
                 key={product.id}
@@ -1028,7 +954,7 @@ export function ModasrMarketplace({
           </div>
 
           {/* Quick Ecosystem & Brand Filter Bar (Shown on Full Catalog 'search' page) */}
-          {activePage === 'search' && (
+          {(activePage as unknown as string) === 'search' && (
           <div
             data-testid="brand-ecosystem-filter-bar"
             className="flex flex-wrap items-center gap-2 mb-8"
@@ -1451,9 +1377,7 @@ export function ModasrMarketplace({
           data-testid="marketplace-product-grid"
           data-scroll-reveal="slide-up"
           data-revealed={productGridReveal.isVisible ? 'true' : 'false'}
-          className={`grid grid-cols-1 md:grid-cols-2 ${
-            filteredProducts.length === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-3'
-          } gap-5`}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5"
         >
           {filteredProducts.map((product, idx) => (
             <MarketplaceProductCard

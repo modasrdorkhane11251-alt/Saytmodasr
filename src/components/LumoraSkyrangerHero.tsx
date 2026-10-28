@@ -17,6 +17,7 @@ import {
   filterModasrProducts,
 } from '../utils/modasrStore';
 import { SectionId } from '../utils/heroConfig';
+import { ProductSplitCard } from './ProductSplitCard';
 
 export const LUMORA_PLATE_URL =
   'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/a194141a-44ba-44bb-8372-e6720af994ca.jpg';
@@ -133,7 +134,7 @@ export function LumoraSkyrangerHero({
   const cursorDotRef = useRef<HTMLDivElement | null>(null);
   const cursorRingRef = useRef<HTMLDivElement | null>(null);
 
-  const [helmetOn, setHelmetOn] = useState(false);
+  const [powerActive, setPowerActive] = useState(false);
   const [pressing, setPressing] = useState(false);
   const [clipReady, setClipReady] = useState(false);
   const [pointerVisible, setPointerVisible] = useState(false);
@@ -333,7 +334,7 @@ export function LumoraSkyrangerHero({
 
   const handlePushClick = () => {
     setPressing(true);
-    setHelmetOn((prev) => !prev);
+    setPowerActive((prev) => !prev);
     setTimeout(() => setPressing(false), 320);
   };
 
@@ -361,7 +362,7 @@ export function LumoraSkyrangerHero({
         {/* Navigation pill row (Desktop/Tablet; on mobile bottom dock provides direct navigation) */}
         <div
           data-testid="search-hub-nav-pills"
-          className="hidden md:flex items-center justify-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full bg-slate-950/85 backdrop-blur-xl border border-cyan-500/30 shadow-[0_0_24px_rgba(0,210,255,0.18)] overflow-x-auto max-w-full"
+          className="hidden md:flex items-center justify-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full bg-[#060B14] border border-cyan-500/30 shadow-[0_0_24px_rgba(0,210,255,0.18)] overflow-x-auto max-w-full"
         >
           <button
             type="button"
@@ -400,7 +401,7 @@ export function LumoraSkyrangerHero({
         <div className="w-full relative">
           <div
             data-testid="search-hub-input-wrapper"
-            className="w-full flex items-center gap-3 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-slate-950/90 backdrop-blur-2xl border-2 border-cyan-400/80 shadow-[0_0_28px_rgba(34,211,238,0.45),inset_0_1px_3px_rgba(255,255,255,0.4)] transition-all duration-300 focus-within:border-cyan-300 focus-within:shadow-[0_0_36px_rgba(34,211,238,0.65)]"
+            className="w-full flex items-center gap-3 px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-[#060B14] border-2 border-cyan-400/80 shadow-[0_0_28px_rgba(34,211,238,0.45),inset_0_1px_3px_rgba(255,255,255,0.4)] transition-all duration-300 focus-within:border-cyan-300 focus-within:shadow-[0_0_36px_rgba(34,211,238,0.65)]"
           >
             <Search className="w-5 h-5 text-cyan-300 shrink-0" />
             <input
@@ -460,7 +461,7 @@ export function LumoraSkyrangerHero({
           data-testid="search-results-panel"
           className="relative z-40 w-full max-w-3xl px-4 mt-3 animate-scale-in"
         >
-          <div className="rounded-3xl bg-[#06121E]/95 backdrop-blur-2xl border-2 border-cyan-400/50 shadow-[0_16px_50px_rgba(0,0,0,0.85),0_0_40px_rgba(34,211,238,0.25)] p-4 sm:p-5 max-h-[55vh] overflow-y-auto">
+          <div className="rounded-3xl bg-[#06101D] border-2 border-cyan-400/50 shadow-[0_16px_50px_rgba(0,0,0,0.85),0_0_40px_rgba(34,211,238,0.25)] p-4 sm:p-5 max-h-[55vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-2.5 mb-3 border-b border-white/10">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-cyan-300" />
@@ -500,55 +501,18 @@ export function LumoraSkyrangerHero({
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
-                {matchedProducts.map((product) => {
-                  const tomanPrice = convertUsdToToman(product.priceUsd, usdtRate);
-                  return (
-                    <div
-                      key={product.id}
-                      data-testid={`search-product-card-${product.id}`}
-                      className="group relative rounded-2xl bg-slate-900/80 hover:bg-slate-900 border border-white/15 hover:border-cyan-400/60 p-3 flex flex-col justify-between transition-all duration-200 hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]"
-                    >
-                      <div>
-                        <div className="flex items-center justify-between gap-2 mb-1.5">
-                          <span className="text-[10px] font-bold text-cyan-300 px-2 py-0.5 rounded-md bg-cyan-400/10 border border-cyan-400/20">
-                            {product.platformBrand}
-                          </span>
-                          <span className="text-[10px] font-semibold text-emerald-400 flex items-center gap-1">
-                            <Zap className="w-3 h-3" />
-                            <span>تحویل آنی</span>
-                          </span>
-                        </div>
-                        <h4 className="text-xs font-bold text-white group-hover:text-cyan-200 transition-colors line-clamp-1">
-                          {product.titleFa}
-                        </h4>
-                        <p className="text-[11px] text-white/60 line-clamp-2 mt-1">
-                          {product.subtitleFa}
-                        </p>
-                      </div>
-
-                      <div className="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-between gap-2">
-                        <div>
-                          <div className="text-xs font-black text-white tabular-nums">
-                            {tomanPrice.toLocaleString('fa-IR')} تومان
-                          </div>
-                          <div className="text-[10px] text-white/45 tabular-nums">
-                            ${product.priceUsd.toFixed(2)} USD
-                          </div>
-                        </div>
-                        <button
-                          type="button"
-                          data-testid={`search-add-to-cart-${product.id}`}
-                          onClick={() => onAddToCart?.(product)}
-                          className="px-2.5 py-1.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold text-xs flex items-center gap-1 transition-all cursor-pointer shadow-md active:scale-95"
-                        >
-                          <ShoppingBag className="w-3 h-3" />
-                          <span>افزودن</span>
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3.5">
+                {matchedProducts.map((product, idx) => (
+                  <ProductSplitCard
+                    key={product.id}
+                    product={product}
+                    cascadeIndex={idx}
+                    lang="fa"
+                    usdtRate={usdtRate}
+                    onAddToCart={(p) => onAddToCart?.(p)}
+                    testIdPrefix="search-product-card"
+                  />
+                ))}
               </div>
             )}
           </div>
@@ -581,25 +545,15 @@ export function LumoraSkyrangerHero({
           className={`search-cadet-head-video ${clipReady ? 'is-ready' : ''}`}
         />
 
-        {/* Clear Glass Bubble Helmet: Exactly (533, 288, 360x360) */}
-        <img
-          src="/assets/lumora-helmet.jpg"
-          alt="Space Helmet"
-          aria-hidden="true"
-          referrerPolicy="no-referrer"
-          data-testid="search-character-helmet"
-          className={`search-cadet-helmet ${helmetOn ? 'is-active' : ''}`}
-          draggable={false}
-        />
 
         {/* Real PUSH ME Button laid exactly at (675, 720, 75u) over printed chest button */}
         <button
           ref={pushBtnRef}
           type="button"
-          aria-pressed={helmetOn}
+          aria-pressed={powerActive}
           onClick={handlePushClick}
           data-testid="search-character-push-btn"
-          className={`search-cadet-push-btn ${pressing ? 'is-pressing' : ''}`}
+          className={`search-cadet-push-btn ${pressing ? 'is-pressing' : ''} ${powerActive ? 'is-active' : ''}`}
         >
           <span>PUSH</span>
           <span>ME</span>
@@ -608,9 +562,9 @@ export function LumoraSkyrangerHero({
 
       {/* Floating Status Note at bottom (Desktop/Tablet) */}
       <div className="hidden sm:flex absolute bottom-3 inset-x-4 items-center justify-center pointer-events-none z-20">
-        <div className="flex items-center gap-2 bg-slate-950/75 backdrop-blur-md px-3.5 py-1 rounded-full border border-cyan-400/30 text-[11px] text-cyan-200 shadow-lg">
+        <div className="flex items-center gap-2 bg-[#060B14] px-3.5 py-1 rounded-full border border-cyan-400/30 text-[11px] text-cyan-200 shadow-lg">
           <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
-          <span>چرخش روان سر با حرکت لمس و ماوس · فشردن PUSH ME برای کلاه</span>
+          <span>چرخش روان سر با حرکت لمس و ماوس · فشردن PUSH ME</span>
         </div>
       </div>
     </div>

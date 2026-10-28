@@ -101,12 +101,12 @@ export function InteractiveShowcasePanel({
                       </div>
                       <div className="text-[11px] text-white/50">
                         {item.category.toUpperCase()} ·{' '}
-                        {lang === 'fa' ? item.deliveryMethodFa : item.deliveryMethodEn}
+                        {lang === 'fa' ? item.subtitleFa : item.subtitleEn}
                       </div>
                     </div>
                   </div>
                   <span className="text-xs font-bold text-cyan-300 tabular-nums">
-                    {item.priceTag}
+                    {item.metric}
                   </span>
                 </div>
 
@@ -116,7 +116,7 @@ export function InteractiveShowcasePanel({
                     animate={{ opacity: 1, height: 'auto' }}
                     className="mt-2.5 pt-2.5 border-t border-white/10 text-[11px] text-white/70 space-y-1.5"
                   >
-                    <p>{lang === 'fa' ? item.descriptionFa : item.descriptionEn}</p>
+                    <p>{lang === 'fa' ? item.subtitleFa : item.subtitleEn}</p>
                     <div className="flex items-center justify-between pt-1">
                       <span className="text-emerald-400 flex items-center gap-1 text-[10px]">
                         <CheckCircle2 className="w-3 h-3" />
