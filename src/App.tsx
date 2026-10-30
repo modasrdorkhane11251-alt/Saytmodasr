@@ -37,6 +37,7 @@ import { InteractiveShowcasePanel } from './components/InteractiveShowcasePanel'
 import { ThemeManager } from './components/ThemeManager';
 import { ModasrMarketplace } from './components/ModasrMarketplace';
 import { CartDrawer } from './components/CartDrawer';
+import { DicardoProductDetailModal } from './components/DicardoProductDetailModal';
 import {
   DashboardPrismEmblem,
   TopDashboardDrawer,
@@ -59,6 +60,8 @@ export default function App() {
   >([{ product: MODASR_PRODUCTS[0], quantity: 1 }]);
   const [cartOpen, setCartOpen] = useState(false);
   const [topDashboardOpen, setTopDashboardOpen] = useState(false);
+  const [dashboardSelectedProduct, setDashboardSelectedProduct] =
+    useState<ModasrProduct | null>(null);
   const [orders, setOrders] = useState<ModasrOrder[]>([INITIAL_DEMO_ORDER]);
   const [activeOrderNumber, setActiveOrderNumber] = useState<string>(
     INITIAL_DEMO_ORDER.orderNumber
@@ -265,30 +268,19 @@ export default function App() {
         activeSection === 'web'
       ) && (
         <header className="sticky top-0 z-30 w-full bg-[#040d12]/90 backdrop-blur-2xl border-b border-teal-500/20 shadow-[0_4px_24px_rgba(0,0,0,0.55)] flex items-center justify-between gap-2 sm:gap-6 px-3.5 sm:px-10 lg:px-16 py-3 sm:py-4">
-          <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
-            <a
-              href="#top"
-              onClick={(e) => {
-                e.preventDefault();
-                handleSelectSection('home');
-              }}
-              className="font-podium text-white font-bold uppercase text-lg sm:text-3xl tracking-wider whitespace-nowrap shrink-0"
-            >
-              MODASR
-            </a>
-
-            {/* Top Sliding Dashboard Drawer Button — Graphic Crystal Emblem Instead of Text */}
+          <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+            {/* Top Sliding Dashboard Drawer Button — 3-Line Staggered Hamburger Icon Instead of Text */}
             <button
               type="button"
               data-testid="top-dashboard-drawer-btn"
               onClick={() => setTopDashboardOpen((prev) => !prev)}
               aria-expanded={topDashboardOpen}
-              aria-label={isRtl ? 'باز کردن داشبورد کشویی' : 'Open sliding dashboard'}
-              title={isRtl ? 'داشبورد فرماندهی' : 'Command Dashboard'}
+              aria-label={isRtl ? 'باز کردن منوی کشویی خدمات' : 'Open sliding services menu'}
+              title={isRtl ? 'منوی کشویی خدمات مدثر' : 'MODASR Sliding Menu'}
               className={`group relative inline-flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-2xl backdrop-blur-2xl border transition-all duration-300 shrink-0 cursor-pointer ${
                 topDashboardOpen
-                  ? 'bg-teal-950/80 border-teal-300/80 shadow-[0_0_24px_rgba(45,212,191,0.4)] scale-105'
-                  : 'bg-[#06181e]/90 hover:bg-[#08222a] border-teal-500/35 shadow-[0_6px_20px_rgba(20,184,166,0.18)] hover:scale-105'
+                  ? 'bg-teal-950/90 border-teal-300/90 shadow-[0_4px_0_#042f2e,0_0_24px_rgba(45,212,191,0.45)] scale-105'
+                  : 'bg-[#071a22]/95 hover:bg-[#0a2530] border-teal-400/45 shadow-[0_4px_0_#02060d,0_8px_20px_rgba(20,184,166,0.22),inset_0_1px_1px_rgba(255,255,255,0.28)] hover:-translate-y-0.5 active:translate-y-0.5'
               }`}
             >
               <span className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-tr from-teal-400/15 via-transparent to-cyan-400/15 opacity-80 group-hover:opacity-100 transition-opacity" />
@@ -299,11 +291,22 @@ export default function App() {
               <span
                 className={`pointer-events-none absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-1 rounded-full transition-all duration-300 ${
                   topDashboardOpen
-                    ? 'w-4 bg-amber-300 shadow-[0_0_8px_rgba(252,211,77,0.9)]'
-                    : 'w-2 bg-teal-400/90 group-hover:w-3.5'
+                    ? 'w-5 bg-amber-300 shadow-[0_0_8px_rgba(252,211,77,0.9)]'
+                    : 'w-3 bg-teal-400/90 group-hover:w-5'
                 }`}
               />
             </button>
+
+            <a
+              href="#top"
+              onClick={(e) => {
+                e.preventDefault();
+                handleSelectSection('home');
+              }}
+              className="font-podium text-white font-bold uppercase text-lg sm:text-3xl tracking-wider whitespace-nowrap shrink-0"
+            >
+              MODASR
+            </a>
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
@@ -345,30 +348,19 @@ export default function App() {
         <div className="relative z-20 min-h-[78dvh] lg:min-h-[90dvh] w-full flex flex-col justify-between pb-6">
           {/* Top Bar inside Hero (Brand Wordmark + Sliding Dashboard + Language & Cart) */}
           <header className="relative z-30 w-full flex items-center justify-between gap-2 sm:gap-6 px-3.5 sm:px-10 lg:px-16 py-4 sm:py-6">
-            <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
-              <a
-                href="#top"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleSelectSection('home');
-                }}
-                className="font-podium text-white font-bold uppercase text-lg sm:text-3xl tracking-wider whitespace-nowrap shrink-0"
-              >
-                MODASR
-              </a>
-
-              {/* Top Sliding Dashboard Drawer Button — Graphic Crystal Emblem Instead of Text */}
+            <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+              {/* Top Sliding Dashboard Drawer Button — 3-Line Staggered Hamburger Icon Instead of Text */}
               <button
                 type="button"
                 data-testid="top-dashboard-drawer-btn"
                 onClick={() => setTopDashboardOpen((prev) => !prev)}
                 aria-expanded={topDashboardOpen}
-                aria-label={isRtl ? 'باز کردن داشبورد کشویی' : 'Open sliding dashboard'}
-                title={isRtl ? 'داشبورد فرماندهی' : 'Command Dashboard'}
+                aria-label={isRtl ? 'باز کردن منوی کشویی خدمات' : 'Open sliding services menu'}
+                title={isRtl ? 'منوی کشویی خدمات مدثر' : 'MODASR Sliding Menu'}
                 className={`group relative inline-flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-2xl backdrop-blur-2xl border transition-all duration-300 shrink-0 cursor-pointer ${
                   topDashboardOpen
-                    ? 'bg-white/[0.34] border-teal-200/90 shadow-[0_0_24px_rgba(45,212,191,0.45),inset_0_1px_2px_rgba(255,255,255,0.95)] scale-105'
-                    : 'bg-white/[0.2] hover:bg-white/[0.3] border-white/60 shadow-[0_6px_20px_rgba(20,184,166,0.25),inset_0_1px_2px_rgba(255,255,255,0.85)] hover:scale-105'
+                    ? 'bg-white/[0.34] border-teal-200/90 shadow-[0_4px_0_#042f2e,0_0_24px_rgba(45,212,191,0.45),inset_0_1px_2px_rgba(255,255,255,0.95)] scale-105'
+                    : 'bg-[#071a22]/90 hover:bg-[#0a2530] border-white/55 shadow-[0_4px_0_#02060d,0_6px_20px_rgba(20,184,166,0.25),inset_0_1px_2px_rgba(255,255,255,0.65)] hover:-translate-y-0.5 active:translate-y-0.5'
                 }`}
               >
                 <span className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-tr from-teal-300/20 via-white/10 to-rose-300/20 opacity-80 group-hover:opacity-100 transition-opacity" />
@@ -379,11 +371,22 @@ export default function App() {
                 <span
                   className={`pointer-events-none absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-1 rounded-full transition-all duration-300 ${
                     topDashboardOpen
-                      ? 'w-4 bg-amber-300 shadow-[0_0_8px_rgba(252,211,77,0.9)]'
-                      : 'w-2 bg-teal-300/90 group-hover:w-3.5'
+                      ? 'w-5 bg-amber-300 shadow-[0_0_8px_rgba(252,211,77,0.9)]'
+                      : 'w-3 bg-teal-300/90 group-hover:w-5'
                   }`}
                 />
               </button>
+
+              <a
+                href="#top"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSelectSection('home');
+                }}
+                className="font-podium text-white font-bold uppercase text-lg sm:text-3xl tracking-wider whitespace-nowrap shrink-0"
+              >
+                MODASR
+              </a>
             </div>
 
             <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
@@ -498,18 +501,18 @@ export default function App() {
               </div>
 
               {/* Right: Stats + Server-Verified Guarantee Badge */}
-              <div className="flex flex-wrap items-center gap-6 sm:gap-8">
-                <div className="flex items-center gap-6 sm:gap-8">
+              <div className="flex flex-wrap items-center gap-4 sm:gap-8 w-full lg:w-auto">
+                <div className="grid grid-cols-3 gap-2 sm:flex sm:items-center sm:gap-8 w-full sm:w-auto">
                   {content.stats.map((stat) => (
-                    <div key={stat.label}>
+                    <div key={stat.label} className="min-w-0">
                       <div
-                        className={`text-xl sm:text-2xl text-white tracking-wide tabular-nums ${
+                        className={`text-sm sm:text-2xl text-white tracking-wide tabular-nums truncate ${
                           isRtl ? 'font-vazir font-black' : 'font-podium font-bold'
                         }`}
                       >
                         {stat.value}
                       </div>
-                      <div className="text-[11px] text-white/60 tracking-wide mt-0.5 whitespace-nowrap">
+                      <div className="text-[10px] sm:text-[11px] text-white/65 tracking-wide mt-0.5 truncate">
                         {stat.label}
                       </div>
                     </div>
@@ -569,6 +572,7 @@ export default function App() {
         activeSection={activeSection}
         onSelectSection={handleSelectSection}
         onSelectCategory={handleSelectCategory}
+        onSelectProduct={(product) => setDashboardSelectedProduct(product)}
         usdtRate={usdtRate}
         onRefreshRate={handleRefreshRate}
         currencyMode={currencyMode}
@@ -577,6 +581,21 @@ export default function App() {
         onOpenCart={() => setCartOpen(true)}
         latestOrder={orders[0] || INITIAL_DEMO_ORDER}
       />
+
+      {/* Global Product Detail Modal triggered from Dashboard Service Menu */}
+      {dashboardSelectedProduct && (
+        <DicardoProductDetailModal
+          product={dashboardSelectedProduct}
+          usdtRate={usdtRate}
+          lang={lang}
+          showUsd={currencyMode === 'usd'}
+          onClose={() => setDashboardSelectedProduct(null)}
+          onAddToCart={(customizedProduct) => {
+            handleAddToCart(customizedProduct);
+          }}
+          onOpenCart={() => setCartOpen(true)}
+        />
+      )}
 
       {/* Interactive Server-Verified Shopping Cart Drawer */}
       <CartDrawer

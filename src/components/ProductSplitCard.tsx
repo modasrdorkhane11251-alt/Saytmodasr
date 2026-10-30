@@ -1,9 +1,11 @@
 import React from 'react';
-import { Plus } from 'lucide-react';
+import { Layers, Plus, ShoppingCart } from 'lucide-react';
 import {
   ModasrProduct,
   ProductIconType,
   convertUsdToToman,
+  getDicardoCardTitles,
+  getProductPurchaseTypes,
 } from '../utils/modasrStore';
 import { Language } from '../utils/heroConfig';
 
@@ -321,7 +323,7 @@ export const VISUAL_STYLES: Record<ProductIconType, ProductVisualStyle> = {
   },
 };
 
-function renderBrandEmblem(iconType: ProductIconType) {
+export function renderBrandEmblem(iconType: ProductIconType) {
   switch (iconType) {
     case 'openai':
       return (
@@ -982,14 +984,24 @@ export function ProductSplitCard({
               <span>{categorySubLabel}</span>
             </div>
 
-            {/* Row 2: Bold White Title */}
+            {/* Row 2: Unified Bilingual Title */}
             <h3 className="mt-1 text-[15px] sm:text-[18px] font-black text-white leading-snug line-clamp-1">
-              {cleanTitle}
+              {isRtl ? getDicardoCardTitles(product).titleFa : getDicardoCardTitles(product).titleEn}
             </h3>
 
-            {/* Row 3: Truncated Description */}
-            <p className="mt-1 text-[11px] sm:text-xs text-white/65 line-clamp-1 leading-relaxed">
-              {isRtl ? product.subtitleFa : product.subtitleEn}
+            {/* Rainbow Gradient Line */}
+            <div
+              aria-hidden="true"
+              style={{
+                background:
+                  'linear-gradient(90deg, #8b5cf6 0%, #06b6d4 28%, #10b981 52%, #f59e0b 76%, #ec4899 100%)',
+              }}
+              className="my-1.5 h-[2px] w-full rounded-full opacity-85"
+            />
+
+            {/* English Brand Title */}
+            <p className="text-[11px] sm:text-xs font-bold text-teal-200/90 line-clamp-1">
+              {getDicardoCardTitles(product).titleEn}
             </p>
           </div>
 
@@ -1000,7 +1012,11 @@ export function ProductSplitCard({
                 {isRtl ? 'شروع از' : 'From'}
               </span>
               <span className="text-[17px] sm:text-[21px] font-black text-white tracking-tight tabular-nums">
-                {tomanPrice.toLocaleString('fa-IR')} تومان
+                {(product.id === 'codm-cp-880' || product.id === 'codm-cp-2400'
+                  ? 295000
+                  : tomanPrice
+                ).toLocaleString('fa-IR')}{' '}
+                تومان
               </span>
               <span className="text-[11px] sm:text-xs text-white/45 line-through tabular-nums">
                 {oldTomanPrice.toLocaleString('fa-IR')} تومان
@@ -1012,21 +1028,220 @@ export function ProductSplitCard({
             </div>
           </div>
 
-          {/* Row 6: Full-Width Mint-Teal Quick Add Button */}
-          <button
-            type="button"
-            data-testid={`quick-add-btn-${product.id}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              onAddToCart(product);
-            }}
-            className="w-full py-2.5 sm:py-3 px-4 rounded-2xl bg-[#2BBAA5] hover:bg-[#34CDB6] active:scale-[0.98] text-[#041815] font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all duration-200 shadow-[0_6px_20px_rgba(43,186,165,0.3)] cursor-pointer"
-          >
-            <Plus className="w-4 h-4 stroke-[2.5]" />
-            <span>{isRtl ? 'افزودن سریع' : 'Quick Add'}</span>
-          </button>
+          {/* Row 6: Full-Width Select Packages / Quick Add Button */}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onShowDetails?.(product);
+              }}
+              className="flex-1 py-2.5 sm:py-3 px-3 rounded-2xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#9366F9] hover:to-[#8B5CF6] text-white font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all duration-200 shadow-[0_6px_20px_rgba(139,92,246,0.35)] cursor-pointer"
+            >
+              <Layers className="w-4 h-4" />
+              <span>{isRtl ? 'انتخاب بسته و خرید' : 'Select Package'}</span>
+            </button>
+            <button
+              type="button"
+              data-testid={`quick-add-btn-${product.id}`}
+              aria-label={isRtl ? 'افزودن سریع' : 'Quick Add'}
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddToCart(product);
+              }}
+              className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-[#2BBAA5] hover:bg-[#34CDB6] active:scale-[0.98] text-[#041815] font-black flex items-center justify-center transition-all duration-200 shadow-[0_6px_20px_rgba(43,186,165,0.3)] cursor-pointer shrink-0"
+            >
+              <Plus className="w-4 h-4 stroke-[2.5]" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
+/**
+ * Dicardo-inspired Unified Parent Category Card (Matches Screenshot_2026-10-30-08-43-50-501):
+ * - Top bold game/service cover illustration with 3D crystal badge, golden coins/gems or brand emblem, and cover typography
+ * - Clean lower card body with centered Persian title ("سی پی کالاف دیوتی موبایل")
+ * - Full-width multi-color rainbow gradient divider line
+ * - Centered bold English title ("Call of Duty Mobile")
+ * - Starting price + package selector indicator & quick cart action
+ */
+export function PermioCategoryProductCard({
+  product,
+  lang = 'fa',
+  usdtRate,
+  currencyMode = 'toman',
+  onAddToCart,
+  onShowDetails,
+  testIdPrefix = 'permio-card',
+}: ProductSplitCardProps) {
+  const isRtl = lang === 'fa';
+  const style = VISUAL_STYLES[product.iconType] || VISUAL_STYLES.openai;
+  const dicardoTitles = getDicardoCardTitles(product);
+  const purchaseTypes = getProductPurchaseTypes(product, usdtRate);
+  const startingToman =
+    purchaseTypes[0]?.startingPriceToman ||
+    convertUsdToToman(product.priceUsd, usdtRate);
+
+  const isCodm = product.iconType === 'codm';
+  const isClash = product.iconType === 'supercell';
+  const isPubg = product.iconType === 'pubg';
+  const isFreeFire = product.iconType === 'freefire';
+
+  const coverBackground = isCodm
+    ? 'radial-gradient(circle at 50% 35%, rgba(250, 204, 21, 0.45) 0%, rgba(120, 83, 9, 0.55) 45%, #07090e 100%)'
+    : isClash
+    ? 'radial-gradient(circle at 50% 35%, rgba(56, 189, 248, 0.52) 0%, rgba(29, 78, 216, 0.65) 52%, #071126 100%)'
+    : isPubg
+    ? 'radial-gradient(circle at 50% 35%, rgba(251, 146, 60, 0.48) 0%, rgba(154, 52, 18, 0.6) 48%, #090604 100%)'
+    : isFreeFire
+    ? 'radial-gradient(circle at 50% 35%, rgba(244, 63, 94, 0.45) 0%, rgba(136, 19, 55, 0.55) 50%, #090408 100%)'
+    : `radial-gradient(circle at 50% 38%, ${style.pedestalColor}42 0%, rgba(12, 20, 38, 0.92) 65%, #050914 100%)`;
+
+  return (
+    <div
+      dir={isRtl ? 'rtl' : 'ltr'}
+      data-testid={`${testIdPrefix}-${product.id}`}
+      onClick={() => onShowDetails?.(product)}
+      className="group relative rounded-[26px] sm:rounded-[30px] bg-[#0b1120]/95 hover:bg-[#10182d] border border-white/15 hover:border-violet-400/65 overflow-hidden flex flex-col justify-between transition-all duration-300 shadow-[0_18px_45px_rgba(0,0,0,0.68)] hover:-translate-y-1 cursor-pointer select-none h-full"
+    >
+      {/* 1. TOP COVER ARTWORK STAGE (Dicardo Poster Cover Style) */}
+      <div
+        style={{ background: coverBackground }}
+        className="relative h-40 sm:h-48 w-full overflow-hidden flex flex-col items-center justify-between p-3 sm:p-4 border-b border-white/10"
+      >
+        {/* Geometric Tactical Backlight Pillars (like CODM yellow chevrons / Clash royal rays) */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 opacity-25 pointer-events-none flex items-center justify-center gap-3"
+        >
+          <div
+            style={{ backgroundColor: style.pedestalColor }}
+            className="w-12 h-32 rounded-t-full blur-md transform -skew-y-12"
+          />
+          <div
+            style={{ backgroundColor: style.pedestalColor }}
+            className="w-14 h-36 rounded-t-full blur-md transform skew-y-12"
+          />
+        </div>
+
+        {/* Top Row: Clean Non-Truncated Purchase Category Pill */}
+        <div className="relative z-20 w-full flex items-center justify-between gap-1">
+          <span className="px-2 py-0.5 rounded-full bg-black/65 backdrop-blur-md border border-white/20 text-[9px] sm:text-[10px] font-bold text-amber-300 whitespace-nowrap">
+            {isRtl
+              ? `${purchaseTypes.length.toLocaleString('fa-IR')} دسته بسته`
+              : `${purchaseTypes.length} Types`}
+          </span>
+          <span className="px-2 py-0.5 rounded-full bg-violet-600/85 backdrop-blur-md border border-violet-300/40 text-[8.5px] sm:text-[10px] font-black text-white uppercase whitespace-nowrap">
+            {product.platformBrand.split('/')[0].trim()}
+          </span>
+        </div>
+
+        {/* Center 3D Crystal Brand Squircle + Floating Coin/Gem Accents */}
+        <div className="relative z-20 my-auto flex items-center justify-center">
+          <div
+            style={{
+              background: style.glassGradient,
+              boxShadow: `0 12px 28px rgba(0,0,0,0.45), 0 0 24px ${style.pedestalColor}55, inset 0 2px 5px rgba(255,255,255,0.95)`,
+            }}
+            className="w-16 h-16 sm:w-20 sm:h-20 rounded-[20px] sm:rounded-[22px] border border-white/95 flex items-center justify-center group-hover:scale-105 transition-transform duration-300"
+          >
+            <div className="scale-105 sm:scale-110">
+              {renderBrandEmblem(product.iconType)}
+            </div>
+          </div>
+
+          {/* Floating Gold CP / Gem Badge on Bottom-Right of Icon (Matches CODM CP & Clash Gems in Screenshot 08-43-50) */}
+          {(isCodm || isPubg || isClash || isFreeFire) && (
+            <div
+              className={`absolute -bottom-1.5 -right-3 w-8 h-8 sm:w-9 sm:h-9 rounded-full border-2 border-white shadow-lg flex items-center justify-center font-sans font-black text-[10px] sm:text-xs ${
+                isClash
+                  ? 'bg-gradient-to-b from-emerald-300 via-emerald-500 to-green-700 text-[#042212]'
+                  : 'bg-gradient-to-b from-amber-200 via-amber-400 to-yellow-700 text-[#1c1102]'
+              }`}
+            >
+              {isCodm ? 'CP' : isPubg ? 'UC' : isClash ? 'GEM' : 'FF'}
+            </div>
+          )}
+        </div>
+
+        {/* Bottom Cover Typography Logo Banner (e.g. CALL OF DUTY MOBILE / CLASH ROYALE) */}
+        <div className="relative z-20 w-full text-center">
+          <div className="inline-block px-2.5 py-0.5 rounded-lg bg-black/55 backdrop-blur-sm border border-white/15">
+            <span className="font-sans font-black text-[10px] sm:text-xs tracking-wider text-white uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] line-clamp-1">
+              {dicardoTitles.coverBadgeMain}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. LOWER UNIFIED DICARDO TITLE PANEL (Persian Title + Rainbow Gradient Line + English Title) */}
+      <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between text-center bg-gradient-to-b from-[#0f172a] to-[#090d18]">
+        <div>
+          {/* Persian Unified Title ("سی پی کالاف دیوتی موبایل" / "جم کلش رویال") */}
+          <h3 className="text-xs sm:text-[15px] font-black text-white leading-snug line-clamp-1 group-hover:text-violet-200 transition-colors">
+            {isRtl ? dicardoTitles.titleFa : dicardoTitles.titleEn}
+          </h3>
+
+          {/* Signature Dicardo Multi-Color Rainbow Gradient Line */}
+          <div
+            aria-hidden="true"
+            style={{
+              background:
+                'linear-gradient(90deg, #6366f1 0%, #06b6d4 25%, #10b981 50%, #f59e0b 75%, #ec4899 100%)',
+            }}
+            className="my-2 sm:my-2.5 h-[2.5px] w-full rounded-full opacity-95"
+          />
+
+          {/* Bold English Title ("Call of Duty Mobile" / "Clash Royal") */}
+          <div
+            dir="ltr"
+            className="font-sans text-xs sm:text-sm font-extrabold text-white/90 tracking-tight line-clamp-1"
+          >
+            {dicardoTitles.titleEn}
+          </div>
+        </div>
+
+        {/* Footer Action Bar: Starting Price + Quick Add Button */}
+        <div className="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between gap-1.5">
+          <button
+            type="button"
+            data-testid={`permio-add-btn-${product.id}`}
+            aria-label={
+              isRtl
+                ? `افزودن ${dicardoTitles.titleFa} به سبد خرید`
+                : `Add ${dicardoTitles.titleEn} to cart`
+            }
+            onClick={(e) => {
+              e.stopPropagation();
+              onAddToCart(product);
+            }}
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-violet-500/20 hover:bg-[#8B5CF6] text-violet-300 hover:text-white border border-violet-400/35 flex items-center justify-center transition-all duration-200 cursor-pointer shrink-0"
+          >
+            <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.2]" />
+          </button>
+
+          <div className="text-end min-w-0">
+            {currencyMode === 'usd' ? (
+              <div className="text-xs sm:text-sm font-black text-violet-300 tabular-nums truncate">
+                From ${product.priceUsd.toFixed(2)}
+              </div>
+            ) : (
+              <div className="text-[11px] sm:text-xs font-black text-emerald-300 tabular-nums truncate">
+                <span className="text-white/60 font-medium">
+                  {isRtl ? 'از ' : 'From '}
+                </span>
+                {startingToman.toLocaleString('fa-IR')}{' '}
+                <span className="text-[10px] font-bold">تومان</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+

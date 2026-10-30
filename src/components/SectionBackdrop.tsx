@@ -226,62 +226,62 @@ export function SectionBackdrop({
         </svg>
       </div>
 
-      {/* =====================================================================
-          1. Full-Viewport High-Quality Gaming Video Layer (ONLY on 'games')
-      ====================================================================== */}
-      <video
-        ref={gamingVideoRef}
-        data-testid="gaming-hero-video"
-        src={HERO_VIDEO_URL}
-        poster={HERO_POSTER_URL}
-        preload={showGamingVideo ? 'auto' : 'none'}
-        autoPlay={showGamingVideo}
-        muted
-        loop
-        playsInline
-        style={{
-          opacity: showGamingVideo ? 1 : 0,
-        }}
-        className="absolute inset-0 w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[76%_center] lg:object-center transition-opacity duration-500"
-      />
+      {/* 1. Full-Viewport Video Layer for Gaming (ONLY on 'games') */}
+      <div
+        style={{ opacity: showGamingVideo ? 1 : 0 }}
+        className="absolute inset-0 w-full h-full transition-opacity duration-500"
+      >
+        <video
+          ref={gamingVideoRef}
+          data-testid="gaming-hero-video"
+          src={HERO_VIDEO_URL}
+          poster={HERO_POSTER_URL}
+          preload={showGamingVideo ? 'auto' : 'none'}
+          autoPlay={showGamingVideo}
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[78%_center] lg:object-center [transform:translateZ(0)] [backface-visibility:hidden]"
+        />
+      </div>
 
-      {/* =====================================================================
-          2. Full-Viewport High-Quality AI Video Layer (ONLY on 'ai')
-      ====================================================================== */}
-      <video
-        ref={aiVideoRef}
-        data-testid="ai-hero-video"
-        src={AI_HERO_VIDEO_URL}
-        poster={AI_HERO_POSTER_URL}
-        preload={showAiVideo ? 'auto' : 'none'}
-        autoPlay={showAiVideo}
-        muted
-        loop
-        playsInline
-        style={{
-          opacity: showAiVideo ? 1 : 0,
-        }}
-        className="absolute inset-0 w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[76%_center] lg:object-center transition-opacity duration-500"
-      />
+      {/* 2. Full-Viewport Video Layer for AI (ONLY on 'ai') */}
+      <div
+        style={{ opacity: showAiVideo ? 1 : 0 }}
+        className="absolute inset-0 w-full h-full transition-opacity duration-500"
+      >
+        <video
+          ref={aiVideoRef}
+          data-testid="ai-hero-video"
+          src={AI_HERO_VIDEO_URL}
+          poster={AI_HERO_POSTER_URL}
+          preload={showAiVideo ? 'auto' : 'none'}
+          autoPlay={showAiVideo}
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[78%_center] lg:object-center [transform:translateZ(0)] [backface-visibility:hidden]"
+        />
+      </div>
 
-      {/* =====================================================================
-          3. Full-Viewport High-Quality Web & Apps Video Layer (ONLY on 'web')
-      ====================================================================== */}
-      <video
-        ref={webVideoRef}
-        data-testid="web-hero-video"
-        src={WEB_HERO_VIDEO_URL}
-        poster={WEB_HERO_POSTER_URL}
-        preload={showWebVideo ? 'auto' : 'none'}
-        autoPlay={showWebVideo}
-        muted
-        loop
-        playsInline
-        style={{
-          opacity: showWebVideo ? 1 : 0,
-        }}
-        className="absolute inset-0 w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[76%_center] lg:object-center transition-opacity duration-500"
-      />
+      {/* 3. Full-Viewport Video Layer for Web & Apps (ONLY on 'web') */}
+      <div
+        style={{ opacity: showWebVideo ? 1 : 0 }}
+        className="absolute inset-0 w-full h-full transition-opacity duration-500"
+      >
+        <video
+          ref={webVideoRef}
+          data-testid="web-hero-video"
+          src={WEB_HERO_VIDEO_URL}
+          poster={WEB_HERO_POSTER_URL}
+          preload={showWebVideo ? 'auto' : 'none'}
+          autoPlay={showWebVideo}
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[78%_center] lg:object-center [transform:translateZ(0)] [backface-visibility:hidden]"
+        />
+      </div>
     </div>
   );
 }

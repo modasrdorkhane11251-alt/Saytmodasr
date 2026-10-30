@@ -545,12 +545,29 @@ export function LumoraSkyrangerHero({
           className={`search-cadet-head-video ${clipReady ? 'is-ready' : ''}`}
         />
 
+        {/* Deployable 3D Glass Space Helmet when PUSH ME is activated */}
+        <img
+          src="/assets/lumora-helmet.jpg"
+          onError={(e) => {
+            const target = e.currentTarget;
+            if (target.src !== LUMORA_HELMET_URL) {
+              target.src = LUMORA_HELMET_URL;
+            }
+          }}
+          alt="کلاه فضانوردی"
+          aria-hidden={!powerActive}
+          draggable={false}
+          data-testid="search-character-helmet"
+          data-helmet-active={powerActive ? 'true' : 'false'}
+          className={`search-cadet-helmet ${powerActive ? 'is-active' : ''}`}
+        />
 
-        {/* Real PUSH ME Button laid exactly at (675, 720, 75u) over printed chest button */}
+        {/* Real PUSH ME Button laid over the chest button */}
         <button
           ref={pushBtnRef}
           type="button"
           aria-pressed={powerActive}
+          aria-label={powerActive ? 'برداشتن کلاه فضانورد' : 'گذاشتن کلاه فضانورد (PUSH ME)'}
           onClick={handlePushClick}
           data-testid="search-character-push-btn"
           className={`search-cadet-push-btn ${pressing ? 'is-pressing' : ''} ${powerActive ? 'is-active' : ''}`}

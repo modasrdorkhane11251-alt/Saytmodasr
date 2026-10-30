@@ -3,9 +3,13 @@ import {
   ArrowUpRight,
   CheckCircle2,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Clock,
   Cpu,
+  CreditCard,
   Gamepad2,
+  Gift,
   Globe,
   Lock,
   RefreshCw,
@@ -29,14 +33,28 @@ import {
   getPageVisualTheme,
 } from '../utils/heroConfig';
 import {
+  AppHubSection,
+  AppPlatformFilter,
+  AppSubCategoryFilter,
+  GamingDeviceFilter,
+  GamingHubSection,
+  GamingSubCategoryFilter,
+  HomeCategorySection,
   MODASR_PRODUCTS,
   ModasrOrder,
   ModasrProduct,
+  POPULAR_HOME_HASHTAGS,
   ProductCategory,
   convertUsdToToman,
+  filterAppHubProducts,
+  filterGamingHubProducts,
   filterModasrProducts,
   formatToman,
+  getAppHubSections,
   getCategoryCounts,
+  getGamingHubSections,
+  getHomeCategorizedSections,
+  getUnifiedBrandProducts,
 } from '../utils/modasrStore';
 import {
   getSectionRevealVariant,
@@ -46,7 +64,12 @@ import { ScrollReveal } from './ScrollReveal';
 import { CornerBracketSvg, WireframeGlobeSvg } from './LgpsmIcons';
 import { LumoraSkyrangerHero } from './LumoraSkyrangerHero';
 import { MeridianFooter } from './MeridianFooter';
-import { ProductSplitCard } from './ProductSplitCard';
+import {
+  PermioCategoryProductCard,
+  ProductSplitCard,
+} from './ProductSplitCard';
+import { DicardoProductDetailModal } from './DicardoProductDetailModal';
+import { GamingMarketplace } from './GamingMarketplace';
 import { DashboardPrismEmblem } from './TopDashboardDrawer';
 
 interface ModasrMarketplaceProps {
@@ -269,6 +292,107 @@ function MarketplaceProductCard({
   );
 }
 
+interface PermioCategoryShowcaseSectionProps {
+  section: HomeCategorySection;
+  lang: Language;
+  usdtRate: number;
+  currencyMode: 'toman' | 'usd';
+  onAddToCart: (product: ModasrProduct) => void;
+  onShowDetails: (product: ModasrProduct) => void;
+  onOpenCategoryPage: (
+    page: 'ai' | 'games' | 'web' | 'search',
+    category: ProductCategory
+  ) => void;
+}
+
+function PermioCategoryShowcaseSection({
+  section,
+  lang,
+  usdtRate,
+  currencyMode,
+  onAddToCart,
+  onShowDetails,
+  onOpenCategoryPage,
+}: PermioCategoryShowcaseSectionProps) {
+  const isRtl = lang === 'fa';
+
+  const SectionBadgeIcon =
+    section.id === 'ingame-coins' || section.id === 'gift-cards'
+      ? Gamepad2
+      : section.id === 'ai-services'
+      ? Cpu
+      : section.id === 'music-video'
+      ? Tv
+      : section.id === 'graphics-vpn'
+      ? ShieldCheck
+      : Globe;
+
+  return (
+    <div
+      data-testid={`permio-category-section-${section.id}`}
+      className="py-6 sm:py-8 first:pt-2"
+    >
+      {/* Dicardo-Style Category Header Bar (Matches Screenshot 08-43-50: 3D Badge + Bold Title on Right, Divider Line in Middle, "مشاهده آرشیو" on Left) */}
+      <div className="flex items-center justify-between gap-3 sm:gap-4 mb-5 px-1">
+        {/* Right: 3D Category Icon Box + Title */}
+        <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
+          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-[#8B5CF6] via-[#7C3AED] to-[#4F46E5] border border-violet-300/50 shadow-[0_8px_22px_rgba(139,92,246,0.4)] flex items-center justify-center text-white shrink-0">
+            <SectionBadgeIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+          </div>
+          <div>
+            <h3 className="text-lg sm:text-2xl font-black text-white tracking-tight">
+              {isRtl ? section.titleFa : section.titleEn}
+            </h3>
+            <p className="text-[11px] sm:text-xs font-semibold text-white/60 mt-0.5">
+              {isRtl ? section.kickerFa : section.kickerEn}
+            </p>
+          </div>
+        </div>
+
+        {/* Center Horizontal Line */}
+        <div
+          aria-hidden="true"
+          className="flex-1 h-[1px] bg-gradient-to-l from-white/25 via-white/12 to-white/5 mx-1 sm:mx-3"
+        />
+
+        {/* Left: "مشاهده آرشیو" Button */}
+        <button
+          type="button"
+          data-testid={`permio-view-all-${section.id}`}
+          onClick={() =>
+            onOpenCategoryPage(section.targetPage, section.targetCategory)
+          }
+          className="px-3.5 sm:px-4 py-2 rounded-xl bg-white/[0.06] hover:bg-violet-600/30 text-white/85 hover:text-white border border-white/15 hover:border-violet-400/50 text-xs sm:text-sm font-bold inline-flex items-center gap-1.5 transition-all cursor-pointer shrink-0"
+        >
+          <span>{isRtl ? 'مشاهده آرشیو' : 'View Archive'}</span>
+          {isRtl ? (
+            <ChevronLeft className="w-3.5 h-3.5 text-violet-300" />
+          ) : (
+            <ChevronRight className="w-3.5 h-3.5 text-violet-300" />
+          )}
+        </button>
+      </div>
+
+      {/* Dicardo 2-Column Mobile / 3-Column Tablet / 4-Column Desktop Unified Product Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5">
+        {section.products.slice(0, 4).map((product, idx) => (
+          <PermioCategoryProductCard
+            key={`${section.id}-${product.id}`}
+            product={product}
+            cascadeIndex={idx}
+            lang={lang}
+            usdtRate={usdtRate}
+            currencyMode={currencyMode}
+            onAddToCart={onAddToCart}
+            onShowDetails={onShowDetails}
+            testIdPrefix={`permio-card-${section.id}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function ModasrMarketplace({
   activePage = 'home',
   lang,
@@ -297,8 +421,29 @@ export function ModasrMarketplace({
   const [selectedAiModelId, setSelectedAiModelId] = useState<
     'chatgpt-plus' | 'claude-pro' | 'cursor-pro'
   >('chatgpt-plus');
+  const [gamingSubCategory, setGamingSubCategory] =
+    useState<GamingSubCategoryFilter>('all');
+  const [gamingDevice, setGamingDevice] = useState<GamingDeviceFilter>('all');
+  const [appSubCategory, setAppSubCategory] =
+    useState<AppSubCategoryFilter>('all');
+  const [appPlatform, setAppPlatform] = useState<AppPlatformFilter>('all');
+  const [activeCapacityGuideTab, setActiveCapacityGuideTab] = useState<
+    'cap2' | 'cap3' | 'cap1' | 'xbox'
+  >('cap2');
+
+  useEffect(() => {
+    if (activePage === 'games') {
+      if (selectedCategory === 'ingame') {
+        setGamingSubCategory('ingame');
+      } else if (selectedCategory === 'gaming') {
+        setGamingSubCategory('all');
+      }
+    }
+  }, [activePage, selectedCategory]);
 
   const categoryCounts = getCategoryCounts(MODASR_PRODUCTS);
+  const gamingHubSections: GamingHubSection[] = getGamingHubSections(MODASR_PRODUCTS);
+  const appHubSections: AppHubSection[] = getAppHubSections(MODASR_PRODUCTS);
 
   // Section-specific Intersection Observer hooks (distinct animation per section)
   const rateBannerReveal = useScrollReveal<HTMLDivElement>('scale-in', {
@@ -340,14 +485,39 @@ export function ModasrMarketplace({
         : 'vpn'
       : selectedCategory;
 
-  const filteredProducts = filterModasrProducts(
-    MODASR_PRODUCTS,
-    effectiveCategory,
-    searchQuery,
-    brandFilter
-  );
+  const rawFilteredProducts =
+    activePage === 'games'
+      ? filterGamingHubProducts(
+          MODASR_PRODUCTS,
+          gamingSubCategory,
+          gamingDevice,
+          searchQuery
+        )
+      : activePage === 'web'
+      ? filterAppHubProducts(
+          MODASR_PRODUCTS,
+          appSubCategory,
+          appPlatform,
+          searchQuery
+        )
+      : filterModasrProducts(
+          MODASR_PRODUCTS,
+          effectiveCategory,
+          searchQuery,
+          brandFilter
+        );
 
-  const featuredDashboardProducts = MODASR_PRODUCTS.slice(0, 6);
+  const filteredProducts =
+    searchQuery.trim() === ''
+      ? getUnifiedBrandProducts(rawFilteredProducts)
+      : rawFilteredProducts;
+
+  const rawHomeSections = getHomeCategorizedSections(MODASR_PRODUCTS);
+  // Display Mobile Games ("بازی‌های موبایلی") first so CODM & Clash Royale appear right at the top of the home showcase
+  const homeCategorizedSections = [
+    ...rawHomeSections.filter((s) => s.id === 'ingame-coins'),
+    ...rawHomeSections.filter((s) => s.id !== 'ingame-coins'),
+  ];
 
   const trackedOrder =
     orders.find(
@@ -519,14 +689,16 @@ export function ModasrMarketplace({
                 {[
                   {
                     id: 'games-card',
-                    titleFa: 'گیفت‌کارت و کنسول',
-                    titleEn: 'Console & Gift Cards',
-                    subFa: `${categoryCounts.gaming.toLocaleString('fa-IR')} محصول`,
-                    subEn: `${categoryCounts.gaming} Products`,
+                    titleFa: 'اکانت ظرفیتی و دیوایس گیم',
+                    titleEn: 'Capacity Accounts & Gear',
+                    subFa: `${categoryCounts.gaming.toLocaleString('fa-IR')} محصول گیمینگ`,
+                    subEn: `${categoryCounts.gaming} Gaming Items`,
                     accent: 'from-[#280610]/90 to-[#120308]/95 border-rose-500/30 hover:border-rose-400/60 text-rose-300',
                     icon: Gamepad2,
                     onClick: () => {
                       onSelectCategory('gaming');
+                      setGamingSubCategory('all');
+                      setGamingDevice('all');
                       onActivateHeroSection?.('games');
                     },
                   },
@@ -621,6 +793,40 @@ export function ModasrMarketplace({
                     </button>
                   );
                 })}
+              </div>
+
+              {/* Permio-style Popular Hashtag Pill Cloud ("محصولات پر کاربرد:") */}
+              <div
+                data-testid="permio-popular-hashtags"
+                className="mt-5 pt-5 border-t border-white/10"
+              >
+                <div className="text-xs font-bold text-teal-300 mb-3 flex items-center gap-2">
+                  <span>
+                    {isRtl ? 'محصولات پر کاربرد:' : 'Popular Products:'}
+                  </span>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  {POPULAR_HOME_HASHTAGS.map((tag) => (
+                    <button
+                      key={tag.id}
+                      type="button"
+                      data-testid={`popular-hashtag-${tag.id}`}
+                      onClick={() => {
+                        const targetProd = MODASR_PRODUCTS.find(
+                          (p) => p.id === tag.productId
+                        );
+                        if (targetProd) {
+                          setDetailProduct(targetProd);
+                        } else {
+                          onSelectCategory(tag.category);
+                        }
+                      }}
+                      className="px-3.5 py-2 rounded-2xl bg-teal-500/12 hover:bg-teal-400 hover:text-slate-950 border border-teal-400/30 text-teal-200 text-xs font-bold transition-all cursor-pointer"
+                    >
+                      {isRtl ? tag.labelFa : tag.labelEn}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -873,17 +1079,17 @@ export function ModasrMarketplace({
               <div className="relative z-10">
                 <div className="flex items-center gap-2 text-xs font-semibold text-rose-400 tracking-wider uppercase">
                   <Gamepad2 className="w-3.5 h-3.5" />
-                  <span>{isRtl ? 'گیم و بازی · GAMING HUB' : 'GAMING & GIFT CARDS'}</span>
+                  <span>{isRtl ? 'گیمینگ، دیوایس و اکانت ظرفیتی · GAMING HUB' : 'CAPACITY ACCOUNTS, DEVICES & GAMING'}</span>
                 </div>
                 <h3 className="text-xl font-bold text-white mt-2">
                   {isRtl
-                    ? 'دنیای گیم و گیفت‌کارت، با ریجن روشن'
-                    : 'Gaming & Store Credit, Clear Regions'}
+                    ? 'اکانت ظرفیتی PS5، دیوایس‌های گیمینگ و شارژ آنی بازی'
+                    : 'PS5 Capacity Accounts, Gaming Gear & Instant Top-Ups'}
                 </h3>
                 <p className="text-xs sm:text-sm text-white/75 mt-2 leading-relaxed">
                   {isRtl
-                    ? 'گیفت‌کارت‌های اورجینال Steam، PlayStation و Xbox Game Pass با تحویل آنی کد دیجیتال.'
-                    : 'Browse official Steam Wallet, PlayStation, and Xbox Game Pass cards with instant delivery.'}
+                    ? 'فروش تخصصی اکانت ظرفیتی قانونی (ظرفیت ۲ و ۳)، کنسول و دسته بازی، سی‌پی/یوسی و گیفت‌کارت استیم و پلی‌استیشن.'
+                    : 'Primary & Switch capacity accounts, PS5/Xbox consoles & controllers, CP/UC, and official gaming gift cards.'}
                 </p>
               </div>
               <div className="relative z-10 mt-8 flex items-end justify-between">
@@ -904,52 +1110,217 @@ export function ModasrMarketplace({
           </ScrollReveal>
         </div>
 
-        {/* Featured Products Preview on Home Dashboard */}
+        {/* 2B. PERMIO-STYLE POPULAR SERVICES HUB ("محبوب‌ترین خدمات · دسترسی سریع به سرویس‌های محبوب") */}
         <div
-          id="featured-dashboard-products"
-          className="mt-10 pt-8 border-t border-white/10"
+          data-testid="permio-popular-services-hub"
+          className="mt-8 rounded-[32px] bg-gradient-to-b from-[#062c27]/95 via-[#052320]/95 to-[#041819]/98 border border-teal-400/35 p-5 sm:p-8 shadow-[0_22px_55px_rgba(0,0,0,0.65)]"
         >
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-            <div>
-              <h3 className="text-xl sm:text-2xl font-bold text-white">
-                {isRtl
-                  ? 'پرفروش‌ترین محصولات منتخب در یک نگاه'
-                  : 'Top Featured Storefront Products'}
-              </h3>
-              <p className="text-xs sm:text-sm text-white/60 mt-1">
-                {isRtl
-                  ? 'محبوب‌ترین اشتراک‌ها و گیفت‌کارت‌های آماده تحویل آنی در داشبورد اصلی'
-                  : 'Most popular subscriptions and gift cards ready for instant delivery'}
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={() => onActivateHeroSection?.('search')}
-              className="px-4 py-2.5 rounded-xl bg-teal-400/15 hover:bg-teal-400 hover:text-slate-950 border border-teal-400/40 text-teal-300 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
-            >
-              <span>
-                {isRtl
-                  ? 'مشاهده کاتالوگ کامل همه محصولات'
-                  : 'Open Full Product Catalog'}
-              </span>
-              <ArrowUpRight className="w-4 h-4" />
-            </button>
+          <div className="text-start mb-6">
+            <p className="text-xs sm:text-sm font-bold text-teal-300">
+              {isRtl ? 'محبوب‌ترین خدمات مدثر' : 'Most Popular MODASR Services'}
+            </p>
+            <h3 className="text-xl sm:text-3xl font-black text-white mt-1 leading-snug">
+              {isRtl
+                ? 'دسترسی سریع به سرویس‌های محبوب'
+                : 'Quick Access to Flagship Services'}
+            </h3>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
-            {featuredDashboardProducts.map((product, idx) => (
-              <MarketplaceProductCard
-                key={product.id}
-                product={product}
-                cascadeIndex={idx}
-                lang={lang}
-                usdtRate={usdtRate}
-                currencyMode={currencyMode}
-                onAddToCart={onAddToCart}
-                onShowDetails={setDetailProduct}
-              />
-            ))}
+          {/* 3 Permio-style Horizontal Spotlight Cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {[
+              {
+                id: 'hub-intl-ai',
+                titleFa: 'اکانت‌های هوش مصنوعی و پرداخت ارزی',
+                titleEn: 'AI Accounts & Global Payments',
+                icon: Globe,
+                subIcon: Cpu,
+                accent: 'text-teal-300 border-teal-400/40 bg-teal-500/15',
+                onClick: () => {
+                  onSelectCategory('ai');
+                  onActivateHeroSection?.('ai');
+                },
+              },
+              {
+                id: 'hub-giftcards',
+                titleFa: 'خرید گیفت کارت اورجینال',
+                titleEn: 'Buy Official Gift Cards',
+                icon: Gift,
+                subIcon: CreditCard,
+                accent: 'text-emerald-300 border-emerald-400/40 bg-emerald-500/15',
+                onClick: () => {
+                  onSelectCategory('gaming');
+                  onActivateHeroSection?.('games');
+                },
+              },
+              {
+                id: 'hub-gaming-coins',
+                titleFa: 'خرید بازی و کوین (سی‌پی و یوسی)',
+                titleEn: 'Buy Games & In-Game Coins',
+                icon: Gamepad2,
+                subIcon: Sparkles,
+                accent: 'text-cyan-300 border-cyan-400/40 bg-cyan-500/15',
+                onClick: () => {
+                  onSelectCategory('ingame');
+                  onActivateHeroSection?.('games');
+                },
+              },
+            ].map((card) => {
+              const MainIcon = card.icon;
+              const SubIcon = card.subIcon;
+              return (
+                <button
+                  key={card.id}
+                  type="button"
+                  data-testid={`permio-hub-card-${card.id}`}
+                  onClick={card.onClick}
+                  className="group relative overflow-hidden rounded-[26px] bg-[#031315]/95 hover:bg-[#051d20] border border-teal-400/30 hover:border-teal-300/65 p-5 sm:p-6 flex items-center justify-between gap-4 text-start transition-all duration-300 shadow-[0_14px_34px_rgba(0,0,0,0.5)] cursor-pointer"
+                >
+                  <div className="flex flex-col justify-between h-full space-y-6">
+                    <span className="text-base sm:text-lg font-black text-white group-hover:text-teal-200 transition-colors">
+                      {isRtl ? card.titleFa : card.titleEn}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-[#2DD4BF] group-hover:translate-x-[-2px] transition-transform">
+                      <span>{isRtl ? 'مشاهده' : 'Explore'}</span>
+                      {isRtl ? (
+                        <ChevronLeft className="w-4 h-4" />
+                      ) : (
+                        <ChevronRight className="w-4 h-4" />
+                      )}
+                    </span>
+                  </div>
+
+                  {/* Permio-style Angled 3D Emblem Illustration on Left */}
+                  <div className="relative shrink-0">
+                    <div
+                      className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl -rotate-6 group-hover:rotate-0 transition-transform duration-300 border flex items-center justify-center shadow-lg ${card.accent}`}
+                    >
+                      <MainIcon className="w-8 h-8 sm:w-9 sm:h-9" />
+                    </div>
+                    <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-[#041518] border border-teal-400/50 flex items-center justify-center text-teal-300 shadow-md">
+                      <SubIcon className="w-4 h-4" />
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
           </div>
+
+          {/* 5 Outlined Emerald Service Box Tiles (2x2 + 1 Full-Width Bottom Box matching permio-mobile-2.png) */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 mt-4">
+            {[
+              {
+                id: 'tile-telegram-esim',
+                labelFa: 'تلگرام پرمیوم و استارز',
+                labelEn: 'Telegram Premium & Stars',
+                icon: Globe,
+                onClick: () => {
+                  onSelectCategory('subscriptions');
+                  onActivateHeroSection?.('web');
+                },
+              },
+              {
+                id: 'tile-apple-id',
+                labelFa: 'اپل آیدی و آیکلود آمریکا',
+                labelEn: 'USA Apple ID & iCloud',
+                icon: CreditCard,
+                onClick: () => {
+                  onSelectCategory('subscriptions');
+                  onActivateHeroSection?.('web');
+                },
+              },
+              {
+                id: 'tile-static-ip',
+                labelFa: 'آی‌پی ثابت و سرور ترید',
+                labelEn: 'Static IP & Trading VPS',
+                icon: Wifi,
+                onClick: () => {
+                  onSelectCategory('vpn');
+                  onActivateHeroSection?.('web');
+                },
+              },
+              {
+                id: 'tile-streaming',
+                labelFa: 'اسپاتیفای و یوتیوب پرمیوم',
+                labelEn: 'Spotify & YouTube Pro',
+                icon: Tv,
+                onClick: () => {
+                  onSelectCategory('subscriptions');
+                  onActivateHeroSection?.('web');
+                },
+              },
+            ].map((tile) => {
+              const TileIcon = tile.icon;
+              return (
+                <button
+                  key={tile.id}
+                  type="button"
+                  data-testid={`permio-tile-${tile.id}`}
+                  onClick={tile.onClick}
+                  className="p-4 sm:p-5 rounded-[22px] bg-teal-500/10 hover:bg-teal-500/20 border border-teal-300/35 hover:border-teal-300/70 flex flex-col items-center justify-center text-center gap-2.5 transition-all cursor-pointer"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-teal-400/15 border border-teal-300/40 flex items-center justify-center text-teal-200">
+                    <TileIcon className="w-5 h-5" />
+                  </div>
+                  <div className="text-xs sm:text-sm font-bold text-white flex items-center gap-1">
+                    <span>{isRtl ? tile.labelFa : tile.labelEn}</span>
+                    {isRtl ? (
+                      <ChevronLeft className="w-3.5 h-3.5 text-teal-300" />
+                    ) : (
+                      <ChevronRight className="w-3.5 h-3.5 text-teal-300" />
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+
+            {/* 5th Full-Width Service Tile (Matches bottom wide tile in permio-mobile-2.png) */}
+            <button
+              type="button"
+              data-testid="permio-tile-all-catalog"
+              onClick={() => onActivateHeroSection?.('search')}
+              className="col-span-2 lg:col-span-4 p-4 sm:p-5 rounded-[22px] bg-teal-500/10 hover:bg-teal-500/20 border border-teal-300/35 hover:border-teal-300/70 flex flex-col items-center justify-center text-center gap-2 transition-all cursor-pointer"
+            >
+              <div className="w-10 h-10 rounded-xl bg-teal-400/15 border border-teal-300/40 flex items-center justify-center text-teal-200">
+                <Search className="w-5 h-5" />
+              </div>
+              <div className="text-xs sm:text-sm font-bold text-white flex items-center gap-1">
+                <span>
+                  {isRtl
+                    ? 'جستجوی هوشمند و مشاهده تمام ۵۰ سرویس پرمیوم بین‌المللی'
+                    : 'Smart Search & Full 50+ International Premium Catalog'}
+                </span>
+                {isRtl ? (
+                  <ChevronLeft className="w-3.5 h-3.5 text-teal-300" />
+                ) : (
+                  <ChevronRight className="w-3.5 h-3.5 text-teal-300" />
+                )}
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* 2C. PERMIO-STYLE CATEGORIZED PRODUCT SHOWCASE SECTIONS ON HOME PAGE */}
+        <div
+          id="featured-dashboard-products"
+          data-testid="permio-home-categorized-products"
+          className="mt-10 pt-4"
+        >
+          {homeCategorizedSections.map((section) => (
+            <PermioCategoryShowcaseSection
+              key={section.id}
+              section={section}
+              lang={lang}
+              usdtRate={usdtRate}
+              currencyMode={currencyMode}
+              onAddToCart={onAddToCart}
+              onShowDetails={setDetailProduct}
+              onOpenCategoryPage={(page, cat) => {
+                onSelectCategory(cat);
+                onActivateHeroSection?.(page);
+              }}
+            />
+          ))}
         </div>
       </section>
       )}
@@ -960,555 +1331,651 @@ export function ModasrMarketplace({
         id="catalog-section"
         className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-4 pb-12"
       >
-        <div
-          ref={catalogHeaderReveal.ref}
-          data-scroll-reveal="fade-up"
-          data-revealed="true"
-          className="animate-fade-up flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6"
-        >
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
-              {isRtl ? 'از نیازت شروع کن' : 'Start From Your Need'}
-            </h2>
-            <p className="text-sm text-white/75 mt-2 drop-shadow-[0_1px_6px_rgba(0,0,0,0.75)]">
-              {isRtl
-                ? 'به‌جای گم‌شدن بین صدها گزینه، دسته‌ی مناسب را انتخاب کن و پلن‌ها را با جزئیات کامل مقایسه کن.'
-                : 'Select your category tab to compare duration, region, and server-verified pricing.'}
-            </p>
-          </div>
-        </div>
-
-        {/* Interactive Category Filter Bar — Animation: slide-left */}
-        <ScrollReveal variant="slide-left" delayMs={60}>
+        {activePage !== 'games' && (
           <div
-            className={`flex flex-wrap items-center gap-2 mb-5 p-1.5 rounded-2xl border ${pageTheme.cardGlassClass} ${pageTheme.cardBorderClass}`}
+            ref={catalogHeaderReveal.ref}
+            data-scroll-reveal="fade-up"
+            data-revealed="true"
+            className="animate-fade-up flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6"
           >
-            {(
-              activePage === 'games'
-                ? ([
-                    {
-                      id: 'gaming',
-                      fa: `گیفت‌کارت و کنسول (${categoryCounts.gaming.toLocaleString('fa-IR')})`,
-                      en: `Gift Cards & Console (${categoryCounts.gaming})`,
-                    },
-                    {
-                      id: 'ingame',
-                      fa: `جم، سی‌پی و یوسی · دیکاردو (${categoryCounts.ingame.toLocaleString('fa-IR')})`,
-                      en: `CP, UC & Gems (${categoryCounts.ingame})`,
-                    },
-                  ] as Array<{ id: ProductCategory; fa: string; en: string }>)
-                : activePage === 'ai'
-                ? ([
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+                {activePage === 'web'
+                  ? isRtl
+                    ? 'مرکز تخصصی اپ‌ها، ویندوز، اندروید، آیفون، کنسول و دسته‌های بازی'
+                    : 'App, OS & Gaming Controller Hub: Windows, Android, iPhone, Xbox & PlayStation'
+                  : isRtl
+                  ? 'از نیازت شروع کن'
+                  : 'Start From Your Need'}
+              </h2>
+              <p className="text-sm text-white/75 mt-2 drop-shadow-[0_1px_6px_rgba(0,0,0,0.75)]">
+                {activePage === 'web'
+                  ? isRtl
+                    ? 'دسته‌بندی اختصاصی ویندوز، اندروید، آیفون، ایکس‌باکس و پلی‌استیشن به همراه دسته‌های بازی اورجینال، اپل‌آیدی، گوگل‌پلی، VPN و اشتراک‌های پرمیوم.'
+                    : 'Dedicated Windows, Android, iPhone, Xbox, and PlayStation categories alongside original controllers, Apple ID, Google Play, VPN, and premium apps.'
+                  : isRtl
+                  ? 'به‌جای گم‌شدن بین صدها گزینه، دسته‌ی مناسب را انتخاب کن و پلن‌ها را با جزئیات کامل مقایسه کن.'
+                  : 'Select your category tab to compare duration, region, and server-verified pricing.'}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* ===================================================================
+            DEDICATED GAMING MARKETPLACE (ONLY ON activePage === 'games')
+        ==================================================================== */}
+        {activePage === 'games' ? (
+          <GamingMarketplace
+            lang={lang}
+            usdtRate={usdtRate}
+            currencyMode={currencyMode}
+            selectedCategory={selectedCategory}
+            onSelectCategory={onSelectCategory}
+            onAddToCart={onAddToCart}
+            onShowDetails={setDetailProduct}
+            onOpenCart={onOpenCart}
+          />
+        ) : activePage === 'web' ? (
+          /* ===================================================================
+              DEDICATED APP, OS & CONTROLLERS HUB (ONLY ON activePage === 'web')
+          ==================================================================== */
+          <div data-testid="dedicated-app-hub" className="space-y-8 mb-10">
+            {/* 1. APP & CONNECTIVITY SUB-CATEGORY TABS */}
+            <div
+              data-testid="app-subcategory-bar"
+              className={`flex flex-wrap items-center gap-2 p-2 rounded-2xl border ${pageTheme.cardGlassClass} ${pageTheme.cardBorderClass}`}
+            >
+              {(
+                [
+                  {
+                    id: 'all',
+                    fa: 'همه اپ‌ها، پلتفرم‌ها و دسته‌ها',
+                    en: 'All Apps, Platforms & Controllers',
+                  },
+                  {
+                    id: 'platform-apps',
+                    fa: 'ویندوز، اندروید، آیفون و کنسول',
+                    en: 'Windows, Android, iPhone & Console Apps',
+                  },
+                  {
+                    id: 'controllers',
+                    fa: 'دسته‌های بازی (ویندوز / موبایل / کنسول)',
+                    en: 'Game Controllers (PC / Mobile / Console)',
+                  },
+                  {
+                    id: 'vpn',
+                    fa: `اتصال، VPN و DNS گیمینگ (${(categoryCounts.vpn + 1).toLocaleString('fa-IR')})`,
+                    en: `VPN, Static IP & Gaming DNS (${categoryCounts.vpn + 1})`,
+                  },
+                  {
+                    id: 'streaming',
+                    fa: 'تلگرام پرمیوم، استریم و طراحی',
+                    en: 'Telegram Pro, Streaming & Design',
+                  },
+                ] as Array<{ id: AppSubCategoryFilter; fa: string; en: string }>
+              ).map((tab) => {
+                const active = appSubCategory === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    data-testid={`app-subtab-${tab.id}`}
+                    onClick={() => {
+                      setAppSubCategory(tab.id);
+                      if (tab.id === 'vpn') {
+                        onSelectCategory('vpn');
+                      } else {
+                        onSelectCategory('subscriptions');
+                      }
+                    }}
+                    className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
+                      active
+                        ? pageTheme.pillActiveClass
+                        : 'text-white/80 hover:text-white hover:bg-white/10'
+                    }`}
+                  >
+                    {isRtl ? tab.fa : tab.en}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* 2. 5-PLATFORM & CONTROLLER FILTER BAR (ویندوز، اندروید، آیفون، ایکس‌باکس، پلی‌استیشن + دسته‌ها) */}
+            <div className="rounded-3xl bg-[#070b1d]/90 backdrop-blur-2xl border border-indigo-500/35 p-4 sm:p-5 shadow-[0_14px_40px_rgba(0,0,0,0.55)] space-y-4">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div>
+                  <div className="text-xs font-bold text-indigo-300 flex items-center gap-2">
+                    <Globe className="w-4 h-4 text-indigo-400" />
+                    <span>
+                      {isRtl
+                        ? 'فیلتر بر اساس سیستم‌عامل، پلتفرم و دسته بازی (ویندوز · اندروید · آیفون · ایکس‌باکس · پلی‌استیشن):'
+                        : 'Filter by OS, Platform & Gamepad (Windows · Android · iPhone · Xbox · PlayStation):'}
+                    </span>
+                  </div>
+                  <div
+                    data-testid="app-platform-filter-bar"
+                    className="flex flex-wrap items-center gap-2 mt-3"
+                  >
+                    {(
+                      [
+                        { id: 'all', fa: 'همه پلتفرم‌ها و اپ‌ها', en: 'All Platforms & Apps' },
+                        {
+                          id: 'windows',
+                          fa: 'ویندوز (Windows 11 / PC)',
+                          en: 'Windows 11 / PC',
+                        },
+                        {
+                          id: 'android',
+                          fa: 'اندروید (Google Play / Android)',
+                          en: 'Android & Google Play',
+                        },
+                        {
+                          id: 'iphone',
+                          fa: 'آیفون (Apple ID / iOS)',
+                          en: 'iPhone & Apple ID',
+                        },
+                        {
+                          id: 'xbox',
+                          fa: 'ایکس‌باکس (Xbox App & Game Pass)',
+                          en: 'Xbox App & Game Pass',
+                        },
+                        {
+                          id: 'ps5',
+                          fa: 'پلی‌استیشن (PSN & DualSense)',
+                          en: 'PlayStation (PSN & DualSense)',
+                        },
+                        {
+                          id: 'controllers',
+                          fa: 'دسته‌های بازی (PC / موبایل / کنسول)',
+                          en: 'Controllers (PC / Mobile / Console)',
+                        },
+                      ] as Array<{ id: AppPlatformFilter; fa: string; en: string }>
+                    ).map((plat) => {
+                      const isPlatActive = appPlatform === plat.id;
+                      return (
+                        <button
+                          key={plat.id}
+                          type="button"
+                          data-testid={`app-platform-chip-${plat.id}`}
+                          onClick={() => setAppPlatform(plat.id)}
+                          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer border ${
+                            isPlatActive
+                              ? 'bg-gradient-to-r from-indigo-500 to-sky-500 text-white border-indigo-300 shadow-[0_0_18px_rgba(99,102,241,0.45)]'
+                              : 'bg-white/[0.05] border-white/15 text-white/75 hover:text-white hover:border-indigo-400/50'
+                          }`}
+                        >
+                          {isRtl ? plat.fa : plat.en}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Instant App & Platform Search Input */}
+                <div className="w-full lg:w-72 shrink-0">
+                  <div className="relative">
+                    <Search className="w-4 h-4 text-indigo-300 absolute top-1/2 -translate-y-1/2 right-3.5 pointer-events-none" />
+                    <input
+                      type="text"
+                      data-testid="app-hub-search-input"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder={
+                        isRtl
+                          ? 'جستجو در اپ و دسته (ویندوز، آیفون، اندروید، دسته...)'
+                          : 'Search Windows, Android, iPhone, Xbox, PS5...'
+                      }
+                      aria-label={isRtl ? 'جستجو در بخش اتصال و اپ' : 'Search App Hub'}
+                      className="w-full bg-black/45 border border-indigo-500/35 focus:border-indigo-400 rounded-2xl pr-10 pl-3.5 py-2.5 text-xs text-white placeholder:text-white/50 focus:outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 3. WEB, VPN & MULTI-PLATFORM SPOTLIGHT BANNER */}
+            <div
+              data-testid="vpn-category-spotlight"
+              className="relative rounded-3xl overflow-hidden border border-white/45 bg-white/[0.14] backdrop-blur-2xl p-6 sm:p-8 shadow-[0_16px_45px_rgba(0,0,0,0.28),inset_0_1px_2px_rgba(255,255,255,0.75)] animate-scale-in"
+            >
+              <video
+                data-testid="vpn-category-spotlight-video"
+                src={WEB_HERO_VIDEO_URL}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover object-[75%_center] sm:object-[72%_center] md:object-[68%_center] lg:object-center opacity-100 pointer-events-none"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050816]/90 via-[#070b1f]/65 to-transparent pointer-events-none" />
+
+              <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6 my-auto">
+                <div className="max-w-xl">
+                  <div className="inline-flex items-center gap-2 text-xs font-bold text-indigo-200 tracking-wider uppercase mb-2">
+                    <ShieldCheck className="w-4 h-4" />
+                    <span>
+                      {isRtl
+                        ? 'WINDOWS · ANDROID · IPHONE · XBOX · PLAYSTATION HUB'
+                        : 'WINDOWS · ANDROID · IPHONE · XBOX · PLAYSTATION HUB'}
+                    </span>
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-black text-white">
+                    {isRtl
+                      ? 'اپ‌ها، لایسنس سیستم‌عامل، دسته‌های بازی و اتصال پایدار برای هر ۵ پلتفرم'
+                      : 'Official OS Licenses, Mobile/Console Apps, Controllers & High-Speed VPN'}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-white/90 mt-2 leading-relaxed">
+                    {isRtl
+                      ? 'از لایسنس اورجینال ویندوز ۱۱ و آفیس ۳۶۵، اپل‌آیدی آیفون و گوگل‌پلی اندروید تا دسته‌های بازی پلی‌استیشن، ایکس‌باکس و موبایل (Backbone / Kishi) به همراه سرورهای آی‌پی ثابت.'
+                      : 'From Windows 11 Pro & Office 365, Verified iPhone Apple ID, and Android Google Play Pass to DualSense, Xbox, and Backbone controllers.'}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 shrink-0">
+                  <button
+                    type="button"
+                    data-testid="quick-app-controllers-btn"
+                    onClick={() => setAppPlatform('controllers')}
+                    className="p-3 rounded-2xl bg-white/[0.18] hover:bg-indigo-500/40 border border-white/50 backdrop-blur-xl text-start transition-all cursor-pointer"
+                  >
+                    <div className="text-[11px] text-indigo-200 font-semibold">
+                      {isRtl ? 'دسته‌های بازی ۵ پلتفرم' : 'All 5 Platform Gamepads'}
+                    </div>
+                    <div className="text-xs sm:text-sm font-black text-white mt-0.5">
+                      {isRtl ? 'PS5 · Xbox · ویندوز · موبایل' : 'PS5 · Xbox · PC · Mobile'}
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    data-testid="quick-app-windows-btn"
+                    onClick={() => setAppPlatform('windows')}
+                    className="p-3 rounded-2xl bg-white/[0.18] hover:bg-indigo-500/40 border border-white/50 backdrop-blur-xl text-start transition-all cursor-pointer"
+                  >
+                    <div className="text-[11px] text-indigo-200 font-semibold">
+                      {isRtl ? 'ویندوز و آفیس ۳۶۵' : 'Windows 11 & M365'}
+                    </div>
+                    <div className="text-xs sm:text-sm font-black text-white mt-0.5">
+                      {isRtl ? 'لایسنس و دسته PC' : 'PC Keys & Controllers'}
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    data-testid="quick-app-mobile-btn"
+                    onClick={() => setAppPlatform('iphone')}
+                    className="p-3 rounded-2xl bg-white/[0.18] hover:bg-indigo-500/40 border border-white/50 backdrop-blur-xl text-start transition-all cursor-pointer col-span-2 sm:col-span-1"
+                  >
+                    <div className="text-[11px] text-indigo-200 font-semibold">
+                      {isRtl ? 'آیفون و اندروید' : 'iPhone & Android'}
+                    </div>
+                    <div className="text-xs sm:text-sm font-black text-white mt-0.5">
+                      {isRtl ? 'اپل‌آیدی، گوگل‌پلی و Backbone' : 'Apple ID, Play & Backbone'}
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* 4. CATEGORIZED DICARDO-STYLE APP & PLATFORM SHELVES */}
+            {appSubCategory === 'all' &&
+            appPlatform === 'all' &&
+            searchQuery.trim() === '' ? (
+              <div data-testid="app-hub-shelves" className="space-y-8">
+                {appHubSections.map((shelf) => (
+                  <div
+                    key={shelf.id}
+                    data-testid={`app-shelf-${shelf.id}`}
+                    className="rounded-3xl bg-[#060919]/90 border border-indigo-500/25 p-5 sm:p-7 shadow-[0_16px_40px_rgba(0,0,0,0.55)]"
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+                      <div className="flex items-center gap-3">
+                        <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-indigo-500 via-blue-600 to-sky-500 border border-indigo-300/50 shadow-[0_8px_22px_rgba(99,102,241,0.35)] flex items-center justify-center text-white shrink-0">
+                          <Globe className="w-5 h-5 sm:w-6 sm:h-6" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg sm:text-2xl font-black text-white">
+                            {isRtl ? shelf.titleFa : shelf.titleEn}
+                          </h3>
+                          <p className="text-[11px] sm:text-xs font-semibold text-white/65 mt-0.5">
+                            {isRtl ? shelf.kickerFa : shelf.kickerEn}
+                          </p>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        data-testid={`app-shelf-filter-${shelf.id}`}
+                        onClick={() => setAppSubCategory(shelf.subCategory)}
+                        className="px-3.5 py-2 rounded-xl bg-indigo-500/15 hover:bg-indigo-500 text-indigo-200 hover:text-white border border-indigo-400/35 text-xs font-bold inline-flex items-center gap-1.5 transition-all cursor-pointer"
+                      >
+                        <span>
+                          {isRtl ? 'مشاهده همه این بخش' : 'Filter This Section'}
+                        </span>
+                        {isRtl ? (
+                          <ChevronLeft className="w-3.5 h-3.5" />
+                        ) : (
+                          <ChevronRight className="w-3.5 h-3.5" />
+                        )}
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5">
+                      {shelf.products.map((product, idx) => (
+                        <PermioCategoryProductCard
+                          key={`${shelf.id}-${product.id}`}
+                          product={product}
+                          cascadeIndex={idx}
+                          lang={lang}
+                          usdtRate={usdtRate}
+                          currencyMode={currencyMode}
+                          onAddToCart={onAddToCart}
+                          onShowDetails={setDetailProduct}
+                          testIdPrefix={`app-shelf-card-${shelf.id}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div
+                data-testid="app-filtered-dicardo-grid"
+                className="rounded-3xl bg-[#060919]/90 border border-indigo-500/30 p-5 sm:p-7 shadow-[0_16px_40px_rgba(0,0,0,0.55)]"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-black text-white">
+                      {isRtl
+                        ? `محصولات فیلترشده اپ، پلتفرم و دسته‌ها (${filteredProducts.length.toLocaleString('fa-IR')} محصول)`
+                        : `Filtered App & Platform Products (${filteredProducts.length})`}
+                    </h3>
+                    <p className="text-xs text-white/65 mt-0.5">
+                      {isRtl
+                        ? 'روی هر محصول کلیک کنید تا پنل انتخاب پکیج، مدل دسته بازی یا لایسنس پلتفرم برایتان باز شود.'
+                        : 'Click any card to choose your controller model, OS license, or subscription plan.'}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    data-testid="app-reset-filters-btn"
+                    onClick={() => {
+                      setAppSubCategory('all');
+                      setAppPlatform('all');
+                      setSearchQuery('');
+                    }}
+                    className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-white border border-white/20 cursor-pointer"
+                  >
+                    {isRtl ? 'نمایش همه قفسه‌های اپ و پلتفرم' : 'Show All App Shelves'}
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5">
+                  {filteredProducts.map((product, idx) => (
+                    <PermioCategoryProductCard
+                      key={`filtered-app-${product.id}`}
+                      product={product}
+                      cascadeIndex={idx}
+                      lang={lang}
+                      usdtRate={usdtRate}
+                      currencyMode={currencyMode}
+                      onAddToCart={onAddToCart}
+                      onShowDetails={setDetailProduct}
+                      testIdPrefix="app-filtered-card"
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          /* ===================================================================
+              AI CATALOG SECTION (ONLY ON activePage === 'ai')
+          ==================================================================== */
+          <>
+            <ScrollReveal variant="slide-left" delayMs={60}>
+              <div
+                className={`flex flex-wrap items-center gap-2 mb-5 p-1.5 rounded-2xl border ${pageTheme.cardGlassClass} ${pageTheme.cardBorderClass}`}
+              >
+                {(
+                  [
                     {
                       id: 'ai',
                       fa: `هوش مصنوعی و ابزار کدنویسی (${categoryCounts.ai.toLocaleString('fa-IR')})`,
                       en: `AI & Code (${categoryCounts.ai})`,
                     },
-                  ] as Array<{ id: ProductCategory; fa: string; en: string }>)
-                : activePage === 'web'
-                ? ([
-                    {
-                      id: 'vpn',
-                      fa: `اتصال و آی‌پی ثابت (${categoryCounts.vpn.toLocaleString('fa-IR')})`,
-                      en: `VPN & Static IP (${categoryCounts.vpn})`,
-                    },
-                    {
-                      id: 'subscriptions',
-                      fa: `اشتراک پرمیوم و اپل‌آیدی (${categoryCounts.subscriptions.toLocaleString('fa-IR')})`,
-                      en: `Premium & Apple ID (${categoryCounts.subscriptions})`,
-                    },
-                  ] as Array<{ id: ProductCategory; fa: string; en: string }>)
-                : ([
-                    {
-                      id: 'all',
-                      fa: `همه محصولات (${categoryCounts.all.toLocaleString('fa-IR')})`,
-                      en: `All Products (${categoryCounts.all})`,
-                    },
-                    {
-                      id: 'ai',
-                      fa: `هوش مصنوعی (${categoryCounts.ai.toLocaleString('fa-IR')})`,
-                      en: `AI & Code (${categoryCounts.ai})`,
-                    },
-                    {
-                      id: 'ingame',
-                      fa: `جم، سی‌پی و یوسی · دیکاردو (${categoryCounts.ingame.toLocaleString('fa-IR')})`,
-                      en: `CP, UC & Gems (${categoryCounts.ingame})`,
-                    },
-                    {
-                      id: 'gaming',
-                      fa: `گیفت‌کارت و کنسول (${categoryCounts.gaming.toLocaleString('fa-IR')})`,
-                      en: `Gift Cards & Console (${categoryCounts.gaming})`,
-                    },
-                    {
-                      id: 'subscriptions',
-                      fa: `اشتراک پرمیوم و اپل‌آیدی (${categoryCounts.subscriptions.toLocaleString('fa-IR')})`,
-                      en: `Premium & Apple ID (${categoryCounts.subscriptions})`,
-                    },
-                    {
-                      id: 'vpn',
-                      fa: `اتصال و آی‌پی ثابت (${categoryCounts.vpn.toLocaleString('fa-IR')})`,
-                      en: `VPN & Static IP (${categoryCounts.vpn})`,
-                    },
-                  ] as Array<{ id: ProductCategory; fa: string; en: string }>)
-            ).map((tab) => {
-              const active = effectiveCategory === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  data-testid={`category-tab-${tab.id}`}
-                  onClick={() => {
-                    onSelectCategory(tab.id);
-                    setBrandFilter('all');
-                  }}
-                  className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
-                    active
-                      ? pageTheme.pillActiveClass
-                      : 'text-white/80 hover:text-white hover:bg-white/10'
-                  }`}
-                >
-                  {isRtl ? tab.fa : tab.en}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Quick Ecosystem & Brand Filter Bar (Shown on Full Catalog 'search' page) */}
-          {(activePage as unknown as string) === 'search' && (
-          <div
-            data-testid="brand-ecosystem-filter-bar"
-            className="flex flex-wrap items-center gap-2 mb-8"
-          >
-            {(
-              [
-                { id: 'all', fa: 'همه برندها', en: 'All Brands' },
-                { id: 'call of duty', fa: 'سی‌پی کالاف دیوتی', en: 'Call of Duty CP' },
-                { id: 'pubg', fa: 'یوسی پابجی موبایل', en: 'PUBG Mobile UC' },
-                { id: 'free fire', fa: 'جم فری‌فایر', en: 'Free Fire Gems' },
-                { id: 'supercell', fa: 'کلش و براول استارز', en: 'Supercell / Clash' },
-                { id: 'telegram', fa: 'تلگرام پرمیوم و استارز', en: 'Telegram & Stars' },
-                { id: 'apple', fa: 'اپل‌آیدی و گیفت‌کارت اپل', en: 'Apple ID & iTunes' },
-                { id: 'steam', fa: 'استیم و بتل‌نت', en: 'Steam & Battle.net' },
-                { id: 'playstation', fa: 'پلی‌استیشن و پلاس', en: 'PlayStation & Plus' },
-                { id: 'openai', fa: 'ChatGPT / هوش مصنوعی', en: 'OpenAI & AI' },
-                { id: 'spotify', fa: 'اسپاتیفای و یوتیوب', en: 'Spotify & Media' },
-              ] as const
-            ).map((chip) => {
-              const isChipActive = brandFilter === chip.id;
-              return (
-                <button
-                  key={chip.id}
-                  type="button"
-                  data-testid={`brand-chip-${chip.id}`}
-                  onClick={() => {
-                    setBrandFilter(chip.id);
-                    if (chip.id !== 'all') {
-                      onSelectCategory('all');
-                    }
-                  }}
-                  className={`px-3 py-1.5 rounded-lg text-[11px] font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer border ${
-                    isChipActive
-                      ? 'bg-white/15 border-teal-400 text-teal-300'
-                      : 'bg-white/[0.02] border-white/10 text-white/60 hover:text-white hover:border-white/25'
-                  }`}
-                >
-                  {isRtl ? chip.fa : chip.en}
-                </button>
-              );
-            })}
-          </div>
-          )}
-        </ScrollReveal>
-
-        {/* ===================================================================
-            3A-0. DEDICATED DICARDO IN-GAME TOP-UP SPOTLIGHT (CP, UC, GEMS & PASSES)
-        ==================================================================== */}
-        {effectiveCategory === 'ingame' && (
-          <div
-            data-testid="ingame-category-spotlight"
-            className="mb-8 relative rounded-3xl overflow-hidden border border-white/45 bg-white/[0.14] backdrop-blur-2xl p-6 sm:p-8 shadow-[0_16px_45px_rgba(0,0,0,0.25),inset_0_1px_2px_rgba(255,255,255,0.7)] animate-scale-in"
-          >
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-              <div className="lg:col-span-7 space-y-3">
-                <div className="text-xs font-bold text-amber-300 tracking-wider uppercase">
-                  {isRtl
-                    ? 'DICARDO & GLOBAL IN-GAME HUB · شارژ آنی سی‌پی، یوسی و جم بازی با آیدی'
-                    : 'INSTANT UID TOP-UP · CALL OF DUTY CP, PUBG UC & GEMS'}
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-black text-white">
-                  {isRtl
-                    ? 'شارژ مستقیم بازی‌های موبایل با آیدی (UID) و رسید رسمی استور'
-                    : 'Direct Mobile Game Top-Ups via Player ID & Official Store Receipts'}
-                </h3>
-                <p className="text-xs sm:text-sm text-white/85 leading-relaxed">
-                  {isRtl
-                    ? 'تمامی بسته‌های سی‌پی کالاف دیوتی موبایل، یوسی پابجی موبایل، جم فری‌فایر، بلیط طلایی کلش و ولکین مون گنشین ایمپکت به‌صورت قانونی و با تضمین ۱۰۰٪ عدم بن شدن اکانت شارژ می‌شوند.'
-                    : 'All Call of Duty Mobile CP, PUBG UC, Free Fire Diamonds, and Supercell Passes are fulfilled via official gateways.'}
-                </p>
-              </div>
-
-              <div className="lg:col-span-5 rounded-2xl bg-white/[0.16] backdrop-blur-xl border border-white/45 shadow-[inset_0_1px_1.5px_rgba(255,255,255,0.65)] p-5 space-y-3">
-                <div className="text-xs font-bold text-amber-200">
-                  {isRtl
-                    ? 'ثبت سریع آیدی بازی (Player ID / UID) برای تحویل اتوماتیک:'
-                    : 'Quick Player ID / UID Entry for Instant Top-Up:'}
-                </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={playerUidInput}
-                    onChange={(e) => setPlayerUidInput(e.target.value)}
-                    placeholder={
-                      isRtl
-                        ? 'مثال: 5128493021 یا ایمیل اکتیویژن'
-                        : 'e.g. 5128493021 or Activision ID'
-                    }
-                    aria-label={isRtl ? 'آیدی بازیکن یا اکانت بازی' : 'Player UID'}
-                    className="flex-1 bg-white/[0.16] border border-white/45 focus:border-white rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-white/60 focus:outline-none"
-                  />
-                </div>
-                <div className="text-[11px] text-white/80">
-                  {playerUidInput.trim()
-                    ? isRtl
-                      ? `آیدی «${playerUidInput}» آماده ثبت روی سفارش است. بسته مورد نظر را از لیست زیر به سبد اضافه کنید.`
-                      : `Player ID "${playerUidInput}" locked for your next top-up order.`
-                    : isRtl
-                    ? 'برای یوسی پابجی، جم فری‌فایر و گنشین ایمپکت نیازی به رمز عبور اکانت نیست.'
-                    : 'No account password required for PUBG UC, Free Fire, or Genshin UID top-ups.'}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ===================================================================
-            3A. DEDICATED GAMING CATEGORY SPOTLIGHT BANNER (With Hero Gaming Video!)
-        ==================================================================== */}
-        {effectiveCategory === 'gaming' && (
-          <div
-            data-testid="gaming-category-spotlight"
-            className="mb-8 relative rounded-3xl overflow-hidden border border-white/45 bg-white/[0.14] backdrop-blur-2xl min-h-[260px] sm:min-h-[300px] flex flex-col justify-between p-6 sm:p-8 shadow-[0_16px_45px_rgba(0,0,0,0.28),inset_0_1px_2px_rgba(255,255,255,0.75)] animate-scale-in"
-          >
-            <video
-              data-testid="gaming-category-video"
-              src={HERO_VIDEO_URL}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover object-[88%_center] sm:object-[82%_center] md:object-[76%_center] lg:object-center opacity-100"
-            />
-
-            <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6 my-auto">
-              <div className="max-w-xl">
-                <div className="inline-flex items-center gap-2 text-xs font-bold text-rose-200 tracking-wider uppercase mb-2 drop-shadow-[0_1px_3px_rgba(0,0,0,0.85)]">
-                  <Gamepad2 className="w-4 h-4" />
-                  <span>
-                    {isRtl
-                      ? 'MODASR GAMING ARENA · تحویل آنی کد اورجینال گیم'
-                      : 'MODASR GAMING ARENA · INSTANT DIGITAL CODES'}
-                  </span>
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
-                  {isRtl
-                    ? 'گیفت‌کارت‌های اورجینال Steam، PlayStation و Xbox'
-                    : 'Authentic Steam, PlayStation & Xbox Digital Codes'}
-                </h3>
-                <p className="text-xs sm:text-sm text-white/95 mt-2 leading-relaxed drop-shadow-[0_1px_3px_rgba(0,0,0,0.85)]">
-                  {isRtl
-                    ? 'تم اختصاصی گیم فعال شد! تمام گیفت‌کارت‌ها و اشتراک‌های بازی با ریجن مشخص (آمریکا و گلوبال) و کد دیجیتال اورجینال بدون تاریخ انقضا عرضه می‌شوند.'
-                    : 'Gaming mode active! All gaming gift cards and memberships include verified region specifications and instant digital code delivery.'}
-                </p>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="px-4 py-3 rounded-2xl bg-white/[0.18] backdrop-blur-xl border border-white/55 shadow-[inset_0_1px_2px_rgba(255,255,255,0.75)]">
-                  <div className="text-[11px] text-rose-200 font-bold">STEAM WALLET</div>
-                  <div className="text-sm font-black text-white mt-0.5">$20 USA Code</div>
-                </div>
-                <div className="px-4 py-3 rounded-2xl bg-white/[0.18] backdrop-blur-xl border border-white/55 shadow-[inset_0_1px_2px_rgba(255,255,255,0.75)]">
-                  <div className="text-[11px] text-sky-200 font-bold">PLAYSTATION PSN</div>
-                  <div className="text-sm font-black text-white mt-0.5">$25 US Store</div>
-                </div>
-                <div className="px-4 py-3 rounded-2xl bg-white/[0.18] backdrop-blur-xl border border-white/55 shadow-[inset_0_1px_2px_rgba(255,255,255,0.75)]">
-                  <div className="text-[11px] text-emerald-200 font-bold">XBOX ULTIMATE</div>
-                  <div className="text-sm font-black text-white mt-0.5">Global 1-Month</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ===================================================================
-            3B. CUSTOM ARTIFICIAL INTELLIGENCE (هوش مصنوعی) INTERACTIVE COMMAND DECK
-        ==================================================================== */}
-        {effectiveCategory === 'ai' && (
-          <div
-            data-testid="ai-category-spotlight"
-            className="mb-8 relative rounded-3xl overflow-hidden border border-white/45 bg-white/[0.14] backdrop-blur-2xl p-6 sm:p-8 shadow-[0_16px_45px_rgba(0,0,0,0.28),inset_0_1px_2px_rgba(255,255,255,0.75)] animate-scale-in"
-          >
-            {/* Dedicated Uploaded AI Video Backdrop */}
-            <video
-              data-testid="ai-category-spotlight-video"
-              src={AI_HERO_VIDEO_URL}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover object-[80%_center] sm:object-[76%_center] md:object-[72%_center] lg:object-center opacity-100 pointer-events-none"
-            />
-
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-              {/* Left 7 Cols: Interactive AI Model Selector & Live Capability Matrix */}
-              <div className="lg:col-span-7 space-y-4">
-                <div className="inline-flex items-center gap-2 text-xs font-bold text-teal-200 tracking-wider uppercase drop-shadow-[0_1px_3px_rgba(0,0,0,0.85)]">
-                  <Cpu className="w-4 h-4" />
-                  <span>
-                    {isRtl
-                      ? 'MODASR NEURAL CORE · آزمایشگاه مقایسه مدل‌های هوش مصنوعی'
-                      : 'MODASR NEURAL CORE · INTERACTIVE AI MODEL MATRIX'}
-                  </span>
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
-                  {isRtl
-                    ? 'ابرقدرت‌های هوش مصنوعی با فعال‌سازی رسمی روی اکانت شخصی'
-                    : 'Flagship AI Subscriptions with Direct Personal Activation'}
-                </h3>
-                <p className="text-xs sm:text-sm text-white/95 leading-relaxed drop-shadow-[0_1px_3px_rgba(0,0,0,0.85)]">
-                  {isRtl
-                    ? 'مدل مورد نظر خود را انتخاب کنید تا ظرفیت پردازش، سرعت کدنویسی و نحوه تحویل اختصاصی آن را بررسی و مستقیماً به سبد خرید اضافه کنید.'
-                    : 'Select an AI model below to inspect live reasoning benchmarks, token capacity, and direct personal email activation.'}
-                </p>
-
-                {/* Interactive Model Switcher Tabs */}
-                <div className="flex flex-wrap items-center gap-2 pt-1">
-                  {(
-                    [
-                      {
-                        id: 'chatgpt-plus',
-                        label: 'ChatGPT Plus (GPT-4o)',
-                        badgeFa: 'همه‌فن‌حریف و تحلیل داده',
-                        badgeEn: 'Multimodal & Reasoning',
-                      },
-                      {
-                        id: 'claude-pro',
-                        label: 'Claude 3.7 Sonnet Pro',
-                        badgeFa: 'قهرمان کدنویسی و معماری',
-                        badgeEn: '#1 Coding & Architecture',
-                      },
-                      {
-                        id: 'cursor-pro',
-                        label: 'Cursor AI Pro IDE',
-                        badgeFa: 'ادیتور هوشمند برنامه‌نویسان',
-                        badgeEn: '500 Fast Requests IDE',
-                      },
-                    ] as const
-                  ).map((m) => {
-                    const isSelected = selectedAiModelId === m.id;
-                    return (
-                      <button
-                        key={m.id}
-                        type="button"
-                        onClick={() => setSelectedAiModelId(m.id)}
-                        className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
-                          isSelected
-                            ? 'bg-teal-400 text-slate-950 border-white shadow-[0_0_20px_rgba(0,245,212,0.4)]'
-                            : 'bg-white/[0.16] backdrop-blur-xl text-white border-white/45 hover:bg-white/[0.24]'
-                        }`}
-                      >
-                        {m.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Right 5 Cols: Live Selected AI Model Telemetry & Quick Add Card */}
-              <div className="lg:col-span-5 rounded-2xl bg-white/[0.16] backdrop-blur-xl border border-white/50 shadow-[inset_0_1px_2px_rgba(255,255,255,0.7)] p-5 space-y-4">
-                {(() => {
-                  const activeAiProduct =
-                    MODASR_PRODUCTS.find((p) => p.id === selectedAiModelId) ??
-                    MODASR_PRODUCTS[0];
-                  const specs =
-                    selectedAiModelId === 'claude-pro'
-                      ? {
-                          coding: '99%',
-                          reasoning: '98%',
-                          context: '200K Tokens',
-                          promptPreview:
-                            'claude-3.7-sonnet --thinking=extended -> Verified Clean Architecture',
-                        }
-                      : selectedAiModelId === 'cursor-pro'
-                      ? {
-                          coding: '99%',
-                          reasoning: '96%',
-                          context: '500 Fast Req/mo',
-                          promptPreview:
-                            'cursor-agent: Multi-file refactor completed in 1.2s',
-                        }
-                      : {
-                          coding: '96%',
-                          reasoning: '99%',
-                          context: '128K + Vision/Voice',
-                          promptPreview:
-                            'gpt-4o-omni: Multimodal analysis & image synthesis ready',
-                        };
-
+                  ] as Array<{ id: ProductCategory; fa: string; en: string }>
+                ).map((tab) => {
+                  const active = effectiveCategory === tab.id;
                   return (
-                    <>
-                      <div className="flex items-center justify-between gap-2 border-b border-white/25 pb-3">
-                        <div>
-                          <div className="text-sm font-black text-white">
-                            {isRtl ? activeAiProduct.titleFa : activeAiProduct.titleEn}
-                          </div>
-                          <div className="text-[11px] text-teal-200 mt-0.5">
-                            {isRtl ? activeAiProduct.deliveryFa : activeAiProduct.deliveryEn}
-                          </div>
-                        </div>
-                        <div className="text-end">
-                          <div className="text-base font-black text-teal-200 tabular-nums">
-                            ${activeAiProduct.priceUsd.toFixed(2)}
-                          </div>
-                          <div className="text-[10px] text-white/80">
-                            {isRtl ? activeAiProduct.durationFa : activeAiProduct.durationEn}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-2 text-center">
-                        <div className="p-2.5 rounded-xl bg-white/[0.15] border border-white/40">
-                          <div className="text-xs font-black text-teal-200">{specs.coding}</div>
-                          <div className="text-[10px] text-white/85 mt-0.5">
-                            {isRtl ? 'دقت کدنویسی' : 'Coding Score'}
-                          </div>
-                        </div>
-                        <div className="p-2.5 rounded-xl bg-white/[0.15] border border-white/40">
-                          <div className="text-xs font-black text-cyan-200">
-                            {specs.reasoning}
-                          </div>
-                          <div className="text-[10px] text-white/85 mt-0.5">
-                            {isRtl ? 'قدرت استدلال' : 'Reasoning'}
-                          </div>
-                        </div>
-                        <div className="p-2.5 rounded-xl bg-white/[0.15] border border-white/40">
-                          <div className="text-xs font-black text-emerald-200">
-                            {specs.context}
-                          </div>
-                          <div className="text-[10px] text-white/85 mt-0.5">
-                            {isRtl ? 'ظرفیت مدل' : 'Capacity'}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div
-                        dir="ltr"
-                        className="px-3 py-2 rounded-xl bg-white/[0.16] border border-white/40 font-mono text-[11px] text-teal-100 truncate"
-                      >
-                        $ {specs.promptPreview}
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => onAddToCart(activeAiProduct)}
-                        className="w-full py-2.5 px-4 rounded-xl bg-teal-400 hover:bg-teal-300 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
-                      >
-                        <ShoppingBag className="w-3.5 h-3.5" />
-                        <span>
-                          {isRtl
-                            ? `افزودن سریع «${activeAiProduct.titleFa}» به سبد`
-                            : `Add ${activeAiProduct.titleEn} to Cart`}
-                        </span>
-                      </button>
-                    </>
+                    <button
+                      key={tab.id}
+                      type="button"
+                      data-testid={`category-tab-${tab.id}`}
+                      onClick={() => {
+                        onSelectCategory(tab.id);
+                        setBrandFilter('all');
+                      }}
+                      className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 cursor-pointer ${
+                        active
+                          ? pageTheme.pillActiveClass
+                          : 'text-white/80 hover:text-white hover:bg-white/10'
+                      }`}
+                    >
+                      {isRtl ? tab.fa : tab.en}
+                    </button>
                   );
-                })()}
+                })}
               </div>
+            </ScrollReveal>
+
+            {/* 3B. CUSTOM ARTIFICIAL INTELLIGENCE (هوش مصنوعی) INTERACTIVE COMMAND DECK */}
+            {effectiveCategory === 'ai' && (
+              <div
+                data-testid="ai-category-spotlight"
+                className="mb-8 relative rounded-3xl overflow-hidden border border-white/45 bg-white/[0.14] backdrop-blur-2xl p-6 sm:p-8 shadow-[0_16px_45px_rgba(0,0,0,0.28),inset_0_1px_2px_rgba(255,255,255,0.75)] animate-scale-in"
+              >
+                {/* Dedicated Uploaded AI Video Backdrop */}
+                <video
+                  data-testid="ai-category-spotlight-video"
+                  src={AI_HERO_VIDEO_URL}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover object-[80%_center] sm:object-[76%_center] md:object-[72%_center] lg:object-center opacity-100 pointer-events-none"
+                />
+
+                <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                  {/* Left 7 Cols: Interactive AI Model Selector & Live Capability Matrix */}
+                  <div className="lg:col-span-7 space-y-4">
+                    <div className="inline-flex items-center gap-2 text-xs font-bold text-teal-200 tracking-wider uppercase drop-shadow-[0_1px_3px_rgba(0,0,0,0.85)]">
+                      <Cpu className="w-4 h-4" />
+                      <span>
+                        {isRtl
+                          ? 'MODASR NEURAL CORE · آزمایشگاه مقایسه مدل‌های هوش مصنوعی'
+                          : 'MODASR NEURAL CORE · INTERACTIVE AI MODEL MATRIX'}
+                      </span>
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+                      {isRtl
+                        ? 'ابرقدرت‌های هوش مصنوعی با فعال‌سازی رسمی روی اکانت شخصی'
+                        : 'Flagship AI Subscriptions with Direct Personal Activation'}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-white/95 leading-relaxed drop-shadow-[0_1px_3px_rgba(0,0,0,0.85)]">
+                      {isRtl
+                        ? 'مدل مورد نظر خود را انتخاب کنید تا ظرفیت پردازش، سرعت کدنویسی و نحوه تحویل اختصاصی آن را بررسی و مستقیماً به سبد خرید اضافه کنید.'
+                        : 'Select an AI model below to inspect live reasoning benchmarks, token capacity, and direct personal email activation.'}
+                    </p>
+
+                    {/* Interactive Model Switcher Tabs */}
+                    <div className="flex flex-wrap items-center gap-2 pt-1">
+                      {(
+                        [
+                          {
+                            id: 'chatgpt-plus',
+                            label: 'ChatGPT Plus (GPT-4o)',
+                            badgeFa: 'همه‌فن‌حریف و تحلیل داده',
+                            badgeEn: 'Multimodal & Reasoning',
+                          },
+                          {
+                            id: 'claude-pro',
+                            label: 'Claude 3.7 Sonnet Pro',
+                            badgeFa: 'قهرمان کدنویسی و معماری',
+                            badgeEn: '#1 Coding & Architecture',
+                          },
+                          {
+                            id: 'cursor-pro',
+                            label: 'Cursor AI Pro IDE',
+                            badgeFa: 'ادیتور هوشمند برنامه‌نویسان',
+                            badgeEn: '500 Fast Requests IDE',
+                          },
+                        ] as const
+                      ).map((m) => {
+                        const isSelected = selectedAiModelId === m.id;
+                        return (
+                          <button
+                            key={m.id}
+                            type="button"
+                            onClick={() => setSelectedAiModelId(m.id)}
+                            className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
+                              isSelected
+                                ? 'bg-teal-400 text-slate-950 border-white shadow-[0_0_20px_rgba(0,245,212,0.4)]'
+                                : 'bg-white/[0.16] backdrop-blur-xl text-white border-white/45 hover:bg-white/[0.24]'
+                            }`}
+                          >
+                            {m.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Right 5 Cols: Live Selected AI Model Telemetry & Quick Add Card */}
+                  <div className="lg:col-span-5 rounded-2xl bg-white/[0.16] backdrop-blur-xl border border-white/50 shadow-[inset_0_1px_2px_rgba(255,255,255,0.7)] p-5 space-y-4">
+                    {(() => {
+                      const activeAiProduct =
+                        MODASR_PRODUCTS.find((p) => p.id === selectedAiModelId) ??
+                        MODASR_PRODUCTS[0];
+                      const specs =
+                        selectedAiModelId === 'claude-pro'
+                          ? {
+                              coding: '99%',
+                              reasoning: '98%',
+                              context: '200K Tokens',
+                              promptPreview:
+                                'claude-3.7-sonnet --thinking=extended -> Verified Clean Architecture',
+                            }
+                          : selectedAiModelId === 'cursor-pro'
+                          ? {
+                              coding: '99%',
+                              reasoning: '96%',
+                              context: '500 Fast Req/mo',
+                              promptPreview:
+                                'cursor-agent: Multi-file refactor completed in 1.2s',
+                            }
+                          : {
+                              coding: '96%',
+                              reasoning: '99%',
+                              context: '128K + Vision/Voice',
+                              promptPreview:
+                                'gpt-4o-omni: Multimodal analysis & image synthesis ready',
+                            };
+
+                      return (
+                        <>
+                          <div className="flex items-center justify-between gap-2 border-b border-white/25 pb-3">
+                            <div>
+                              <div className="text-sm font-black text-white">
+                                {isRtl ? activeAiProduct.titleFa : activeAiProduct.titleEn}
+                              </div>
+                              <div className="text-[11px] text-teal-200 mt-0.5">
+                                {isRtl ? activeAiProduct.deliveryFa : activeAiProduct.deliveryEn}
+                              </div>
+                            </div>
+                            <div className="text-end">
+                              <div className="text-base font-black text-teal-200 tabular-nums">
+                                ${activeAiProduct.priceUsd.toFixed(2)}
+                              </div>
+                              <div className="text-[10px] text-white/80">
+                                {isRtl ? activeAiProduct.durationFa : activeAiProduct.durationEn}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-2 text-center">
+                            <div className="p-2.5 rounded-xl bg-white/[0.15] border border-white/40">
+                              <div className="text-xs font-black text-teal-200">{specs.coding}</div>
+                              <div className="text-[10px] text-white/85 mt-0.5">
+                                {isRtl ? 'دقت کدنویسی' : 'Coding Score'}
+                              </div>
+                            </div>
+                            <div className="p-2.5 rounded-xl bg-white/[0.15] border border-white/40">
+                              <div className="text-xs font-black text-cyan-200">
+                                {specs.reasoning}
+                              </div>
+                              <div className="text-[10px] text-white/85 mt-0.5">
+                                {isRtl ? 'قدرت استدلال' : 'Reasoning'}
+                              </div>
+                            </div>
+                            <div className="p-2.5 rounded-xl bg-white/[0.15] border border-white/40">
+                              <div className="text-xs font-black text-emerald-200">
+                                {specs.context}
+                              </div>
+                              <div className="text-[10px] text-white/85 mt-0.5">
+                                {isRtl ? 'ظرفیت مدل' : 'Capacity'}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div
+                            dir="ltr"
+                            className="px-3 py-2 rounded-xl bg-white/[0.16] border border-white/40 font-mono text-[11px] text-teal-100 truncate"
+                          >
+                            $ {specs.promptPreview}
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => onAddToCart(activeAiProduct)}
+                            className="w-full py-2.5 px-4 rounded-xl bg-teal-400 hover:bg-teal-300 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                          >
+                            <ShoppingBag className="w-3.5 h-3.5" />
+                            <span>
+                              {isRtl
+                                ? `افزودن سریع «${activeAiProduct.titleFa}» به سبد`
+                                : `Add ${activeAiProduct.titleEn} to Cart`}
+                            </span>
+                          </button>
+                        </>
+                      );
+                    })()}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Product Grid — Cascading 'slide-up' via useScrollReveal */}
+            <div
+              ref={productGridReveal.ref}
+              data-testid="marketplace-product-grid"
+              data-scroll-reveal="slide-up"
+              data-revealed={productGridReveal.isVisible ? 'true' : 'false'}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5"
+            >
+              {filteredProducts.map((product, idx) => (
+                <MarketplaceProductCard
+                  key={product.id}
+                  product={product}
+                  cascadeIndex={idx}
+                  lang={lang}
+                  usdtRate={usdtRate}
+                  currencyMode={currencyMode}
+                  onAddToCart={onAddToCart}
+                  onShowDetails={setDetailProduct}
+                />
+              ))}
             </div>
-          </div>
+          </>
         )}
-
-        {/* ===================================================================
-            3C. CUSTOM WEB, VPN & APPS (اتصال، تحریم‌شکن و تلگرام پرمیوم) SPOTLIGHT
-        ==================================================================== */}
-        {effectiveCategory === 'vpn' && (
-          <div
-            data-testid="vpn-category-spotlight"
-            className="mb-8 relative rounded-3xl overflow-hidden border border-white/45 bg-white/[0.14] backdrop-blur-2xl p-6 sm:p-8 shadow-[0_16px_45px_rgba(0,0,0,0.28),inset_0_1px_2px_rgba(255,255,255,0.75)] animate-scale-in"
-          >
-            {/* Dedicated Uploaded Web, VPN & Apps Video Backdrop */}
-            <video
-              data-testid="vpn-category-spotlight-video"
-              src={WEB_HERO_VIDEO_URL}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover object-[75%_center] sm:object-[72%_center] md:object-[68%_center] lg:object-center opacity-100 pointer-events-none"
-            />
-
-            <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6 my-auto">
-              <div className="max-w-xl">
-                <div className="inline-flex items-center gap-2 text-xs font-bold text-indigo-200 tracking-wider uppercase mb-2">
-                  <ShieldCheck className="w-4 h-4" />
-                  <span>
-                    {isRtl
-                      ? 'MODASR CONNECT & APPS · تحریم‌شکن، آی‌پی ثابت و اشتراک رسمی'
-                      : 'MODASR CONNECT & APPS · DEDICATED IP, TELEGRAM PREMIUM & SOFTWARE'}
-                  </span>
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-black text-white">
-                  {isRtl
-                    ? 'اتصال پایدار، دور زدن تحریم و اشتراک پریمیوم اپ‌ها'
-                    : 'Unrestricted Speed, Shielded Security & Official Subscriptions'}
-                </h3>
-                <p className="text-xs sm:text-sm text-white/90 mt-2 leading-relaxed">
-                  {isRtl
-                    ? 'سرورهای پرسرعت اختصاصی آلمان و فنلاند، اشتراک تلگرام پرمیوم قانونی بدون نیاز به ورود به اکانت و لایسنس معتبر نرم‌افزارها با تحویل آنی و پشتیبانی شبانه‌روزی.'
-                    : 'MODASR Connect high-speed nodes, zero-login Telegram Premium gifting, and verified software licenses.'}
-                </p>
-              </div>
-
-              <div className="flex flex-wrap lg:flex-col gap-3 shrink-0">
-                <div className="p-3.5 rounded-2xl bg-white/[0.18] border border-white/50 backdrop-blur-xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.75)]">
-                  <div className="text-[11px] text-indigo-200 font-semibold">
-                    {isRtl ? 'پایداری سرورها' : 'Server Uptime'}
-                  </div>
-                  <div className="text-sm font-black text-white mt-0.5">99.9% High-Speed</div>
-                </div>
-                <div className="p-3.5 rounded-2xl bg-white/[0.18] border border-white/50 backdrop-blur-xl shadow-[inset_0_1px_2px_rgba(255,255,255,0.75)]">
-                  <div className="text-[11px] text-indigo-200 font-semibold">
-                    {isRtl ? 'تحویل تلگرام پرمیوم' : 'Telegram Premium'}
-                  </div>
-                  <div className="text-sm font-black text-white mt-0.5">
-                    {isRtl ? 'ارسال فوری با گیفت' : 'Instant Gift Delivery'}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Product Grid — Cascading 'slide-up' via useScrollReveal */}
-        <div
-          ref={productGridReveal.ref}
-          data-testid="marketplace-product-grid"
-          data-scroll-reveal="slide-up"
-          data-revealed={productGridReveal.isVisible ? 'true' : 'false'}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5"
-        >
-          {filteredProducts.map((product, idx) => (
-            <MarketplaceProductCard
-              key={product.id}
-              product={product}
-              cascadeIndex={idx}
-              lang={lang}
-              usdtRate={usdtRate}
-              currencyMode={currencyMode}
-              onAddToCart={onAddToCart}
-              onShowDetails={setDetailProduct}
-            />
-          ))}
-        </div>
       </section>
       )}
 
@@ -1964,124 +2431,23 @@ export function ModasrMarketplace({
         />
       )}
 
-      {/* PRODUCT DETAIL MODAL */}
+      {/* PRODUCT DETAIL MODAL (DICARDO MULTI-PACKAGE & CAPABILITIES VIEW) */}
       {detailProduct && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label={isRtl ? detailProduct.titleFa : detailProduct.titleEn}
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
-        >
-          <div className="max-w-lg w-full rounded-3xl bg-slate-900 border border-teal-500/40 p-6 sm:p-8 shadow-2xl animate-scale-in">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <div className="text-xs text-teal-400 font-semibold">
-                  {detailProduct.platformBrand} ·{' '}
-                  {isRtl
-                    ? detailProduct.categoryLabelFa
-                    : detailProduct.categoryLabelEn}
-                </div>
-                <h3 className="text-xl font-bold text-white mt-1">
-                  {isRtl ? detailProduct.titleFa : detailProduct.titleEn}
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setDetailProduct(null);
-                  setSelectedPackageIdx(0);
-                }}
-                className="px-3 py-1 rounded-xl bg-white/10 text-xs text-white/80 hover:text-white cursor-pointer"
-              >
-                {isRtl ? 'بستن' : 'Close'}
-              </button>
-            </div>
-
-            <p className="text-xs sm:text-sm text-white/70 mt-4 leading-relaxed">
-              {isRtl ? detailProduct.subtitleFa : detailProduct.subtitleEn}
-            </p>
-
-            {detailProduct.popularPackagesFa &&
-              detailProduct.popularPackagesFa.length > 0 && (
-                <div className="mt-4">
-                  <div className="text-xs font-semibold text-white/80 mb-2">
-                    {isRtl
-                      ? 'انتخاب پکیج / ظرفیت محصول:'
-                      : 'Available Packages & Denominations:'}
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {detailProduct.popularPackagesFa.map((pkg, i) => (
-                      <button
-                        key={pkg}
-                        type="button"
-                        onClick={() => setSelectedPackageIdx(i)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-colors cursor-pointer border ${
-                          selectedPackageIdx === i
-                            ? 'bg-teal-400 text-slate-950 border-teal-300 font-bold'
-                            : 'bg-white/5 border-white/15 text-white/75 hover:text-white'
-                        }`}
-                      >
-                        {pkg}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-            <div className="mt-5 p-4 rounded-2xl bg-black/50 border border-white/10 space-y-2 text-xs">
-              <div className="flex justify-between">
-                <span className="text-white/55">
-                  {isRtl ? 'مدت / اعتبار:' : 'Duration:'}
-                </span>
-                <span className="text-white font-semibold">
-                  {isRtl ? detailProduct.durationFa : detailProduct.durationEn}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-white/55">
-                  {isRtl ? 'ریجن سرویس:' : 'Region:'}
-                </span>
-                <span className="text-white font-semibold">
-                  {isRtl ? detailProduct.regionFa : detailProduct.regionEn}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-white/55">
-                  {isRtl ? 'روش تحویل:' : 'Delivery Method:'}
-                </span>
-                <span className="text-teal-300 font-semibold">
-                  {isRtl ? detailProduct.deliveryFa : detailProduct.deliveryEn}
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-6 flex items-center justify-between gap-4">
-              <div>
-                <div className="text-lg font-black text-white tabular-nums">
-                  ≈{' '}
-                  {formatToman(
-                    convertUsdToToman(detailProduct.priceUsd, usdtRate),
-                    lang
-                  )}
-                </div>
-                <div className="text-xs text-white/50 tabular-nums">
-                  ${detailProduct.priceUsd.toFixed(2)} USD
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  onAddToCart(detailProduct);
-                  setDetailProduct(null);
-                  setSelectedPackageIdx(0);
-                }}
-                className="px-6 py-3 rounded-2xl bg-teal-400 hover:bg-teal-300 text-slate-950 font-bold text-xs cursor-pointer"
-              >
-                {isRtl ? 'افزودن به سبد خرید' : 'Add to Cart'}
-              </button>
-            </div>
-          </div>
-        </div>
+        <DicardoProductDetailModal
+          product={detailProduct}
+          usdtRate={usdtRate}
+          lang={lang}
+          showUsd={currencyMode === 'usd'}
+          initialPackageIdx={selectedPackageIdx}
+          onClose={() => {
+            setDetailProduct(null);
+            setSelectedPackageIdx(0);
+          }}
+          onAddToCart={(customizedProduct) => {
+            onAddToCart(customizedProduct);
+          }}
+          onOpenCart={onOpenCart}
+        />
       )}
     </div>
   );
